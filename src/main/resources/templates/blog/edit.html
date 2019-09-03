@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--wangEditor-->
+    <script type="text/javascript" charset="utf-8" src="/wangEditor/wangEditor.min.js"></script>
+
+    <title>DirkBlog - 编辑博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/blog/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Additional fonts for this theme -->
+    <link href="/blog/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
+          type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+          rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this theme -->
+    <link href="/blog/css/clean-blog.min.css" rel="stylesheet">
+
+    <!--弹框引入-->
+    <link rel="stylesheet" href="/naran/css/naranja.min.css">
+    <script type="text/javascript" src="/naran/js/naranja.js"></script>
+
+    <title>DirkBlog--编辑博客</title>
+    <style>
+        .navbar-toggler {
+            z-index: 1;
+        }
+
+        @media (max-width: 576px) {
+            nav > .container {
+                width: 100%;
+            }
+        }
+
+        .title-box {
+            align-content: center;
+        }
+
+        .title-input {
+            width: 99%;
+            border: 1px solid #ccc;
+            padding: 7px 0px;
+            border-radius: 3px;
+            padding-left: 5px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
+        }
+
+        input:focus {
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6)
+        }
+
+    </style>
+</head>
+<body>
+
+<!--<button id="btn1">获取html</button>-->
+<!-- Navigation -->
+<nav class="navbar fixed-top navbar-toggleable-md navbar-light" id="mainNav">
+    <div class="container">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+            &nbsp;&nbsp; <span style="font-size: 15px">菜单</span> &nbsp;&nbsp;
+        </button>
+        <a class="navbar-brand page-scroll" href="/index"><span style="font-size: 40px">Dirk Blog</span></a>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="/"><span style="font-size: 15px">主页</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="/to/about"><span style="font-size: 15px">关于</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="/to/contact"><span style="font-size: 15px">联系</span></a>
+                </li>
+                <!--<li class="nav-item">-->
+                    <!--<a class="nav-link page-scroll" href="/index#4"><span style="font-size: 15px">联系</span></a>-->
+                <!--</li>-->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Header -->
+<header class="intro-header" style="background-image: url('/blog/img/about-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                <div class="post-heading">
+                    <h1>我们的天空</h1>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1">
+                <form method="post" class="formUrl" id="formUrl" action="/blog/save" enctype="multipart/form-data">
+                    <table align="center" border="0px" style="width: 100%">
+                        <tr align="center" style="width: 99%">
+                            <td colspan="3">
+                                <div class="title-box">
+                                    <input th:value="${blog.blogTitle}"
+                                            class="title-input" type="text"
+                                           id="blogTitle" maxlength="50"
+                                           name="blogTitle" placeholder="输入文章标题 (限50字) ">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <input th:value="${blog.blogId}" type="hidden" name="blogId"><br>
+                            </td>
+                        </tr>
+                        <tr align="center" style="width: 99%">
+                            <td colspan="3">
+                                <div class="title-box">
+                                    <textarea th:text="${blog.blogIntro}"
+                                                class="title-input" maxlength="200"
+                                              style="height: 180px; " placeholder="前言 (限200字)"
+                                              name="blogIntro"></textarea>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 30px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div id="editor" >
+                                    <p id="info" th:text="${blog.blogText}" ></p>
+                                </div>
+                            </td>
+                        </tr>
+                        <!--富文本编辑器wangEditor-->
+                        <tr>
+                            <td colspan="3">
+                                <textarea id="textEditor" style="display: none" name="blogText"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 10px"></td>
+                        </tr>
+                        <!--标签-->
+                        <tr>
+                            <td colspan="3">
+                                文章类型：
+                                <select name="artType">
+                                    <option>请选择</option>
+                                    <option value="1" th:selected="${blog.artType} == 1">原创</option>
+                                    <option value="2" th:selected="${blog.artType} == 2">转发</option>
+                                    <option value="3" th:selected="${blog.artType} == 3">翻译</option>
+                                </select>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                博客分类：
+                                <select name="blogType">
+                                    <option>选择分类</option>
+                                    <option value="1" th:selected="${blog.artType} == 1">前端</option>
+                                    <option value="2" th:selected="${blog.artType} == 2">后端</option>
+                                    <option value="3" th:selected="${blog.artType} == 3">架构</option>
+                                    <option value="4" th:selected="${blog.artType} == 4">Linux</option>
+                                    <option value="5" th:selected="${blog.artType} == 5">数据库</option>
+                                    <option value="6" th:selected="${blog.artType} == 6">编程语言</option>
+                                    <option value="7" th:selected="${blog.artType} == 7">其他</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 20px"></td>
+                        </tr>
+                        <!--封面-->
+                        <tr>
+                            <td colspan="3">
+                                文章封面：
+                                <input th:text="${blog.coverImgUrl}" type="file" accept="image/*" name="coverImg">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="height: 28px"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="submit" class="btn btn-block btn-danger"
+                                       style="text-align: center;width: 80%;cursor: pointer;font-size: 20px" value="发布博客">
+                            </td>
+                            <td>
+                                <input type="submit" class="btn btn-block btn-danger"
+                                       style="text-align: center;width: 90%;cursor: pointer;font-size: 20px;" value="保存为草稿">
+                            </td>
+                            <td>
+                                <a href="/index"><input class="btn btn-block btn-info"
+                                        style="text-align: center;width: 40%;cursor: pointer;font-size: 20px" value="取消编辑"></a>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</article>
+
+<hr>
+
+<!-- Footer -->
+<footer>
+    <div th:replace="~{fragments/footer :: footer}"></div><br>
+</footer>
+
+<!-- jQuery Version 3.1.1 -->
+<script src="/blog/js/jquery.js"></script>
+
+<!-- Tether -->
+<script src="/blog/js/tether.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/blog/js/bootstrap.min.js"></script>
+
+<!-- Theme JavaScript -->
+<script src="/blog/js/clean-blog.min.js"></script>
+
+</body>
+<script src="/index/js/jquery.min.js"></script>
+<!--修改富文本编辑器样式-->
+<script type="text/javascript">
+    var E = window.wangEditor
+    var editor = new E(document.getElementById('editor'))
+    //获取文本域
+    var $textEditor = $('#textEditor')
+    editor.customConfig.onchange = function (html) {
+        // 监控变化，同步更新到 textarea
+        $textEditor.val(html)
+    }
+
+    //关闭过滤样式
+    editor.customConfig.pasteFilterStyle = false
+    // 忽略粘贴内容中的图片
+    editor.customConfig.pasteIgnoreImg = true
+
+    // 自定义菜单配置
+    editor.customConfig.menus = [
+        'head',  // 标题
+        'bold',  // 粗体
+        'fontSize',  // 字号
+        // 'fontName',  // 字体
+        'italic',  // 斜体
+        'underline',  // 下划线
+        'strikeThrough',  // 删除线
+        'foreColor',  // 文字颜色
+        'quote',  // 引用
+        // 'video',  // 插入视频
+        // 'backColor',  // 背景颜色
+        'link',  // 插入链接
+        'code',  // 插入代码
+        'list',  // 列表
+        'justify',  // 对齐方式
+        'emoticon',  // 表情
+        'image',  // 插入图片
+        'table',  // 表格
+        'undo',  // 撤销
+        'redo'  // 重复
+    ]
+    // 自定义配置颜色（字体颜色、背景色）
+    editor.customConfig.colors = [
+        '#c22525',
+        '#f9963b',
+        '#8baa4a',
+        '#46acc8',
+        '#4d80bf',
+        '#7b5ba1',
+        '#1c487f',
+        '#ffffff',
+        '#000000'
+    ]
+    // 表情面板可以有多个 tab ，因此要配置成一个数组。数组每个元素代表一个 tab 的配置
+    editor.customConfig.emotions = [
+        {
+            // tab 的标题
+            title: '颜文字',
+            // type -> 'emoji' / 'image'
+            type: 'emoji',
+            // content -> 数组
+            content: ['😂', '😅', '😐', '😠', '😀', '😃', '😆', '😉', '😑', '😬', '😡', '😮', '😥',
+                '😨', '😟', '😳', '😢', '😣', '😦', '😩', '😱', '😵', '😴', '😤', '😧', '😰', '😲',
+                '😶', '😷', '😍', '😎', '😖', '😞', '😛', '😋', '😘', '😭', '😔', '😒',
+                '😜', '🤑', '🤣', '🤯', '👿', '🤬', '💩', '💀 ', '💋']
+        }
+    ]
+    //图片上传地址的URL
+    editor.customConfig.uploadImgServer = '/upload'; //上传URL
+    //图片大小限制为3M，默认是5M
+    // editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024;
+    //上传图片数量默认10000张
+    // editor.customConfig.uploadImgMaxLength = 5;
+    // 上传文件的名字
+    editor.customConfig.uploadFileName = 'file';
+    editor.customConfig.uploadImgHooks = {
+        customInsert: function (insertImg, result, editor) {
+            // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
+            // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
+
+            // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
+            var url =result.data;
+            insertImg(url);
+
+            // result 必须是一个 JSON 格式字符串！！！否则报错
+        }
+    }
+    //自定义提示
+    editor.customConfig.customAlert = function (info) {
+        narn('warn',info)
+    }
+
+    editor.create()
+</script>
+<script type="text/javascript">
+
+    //文章标题获取光标
+    window.onload = function () {
+        var titInput = document.getElementById("blogTitle")
+        titInput.focus();
+        //第一步是先获取服务器传过来的图文信息值
+        var info1 = document.getElementById("info").textContent;
+        //把图文信息的值通过innerHTML赋值给编辑器
+        document.getElementById("info").innerHTML=info1;
+
+        // 监控变化，同步更新到 textarea
+        $('#textEditor').val(info1)
+    }
+
+    /**
+     * 弹出对话框
+     * @param type
+     * @param msg
+     */
+    function narn (type,msg) {
+        naranja()[type]({
+            title: '消息提示',
+            text: msg,
+            timeout: 'keep',
+            buttons: [{
+                text: '接受',
+                click: function (e) {
+                    naranja().success({
+                        title: '通知',
+                        text: '通知被接受'
+                    })
+                }
+            },{
+                text: '取消',
+                click: function (e) {
+                    e.closeNotification()
+                }
+            }]
+        })
+    }
+
+</script>
+<!--自定义wangEditor的高度-->
+<style>
+    .w-e-text-container {
+        height: 450px !important;
+    }
+</style>
+
+</html>

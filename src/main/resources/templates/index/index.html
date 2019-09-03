@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <title>DirkBlog--主页</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="/index/css/bootstrap.min.css">
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/index/css/font-awesome/css/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600|PT+Serif:400,400italic' rel='stylesheet'
+          type='text/css'>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/index/css/style.css" id="theme-styles">
+
+    <!--[if lt IE 9]>
+    <script src="/index/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!--弹框引入-->
+    <link rel="stylesheet" href="/naran/css/naranja.min.css">
+    <script type="text/javascript" src="/naran/js/naranja.js"></script>
+
+</head>
+<body>
+<div class="adcenter">
+</div>
+<header>
+
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="widewrapper subheader">
+        <div class="container">
+            <div class="clean-breadcrumb">
+                <a style="font-size: 30px">主页</a>
+            </div>
+
+            <div th:replace="~{fragments/header :: search}"></div>
+
+        </div>
+    </div>
+</header>
+
+<div class="widewrapper main">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 blog-main">
+                <!--遍历集合，展示博客-->
+                <div th:each="blog : ${blogList}" class="row">
+                    <!--/*@thymesVar id="blogList1" type="遍历集合1"*/-->
+                    <div class="col-md-6 col-sm-6">
+                        <article class=" blog-teaser">
+                            <header>
+                                <!--/*@thymesVar id="coverImgUrl" type="封面URL"*/-->
+                                <img th:src="${blog.coverImgUrl}" alt="">
+                                <h3><a th:text="${blog.blogTitle}"></a></h3>
+                                <span class="meta" th:text="${blog.createTime}"></span>
+                                <span>, </span>
+                                <span class="meta" th:text="${blog.author}"></span>
+                                <hr>
+                            </header>
+                            <div class="body" th:text="${blog.blogIntro}">
+                            </div>
+                            <div class="clearfix">
+                                <a th:href="@{/blog/showOne(id=${blog.blogId})}" class="btn btn-clean-one">阅读更多</a>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!--/*@thymesVar id="blogList1" type="遍历集合2"*/-->
+                    <div th:if="${blog.blogIndex}!=null" class="col-md-6 col-sm-6">
+                        <article class=" blog-teaser">
+                            <header>
+                                <!--/*@thymesVar id="coverImgUrl" type="封面URL"*/-->
+                                <img th:src="${blog.blogIndex.coverImgUrl}" alt="">
+                                <h3><a th:text="${blog.blogIndex.blogTitle}"></a></h3>
+                                <span class="meta" th:text="${blog.blogIndex.createTime}"></span>
+                                <span>, </span>
+                                <span class="meta" th:text="${blog.blogIndex.author}"></span>
+                                <hr>
+                            </header>
+                            <div class="body" th:text="${blog.blogIndex.blogIntro}">
+                            </div>
+                            <div class="clearfix">
+                                <a th:href="@{/blog/showOne(id=${blog.blogIndex.blogId})}" class="btn btn-clean-one">阅读更多</a>
+                            </div>
+                        </article>
+                    </div>
+
+                </div>
+
+                <div class="paging">
+                    <a href="#" class="older">
+                        <img style="height: 35px;width: 33px" src="/index/img/toTop.png" alt="回到顶部">
+                        </i></a>
+                </div>
+
+                <!--分页-->
+                <div class="Paging" id="pagination">
+                    <div class="center_bottom">
+                        <div th:if="${page != null}" style="float:right;padding-right:30px">
+                               <a th:if="${page.currentPage}>0"
+                                  th:href="@{/(currentPage=${page.currentPage - 1})}">上一页</a>
+                               <a th:if="${page.currentPage} + 1<${page.totalPage}"
+                                  th:href="@{/(currentPage=${page.currentPage + 1})}">下一页</a>
+                                <input style="text-align: center;width: 60px" type="number" id="toPage">
+                                <a href="javascript:toSkip()">跳转</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <span id="currentPage" name="currentPage" style="font-size: 18px;color: #0066cc"
+                                  th:text="${page.currentPage+1}"></span>
+                            <span>/</span>
+                            <span id="totalPage" name="totalPage" style="font-size: 18px;color: #0066cc" th:text="${page.totalPage}"></span>页
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <aside class="col-md-4 blog-aside">
+                <div th:replace="~{fragments/right :: right}"></div>
+            </aside>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div th:replace="~{fragments/index-footer :: footer}"></div>
+    <br>
+</footer>
+
+<script src="/index/js/jquery.min.js"></script>
+<script src="/index/js/bootstrap.min.js"></script>
+<script src="/index/js/modernizr.js"></script>
+
+</body>
+<script type="text/javascript">
+    //页面跳转
+    function toSkip() {
+        var toPage = document.getElementById("toPage").value * 1 - 1;
+        var currentPage = document.getElementById("currentPage").textContent;
+        var totalPage = document.getElementById("totalPage").textContent;
+        if(toPage>=0 && toPage<totalPage){
+            if(toPage + 1 == currentPage){
+                narn("warn","跳转的页数为当前页！");
+                return false;
+            }
+            var href = "/?currentPage=" + toPage;
+            window.open(href, "_self");
+        }else{
+            narn("warn","输入的跳转页数有误！");
+        }
+    }
+
+    /**
+     * 弹出对话框
+     * @param type
+     * @param msg
+     */
+    function narn (type,msg) {
+        naranja()[type]({
+            title: '消息提示',
+            text: msg,
+            timeout: 'keep',
+            buttons: [{
+                text: '接受',
+                click: function (e) {
+                    naranja().success({
+                        title: '通知',
+                        text: '通知被接受'
+                    })
+                }
+            },{
+                text: '取消',
+                click: function (e) {
+                    e.closeNotification()
+                }
+            }]
+        })
+    }
+
+</script>
+</html>

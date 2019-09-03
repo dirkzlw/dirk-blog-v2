@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>header</title>
+</head>
+<body>
+
+    <!--头部-->
+    <div th:fragment="header" class="widewrapper masthead">
+        <div class="container">
+            <a href="#" id="logo">
+                <img src="/index/img/logo.png" alt="clean Blog">
+            </a>
+
+            <div id="mobile-nav-toggle" class="pull-right">
+                <a href="#" data-toggle="collapse" data-target=".clean-nav .navbar-collapse">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+
+            <nav class="pull-right clean-nav">
+                <div class="collapse navbar-collapse">
+                    <ul class="nav nav-pills navbar-nav">
+
+                        <li>
+                            <a th:href="@{/}">主 页&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        </li>
+                        <li>
+                            <a th:href="@{/to/about}">关于&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        </li>
+                        <li>
+                            <a th:href="@{/to/contact}">联系&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        </li>
+                        <li>
+                            <a th:if="${user.userId} == null" th:href="@{/to/login}">登 录&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                            <a th:if="${user.userId} != null" th:href="@{/to/user/manage(userId=${user.userId})}">
+                                <img style="
+                                        position: relative;
+                                        top: -8px;
+                                        display: inline;
+                                        width: 34px;
+                                        height: 34px;
+                                        /*display: flex;*/
+                                        border-radius: 50%;
+                                        align-items: center;
+                                        justify-content: center;
+                                        overflow: hidden;
+                                        cursor: pointer;"
+                                        alt="头像"
+                                        class="round_icon"
+                                        title="账户管理"
+                                        th:src="${user.headImgUrl}">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <!--搜索文章-->
+    <div th:fragment="search" class="clean-searchbox">
+        <form th:action="@{/blog/search}" method="get" accept-charset="utf-8">
+            <input class="searchfield" name="fors" id="searchbox" type="text" placeholder="搜索文章">
+            <button class="searchbutton" type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </form>
+    </div>
+
+</body>
+</html>

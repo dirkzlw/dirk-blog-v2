@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <title>DirkBlog--关于</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="/index/css/bootstrap.min.css">
+
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/index/css/font-awesome/css/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600|PT+Serif:400,400italic' rel='stylesheet'
+          type='text/css'>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/index/css/style.css" id="theme-styles">
+
+    <!--[if lt IE 9]>
+    <script src="/index/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+<header>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="widewrapper subheader">
+        <div class="container">
+            <div class="clean-breadcrumb">
+                <a style="font-size: 30px">关于DirkBlog_0.0.2</a>
+            </div>
+
+            <div th:replace="~{fragments/header :: search}"></div>
+
+        </div>
+    </div>
+</header>
+
+<div class="widewrapper main">
+    <div class="container about">
+        <h1>你好, 介绍一下 <span class="about-bold">  DirkBlog_V2</span></h1>
+        <p style="text-indent:2em;font-size: 23px;line-height: 35px;letter-spacing: 6px">
+            这是DirkBlog第2个版本,相较于 <a href="https://github.com/drikZLW/dirk-blog" style="color: #0066cc"
+                                   title="查看V1源码">V1</a>,
+            V2在页面展示,后台代码书写,数据存储等方面都做了很大的改动。
+        </p>
+        <p style="text-indent:2em;font-size: 23px;line-height: 35px;letter-spacing: 6px">
+            在<span style="color: #c22525">页面</span>上,基本摒弃了<a href="https://github.com/drikZLW/dirk-blog"
+                                                             style="color: #0066cc" title="查看V1源码">V1</a>
+            的花里胡哨,改为较为传统的页面展示,但也不失为良好的界面交互,在主页增加了<span style="color: #c22525">公告</span>、<span style="color: #c22525">热门文章</span>、<span
+                style="color: #c22525">标签</span>、<span style="color: #c22525">关注</span>等栏目,
+            有助于用户更简便的操作系统,满足用户的需求。同时，主页上博客展示的信息也更多，有助于用户找到自己需要的文章。另外，在每页的<span style="color: #c22525">底部栏</span>,展示了作者其他项目的源码,供各位阅读,大家一起交流学习。
+            其次,用户<span style="color: #c22525">登录</span>、<span style="color: #c22525">注册</span>界面更为简洁,不在需要邮箱获取验证码,登录去掉了验证码,让用户操作更为简便。
+            <span style="color: #c22525">最重要</span>的一点就是同时满足手机用户操作,这对于<a href="https://github.com/drikZLW/dirk-blog"
+                                                                         style="color: #0066cc" title="查看V1源码">V1</a>
+            是很大的一个改进。
+        </p>
+        <p style="text-indent:2em;font-size: 23px;line-height: 35px;letter-spacing: 6px">
+            在<span style="color: #c22525">后台</span>上,优化的代码书写,提高了系统的,修改了诸多不合理的bug。在<span style="color: #c22525">技术</span>上讲,V2的
+            后台较于<a href="https://github.com/drikZLW/dirk-blog" style="color: #0066cc" title="查看V1源码">V1</a>更加简洁,但是实现的
+            功能却更多,更好。比如：增加了<span
+                style="color: #c22525">定时功能</span>,每隔一段时间读取博客,来获取热门文章,有助于用户及时查看热门文章。另外,在与前端的交互上,增加了<span
+                style="color: #c22525">ajax</span>和<span style="color: #c22525">json</span>的使用,
+            很大程度上提高了系统的流畅性,提高用户体验感。还有,提高了对重复代码的抽取,对于系统的耦合度很是重视。
+        </p>
+        <p style="text-indent:2em;font-size: 23px;line-height: 35px;letter-spacing: 6px">
+            在<span style="color: #c22525">数据存储</span>上,我觉得这点是我最想表达的一点了,正如<span title="这是一个大哥" style="color: #001c22">“老王”</span>
+            所言“你数据库设计的有多烂,代码写的就有多麻烦”,如果你不是设计数据库的,那你遇见设计DB“大仙”的话，你很有可能会杀了他。。。
+            V2的数据库设计,着重降低了类与类之间的耦合度,能不关联的就不关联,能独立查询的尽量做到独立,这样下来,系统的查询速度得到了提升,
+            另外,好的系统少不了数据缓存,和<a href="https://github.com/drikZLW/dirk-blog" style="color: #0066cc" title="查看V1源码">V1</a>
+            一样,V2还是采用的<span style="color: #c22525" title="非关系型数据库">Redis</span>来作为数据缓存,这对数据查询也是一个很大的提高。
+        </p>
+        <p style="text-indent:2em;font-size: 23px;line-height: 35px;letter-spacing: 6px">
+            <span style="color: #c22525">写在最后：</span>学会分享,共同进步。
+        </p>
+
+        <div class="about-button">
+            <a class="btn btn-xlarge btn-clean-one" th:href="@{/to/contact}">反馈</a>
+        </div>
+        <hr>
+    </div>
+
+</div>
+
+<footer>
+    <div th:replace="~{fragments/index-footer :: footer}"></div>
+    <br>
+</footer>
+
+<script src="/index/js/jquery.min.js"></script>
+<script src="/index/js/bootstrap.min.js"></script>
+<script src="/index/js/modernizr.js"></script>
+
+</body>
+</html>

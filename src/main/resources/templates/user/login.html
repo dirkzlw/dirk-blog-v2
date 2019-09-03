@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DirkBlog--登录</title>
+
+    <link rel="stylesheet" href="/user/login/css/style.css">
+
+    <script src="/user/login/js/form.js"></script>
+
+
+    <!--弹框引入-->
+    <link rel="stylesheet" href="/naran/css/naranja.min.css">
+    <script type="text/javascript" src="/naran/js/naranja.js"></script>
+
+</head>
+<body>
+
+<div class="form" style="position:relative">
+
+    <!--登录表单-->
+    <div class="form_login" style="height:0;">
+
+        <form>
+            <h1>登录</h1>
+            <div class="form_item">
+                <label for="login_username">用户名：</label>
+                <input type="text" name="username" id="login_username" placeholder="用户名/邮箱" required>
+            </div>
+            <div class="form_item">
+                <label for="login_password">密码：</label>
+                <input type="password" name="password" id="login_password" placeholder="请输入密码" required>
+            </div>
+            <div class="form_item">
+                <input type="button" value="登录" onclick="login()">
+            </div>
+        </form>
+        <div class="info">
+            没有账号？点击<span class="switch register_Btn">注册账号</span><br><br>
+            忘记密码？点击<span onclick="resetPwd()">重置密码</span>
+        </div>
+
+    </div>
+
+    <!--注册表单-->
+    <div class="form_register" style="position:absolute">
+        <form>
+            <h1>注册</h1>
+            <div class="form_item">
+                <label for="regist_username">用户名：</label>
+                <input type="text" name="r_username" id="regist_username" placeholder="请输入用户名" required>
+            </div>
+            <div class="form_item">
+                <label for="regist_password">密码：</label>
+                <input type="password" name="r_password" id="regist_password" onblur="checkPwd()" placeholder="请输入密码" required>
+            </div>
+            <div class="form_item">
+                <label for="oncepwd">确认密码：</label>
+                <input type="password" id="oncepwd" placeholder="请再次输入密码" onblur="check()" required>
+            </div>
+            <div class="form_item">
+                <label for="email">电子邮箱：</label>
+                <input type="email" name="email" id="email" placeholder="邮箱用于找回密码" required>
+            </div>
+            <div class="form_item">
+                <input type="button" value="注册" onclick="register()">
+            </div>
+        </form>
+        <div class="info">已有账号？点击<span class="switch login_Btn">登录</span></div>
+    </div>
+
+</div>
+</body>
+<script src="/user/login/js/ajax.js"></script>
+<script src="/index/js/jquery.min.js"></script>
+<script type="text/javascript">
+
+    //重置密码
+    function resetPwd() {
+        var email = $('input[name="username"]').val();
+        var re = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+        if (!re.test(email)) {
+            narn("warn", "请正确输入邮箱!");
+            return false;
+        }else {
+            narn("success", "正在请求，请稍后!");
+            $.ajax({
+                type: "POST",
+                url: "/user/pwd/reset",
+                data: {'email': email},
+                dataType: "text", //return dataType: text or json
+                success: function (json) {
+                    if (json == "resetSuccess") {
+                        narn('success', '新密码已发送至邮箱！请即时查看')
+                    } else if(json == 'noneEmail'){
+                        narn('warn', '邮箱不存在！请检查输入')
+                    } else{
+                        narn('warn', '密码重置失败！请检查网络')
+                    }
+                },
+                error: function (json) {
+                    narn('warn', '密码重置！请检查网络')
+                    return false;
+                }
+            });
+        }
+    }
+
+    //登录
+    function login() {
+        var username = $('input[name="username"]').val();
+        var password = $('input[name="password"]').val();
+        if (username == '' || password == '') {
+            narn("warn", "请填写完整登录信息！");
+            return false;
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/user/login",
+                data: {'username': username, 'password': password},
+                dataType: "text", //return dataType: text or json
+                success: function (json) {
+                    if (json == "loginSuccess") {
+                        narn('success', '登录成功！即将自动跳转页面')
+                        setTimeout(function () {
+                            window.location.href = '/';
+                        }, 2500)
+                    } else {
+                        narn('warn', '登录失败！请检查用户名/密码')
+                    }
+                },
+                error: function (json) {
+                    narn('warn', '登录失败！请检查用户名/密码')
+                    return false;
+                }
+            });
+        }
+    }
+
+    //注册
+    function register() {
+        var username = $('input[name="r_username"]').val();
+        var password = $('input[name="r_password"]').val();
+        var email = $('input[name="email"]').val();
+        if (username == '' || password == '' || email == '') {
+            narn("warn", "请填写完整登录信息！");
+            return false;
+        }else{
+            if(checkPwd()){
+                if(check()){
+                    $.ajax({
+                        type: "POST",
+                        url: "/user/register",
+                        data: {'username': username, 'password': password, 'email': email},
+                        dataType: "text", //return dataType: text or json
+                        success: function (json) {
+                            if (json == "registerSuccess") {
+                                narn('success', '注册成功！即将自动跳转页面')
+                                setTimeout(function () {
+                                    window.location.href = '/';
+                                }, 2500)
+                            }else if(json == "emailExit"){
+                                narn('warn', '注册失败！邮箱已存在')
+                            } else {
+                                narn('warn', '注册失败！请检查网络状况')
+                            }
+                        },
+                        error: function (json) {
+                            narn('warn', '注册失败！请检查网络状况')
+                            return false;
+                        }
+                    });
+                }else {
+                    return false;
+                }
+            }else {
+                return false;
+            }
+        }
+    }
+
+    //校验密码
+    function checkPwd(){
+        var str = document.getElementById('regist_password').value;
+        var re = /^[a-zA-Z]\w{5,17}$/;
+        if (!re.test(str)) {
+            narn('success','密码应以字母开头,长度在6-18之间,只能包含字符、数字和下划线!')
+            return false;
+        }
+        return true;
+    }
+
+    //校验注册
+    function check() {
+        var password = document.getElementById("regist_password").value;
+        var oncepwd = document.getElementById("oncepwd").value;
+        if (password != oncepwd) {
+            narn("warn", "两次密码不一致！");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 弹出对话框
+     * @param type
+     * @param msg
+     */
+    function narn(type, msg) {
+        naranja()[type]({
+            title: '消息提示',
+            text: msg,
+            timeout: 'keep',
+            buttons: [{
+                text: '接受',
+                click: function (e) {
+                    naranja().success({
+                        title: '通知',
+                        text: '通知被接受'
+                    })
+                }
+            }, {
+                text: '取消',
+                click: function (e) {
+                    e.closeNotification()
+                }
+            }]
+        })
+    }
+</script>
+</html>

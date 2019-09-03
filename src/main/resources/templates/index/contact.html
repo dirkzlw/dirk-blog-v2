@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <title>DirkBlog--联系</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="/index/css/bootstrap.min.css">
+  
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="/index/css/font-awesome/css/font-awesome.min.css">
+
+    <!-- Google Webfonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600|PT+Serif:400,400italic' rel='stylesheet' type='text/css'>
+
+    <!-- Styles -->
+  <link rel="stylesheet" href="/index/css/style.css" id="theme-styles">
+
+    <!--[if lt IE 9]>      
+        <script src="/index/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <!--弹框引入-->
+    <link rel="stylesheet" href="/naran/css/naranja.min.css">
+    <script type="text/javascript" src="/naran/js/naranja.js"></script>
+    
+</head>
+<body>
+    <header>
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="widewrapper subheader">
+            <div class="container">
+                <div class="clean-breadcrumb">
+                    <a style="font-size: 30px">写下您的建议</a>
+                </div>
+
+                <div th:replace="~{fragments/header :: search}"></div>
+
+            </div>
+        </div>
+    </header>
+
+    <div class="widewrapper main">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 clean-superblock" id="contact">
+                    <h2>谢谢您的反馈</h2>
+                    
+                    <form accept-charset="utf-8" class="contact-form">
+                        <input type="text" name="username" id="username" placeholder="昵称" class="form-control input-lg">
+                        <input type="email" name="email" id="email" placeholder="邮箱" class="form-control input-lg">
+                        <textarea rows="10" name="content" id="content" placeholder="正文..." class="form-control input-lg"></textarea>
+                        <div class="buttons clearfix">
+                            <button type="button" class="btn btn-xlarge btn-clean-one" onclick="contact()">提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>        
+        </div>
+    </div>
+
+   <footer>
+       <div th:replace="~{fragments/index-footer :: footer}"></div><br>
+    </footer>
+    
+    <script src="/index/js/jquery.min.js"></script>
+    <script src="/index/js/bootstrap.min.js"></script>
+    <script src="/index/js/modernizr.js"></script>
+    <script src="/user/login/js/ajax.js"></script>
+
+</body>
+<script type="text/javascript">
+    function contact() {
+        //.replace(/^\s*|\s*$/g,"")去掉前后空格
+        var username = $('input[name="username"]').val().replace(/^\s*|\s*$/g,"");
+        var email = $('input[name="email"]').val().replace(/^\s*|\s*$/g,"");
+        var content = $('textarea[name="content"]').val().replace(/^\s*|\s*$/g,"");
+        var re = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+
+        if(username == "" || email == "" || content == ""){
+            narn("warn", "请将信息填写完整！");
+            return false;
+        }else if(!re.test(email)){
+            narn("warn", "邮箱格式不正确！");
+            return false;
+        } else{
+            $.ajax({
+                type: "POST",
+                url: "/contact/he",
+                data : {'username':username,'email':email,'content':content},
+                dataType: "text", //return dataType: text or json
+                success: function(json) {
+                    if(json=="contactSuccess"){
+                        narn('success','发送成功！非常感谢你的反馈');
+                        //将输入位置置空
+                        document.getElementById('username').value = "";
+                        document.getElementById('email').value = "";
+                        document.getElementById('content').value = "";
+                    }else{
+                        narn('warn','发送失败！请检查网络状况')
+                    }
+                },
+                error: function(json) {
+                    narn('warn','发送失败！请检查网络状况')
+                    return false;
+                }
+            });
+        }
+    }
+
+    /**
+     * 弹出对话框
+     * @param type
+     * @param msg
+     */
+    function narn(type, msg) {
+        naranja()[type]({
+            title: '消息提示',
+            text: msg,
+            timeout: 'keep',
+            buttons: [{
+                text: '接受',
+                click: function (e) {
+                    naranja().success({
+                        title: '通知',
+                        text: '通知被接受'
+                    })
+                }
+            }, {
+                text: '取消',
+                click: function (e) {
+                    e.closeNotification()
+                }
+            }]
+        })
+    }
+</script>
+</html>
