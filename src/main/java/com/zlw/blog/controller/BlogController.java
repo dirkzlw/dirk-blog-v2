@@ -69,7 +69,7 @@ public class BlogController {
     /**
      * 保存博客
      */
-    @PostMapping("/blog/ ")
+    @PostMapping("/blog/save")
     public String saveBlog(Blog blog,
                            MultipartFile coverImg,
                            Model model,

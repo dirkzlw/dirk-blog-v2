@@ -7,6 +7,7 @@ import org.csource.fastdfs.StorageServer;
 import org.csource.fastdfs.TrackerClient;
 import org.csource.fastdfs.TrackerServer;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -34,7 +35,13 @@ public class FastDFSUtils {
 
         String imgUrl = null;
         try {
-            ClientGlobal.init(fdfsConfFile.getPath());
+
+            //本地写法
+            ClassPathResource cpr = new ClassPathResource(FDFS_CLIENT_PAHT);
+            ClientGlobal.init(cpr.getClassLoader().getResource(FDFS_CLIENT_PAHT).getPath());
+
+            //服务器写法
+//            ClientGlobal.init(fdfsConfFile.getPath());
 
             TrackerClient tracker = new TrackerClient();
             TrackerServer trackerServer = tracker.getConnection();

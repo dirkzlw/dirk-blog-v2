@@ -54,7 +54,7 @@ dependencies {
     //Spring Data ElasticSearch
     compile 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
     //fastdfs_client
-    compile files('lib/fastdfs_client_v1.20.jar')
+    compile files('lib/fastdfs-client-java-1.27-SNAPSHOT.jar')
     //Json
 //    compile 'org.springframework.boot:spring-boot-starter-json:2.0.3.RELEASE'
 }

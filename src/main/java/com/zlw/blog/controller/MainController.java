@@ -7,6 +7,7 @@ import com.zlw.blog.service.BlogService;
 import com.zlw.blog.service.HotBlogService;
 import com.zlw.blog.service.UserService;
 import com.zlw.blog.utils.HotBlogUtils;
+import com.zlw.blog.utils.HttpUtils;
 import com.zlw.blog.utils.IndexUtils;
 import com.zlw.blog.utils.UserUtils;
 import com.zlw.blog.vo.BlogEdit;
@@ -171,7 +172,10 @@ public class MainController {
      * 跳转到错误提示页面
      */
     @GetMapping("/to/error")
-    public String toError(){
+    public String toError(Model model, Integer errorCode) {
+        String errorMsg = HttpUtils.getMessageByCode(errorCode);
+        model.addAttribute("errorCode", errorCode);
+        model.addAttribute("errorMsg", errorMsg);
         return "index/error";
     }
 

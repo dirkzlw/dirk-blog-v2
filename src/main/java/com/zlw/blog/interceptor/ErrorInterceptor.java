@@ -15,13 +15,13 @@ import java.util.List;
  */
 @Component
 public class ErrorInterceptor implements HandlerInterceptor {
-    private List<Integer> errorCodeList = Arrays.asList(404, 403, 500, 501);
+    private List<Integer> errorCodeList = Arrays.asList(403, 404, 405, 500, 501);
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
         //当拦截成功时候，转发跳转错误页面
         if (errorCodeList.contains(response.getStatus())) {
-            response.sendRedirect("/to/error");
+            response.sendRedirect("/to/error?errorCode="+response.getStatus());
             return false;
         }
         return true;
