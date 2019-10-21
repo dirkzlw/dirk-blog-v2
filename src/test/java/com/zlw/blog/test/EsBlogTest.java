@@ -1,6 +1,7 @@
 package com.zlw.blog.test;
 
 import com.zlw.blog.DirkBlogV2Application;
+import com.zlw.blog.DirkBlogV2ApplicationTests;
 import com.zlw.blog.po.Blog;
 import com.zlw.blog.po.es.EsBlog;
 import com.zlw.blog.repository.es.EsBlogRepository;
@@ -37,12 +38,11 @@ public class EsBlogTest {
 
         List<Blog> allBlogs = blogService.findAllBlog();
 
-        EsBlog esBlog = new EsBlog(null, null, null, null,null ,null,null);
+        EsBlog esBlog = new EsBlog(null, null, null, null,null ,null);
 
         for (Blog blog : allBlogs) {
             esBlog.setBlogId(blog.getBlogId());
             esBlog.setBlogTitle(blog.getBlogTitle());
-            esBlog.setBlogIntro(blog.getBlogIntro());
             esBlog.setCreateTime(blog.getCreateTime());
             esBlog.setAuthor(blog.getAuthor());
             esBlog.setCoverImgUrl(blog.getCoverImgUrl());
@@ -82,7 +82,7 @@ public class EsBlogTest {
      */
     @Test
     public void testEsQuery(){
-        List<EsBlog> blogs = esBlogRepository.findDistinctByBlogTitleContainingOrBlogIntroContainingOrBlogTypeContaining("测试", "前言", "前端");
+        List<EsBlog> blogs = esBlogRepository.findDistinctByBlogTitleContainingOrBlogTypeContaining("测试",  "前端");
         System.out.println(blogs.size());
         for (EsBlog blog : blogs) {
             System.out.println("blog = " + blog);

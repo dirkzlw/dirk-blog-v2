@@ -9,7 +9,6 @@ public class BlogEdit {
 
     private Integer blogId;
     private String blogTitle;
-    private String blogIntro;
     private String blogText;
     private Integer artType;
     private Integer blogType;
@@ -18,12 +17,11 @@ public class BlogEdit {
     protected BlogEdit() {
     }
 
-    public BlogEdit(Integer blogId, String blogTitle, String blogIntro,
+    public BlogEdit(Integer blogId, String blogTitle,
                     String blogText, Integer artType, Integer blogType,
                     String coverImgUrl) {
         this.blogId = blogId;
         this.blogTitle = blogTitle;
-        this.blogIntro = blogIntro;
         this.blogText = blogText;
         this.artType = artType;
         this.blogType = blogType;
@@ -52,14 +50,6 @@ public class BlogEdit {
 
     public void setBlogTitle(String blogTitle) {
         this.blogTitle = blogTitle;
-    }
-
-    public String getBlogIntro() {
-        return blogIntro;
-    }
-
-    public void setBlogIntro(String blogIntro) {
-        this.blogIntro = blogIntro;
     }
 
     public String getBlogText() {

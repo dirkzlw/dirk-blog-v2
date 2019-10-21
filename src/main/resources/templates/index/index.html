@@ -67,8 +67,6 @@
                                 <span class="meta" th:text="${blog.author}"></span>
                                 <hr>
                             </header>
-                            <div class="body" th:text="${blog.blogIntro}">
-                            </div>
                             <div class="clearfix">
                                 <a th:href="@{/blog/showOne(id=${blog.blogId})}" class="btn btn-clean-one">阅读更多</a>
                             </div>
@@ -87,8 +85,6 @@
                                 <span class="meta" th:text="${blog.blogIndex.author}"></span>
                                 <hr>
                             </header>
-                            <div class="body" th:text="${blog.blogIndex.blogIntro}">
-                            </div>
                             <div class="clearfix">
                                 <a th:href="@{/blog/showOne(id=${blog.blogIndex.blogId})}" class="btn btn-clean-one">阅读更多</a>
                             </div>

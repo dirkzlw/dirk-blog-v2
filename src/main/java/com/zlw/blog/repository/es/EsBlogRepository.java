@@ -12,6 +12,6 @@ import java.util.List;
 public interface EsBlogRepository extends ElasticsearchRepository<EsBlog, Integer> {
 
     //去重    使用关键字
-    List<EsBlog> findDistinctByBlogTitleContainingOrBlogIntroContainingOrBlogTypeContaining(String blogTitle, String blogIntro, String blogType);
+    List<EsBlog> findDistinctByBlogTitleContainingOrBlogTypeContaining(String blogTitle, String blogType);
 
 }

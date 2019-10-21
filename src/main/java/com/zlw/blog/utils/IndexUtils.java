@@ -25,23 +25,11 @@ public class IndexUtils {
          */
         for (int i = 0; i < blogList.size(); i += 2) {
             Blog blog = blogList.get(i);
-            BlogIndex blogIndex = new BlogIndex(blog.getBlogId(), blog.getCoverImgUrl(), blog.getBlogTitle(), blog.getBlogIntro(), blog.getCreateTime(), blog.getAuthor());
-            /*if (blogIndex.getBlogTitle().length() > 9) {
-                blogIndex.setBlogTitle(blogIndex.getBlogTitle().substring(0, 9) + "...");
-            }*/
-            if (blogIndex.getBlogIntro().length() > 20) {
-                blogIndex.setBlogIntro(blogIndex.getBlogIntro().substring(0, 20) + "...");
-            }
+            BlogIndex blogIndex = new BlogIndex(blog.getBlogId(), blog.getCoverImgUrl(), blog.getBlogTitle(), blog.getCreateTime(), blog.getAuthor());
             //解决单数博客数据越界
             if (i + 1 < blogList.size()) {
                 Blog blog2 = blogList.get(i + 1);
-                BlogIndex blogIndex2 = new BlogIndex(blog2.getBlogId(), blog2.getCoverImgUrl(), blog2.getBlogTitle(), blog2.getBlogIntro(), blog2.getCreateTime(), blog2.getAuthor());
-                /*if (blogIndex2.getBlogTitle().length() > 9) {
-                    blogIndex2.setBlogTitle(blogIndex2.getBlogTitle().substring(0, 9) + "...");
-                }*/
-                if (blogIndex2.getBlogIntro().length() > 20) {
-                    blogIndex2.setBlogIntro(blogIndex2.getBlogIntro().substring(0, 20) + "...");
-                }
+                BlogIndex blogIndex2 = new BlogIndex(blog2.getBlogId(), blog2.getCoverImgUrl(), blog2.getBlogTitle(), blog2.getCreateTime(), blog2.getAuthor());
                 blogIndex.setBlogIndex(blogIndex2);
             }
             blogIndexList.add(blogIndex);
@@ -61,23 +49,11 @@ public class IndexUtils {
          */
         for (int i = 0; i < blogList.size(); i += 2) {
             EsBlog blog = blogList.get(i);
-            BlogIndex blogIndex = new BlogIndex(blog.getBlogId(), blog.getCoverImgUrl(), blog.getBlogTitle(), blog.getBlogIntro(), blog.getCreateTime(), blog.getAuthor());
-            /*if (blogIndex.getBlogTitle().length() > 9) {
-                blogIndex.setBlogTitle(blogIndex.getBlogTitle().substring(0, 9) + "...");
-            }*/
-            if (blogIndex.getBlogIntro().length() > 20) {
-                blogIndex.setBlogIntro(blogIndex.getBlogIntro().substring(0, 20) + "...");
-            }
+            BlogIndex blogIndex = new BlogIndex(blog.getBlogId(), blog.getCoverImgUrl(), blog.getBlogTitle(), blog.getCreateTime(), blog.getAuthor());
             //解决单数博客数据越界
             if (i + 1 < blogList.size()) {
                 EsBlog blog2 = blogList.get(i + 1);
-                BlogIndex blogIndex2 = new BlogIndex(blog2.getBlogId(), blog2.getCoverImgUrl(), blog2.getBlogTitle(), blog2.getBlogIntro(), blog2.getCreateTime(), blog2.getAuthor());
-                /*if (blogIndex2.getBlogTitle().length() > 9) {
-                    blogIndex2.setBlogTitle(blogIndex2.getBlogTitle().substring(0, 9) + "...");
-                }*/
-                if (blogIndex2.getBlogIntro().length() > 20) {
-                    blogIndex2.setBlogIntro(blogIndex2.getBlogIntro().substring(0, 20) + "...");
-                }
+                BlogIndex blogIndex2 = new BlogIndex(blog2.getBlogId(), blog2.getCoverImgUrl(), blog2.getBlogTitle(), blog2.getCreateTime(), blog2.getAuthor());
                 blogIndex.setBlogIndex(blogIndex2);
             }
             blogIndexList.add(blogIndex);

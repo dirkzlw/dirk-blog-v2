@@ -12,12 +12,11 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class EsBlog {
     /**
      * id对应blogid
-     * 根据blog标题、前言和文章类型进行筛选
+     * 根据blog标题和文章类型进行筛选
      */
     @Id
     private Integer blogId;
     private String blogTitle;
-    private String blogIntro;
     private String blogType;
     private String author;
     private String createTime;
@@ -26,10 +25,9 @@ public class EsBlog {
     protected EsBlog() {
     }
 
-    public EsBlog(Integer blogId, String blogTitle, String blogIntro, String blogType, String author, String createTime, String coverImgUrl) {
+    public EsBlog(Integer blogId, String blogTitle, String blogType, String author, String createTime, String coverImgUrl) {
         this.blogId = blogId;
         this.blogTitle = blogTitle;
-        this.blogIntro = blogIntro;
         this.blogType = blogType;
         this.author = author;
         this.createTime = createTime;
@@ -50,14 +48,6 @@ public class EsBlog {
 
     public void setBlogTitle(String blogTitle) {
         this.blogTitle = blogTitle;
-    }
-
-    public String getBlogIntro() {
-        return blogIntro;
-    }
-
-    public void setBlogIntro(String blogIntro) {
-        this.blogIntro = blogIntro;
     }
 
     public String getBlogType() {
@@ -97,7 +87,6 @@ public class EsBlog {
         return "EsBlog{" +
                 "blogId=" + blogId +
                 ", blogTitle='" + blogTitle + '\'' +
-                ", blogIntro='" + blogIntro + '\'' +
                 ", blogType='" + blogType + '\'' +
                 ", author='" + author + '\'' +
                 ", createTime='" + createTime + '\'' +

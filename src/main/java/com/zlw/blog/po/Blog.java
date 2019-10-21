@@ -23,8 +23,6 @@ public class Blog implements Serializable {
     private Integer blogId;
     //博客标题
     private String blogTitle;
-    //前言
-    private String blogIntro;
     //博客正文
     @Column(length = 10000)
     private String blogText;
@@ -65,14 +63,6 @@ public class Blog implements Serializable {
 
     public void setBlogTitle(String blogTitle) {
         this.blogTitle = blogTitle;
-    }
-
-    public String getBlogIntro() {
-        return blogIntro;
-    }
-
-    public void setBlogIntro(String blogIntro) {
-        this.blogIntro = blogIntro;
     }
 
     public String getBlogText() {
@@ -152,7 +142,6 @@ public class Blog implements Serializable {
         return "Blog{" +
                 "blogId=" + blogId +
                 ", blogTitle='" + blogTitle + '\'' +
-                ", blogIntro='" + blogIntro + '\'' +
                 ", blogText='" + blogText + '\'' +
                 ", createTime='" + createTime + '\'' +
                 ", artType=" + artType +

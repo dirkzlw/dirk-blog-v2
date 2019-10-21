@@ -12,7 +12,6 @@ public class BlogIndex {
     private Integer blogId;
     private String coverImgUrl;
     private String blogTitle;
-    private String blogIntro;
     private String createTime;
     private String author;
 
@@ -21,11 +20,10 @@ public class BlogIndex {
     protected BlogIndex() {
     }
 
-    public BlogIndex(Integer blogId, String coverImgUrl, String blogTitle,String blogIntro, String createTime, String author) {
+    public BlogIndex(Integer blogId, String coverImgUrl, String blogTitle, String createTime, String author) {
         this.blogId = blogId;
         this.coverImgUrl = coverImgUrl;
         this.blogTitle = blogTitle;
-        this.blogIntro = blogIntro;
         this.createTime = createTime;
         this.author = author;
     }
@@ -52,14 +50,6 @@ public class BlogIndex {
 
     public void setBlogTitle(String blogTitle) {
         this.blogTitle = blogTitle;
-    }
-
-    public String getBlogIntro() {
-        return blogIntro;
-    }
-
-    public void setBlogIntro(String blogIntro) {
-        this.blogIntro = blogIntro;
     }
 
     public String getCreateTime() {

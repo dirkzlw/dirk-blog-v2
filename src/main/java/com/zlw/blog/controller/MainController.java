@@ -120,7 +120,7 @@ public class MainController {
      */
     @GetMapping("/to/blog/edit")
     public String toBlogEdit(Model model) {
-        BlogEdit blogEdit = new BlogEdit(null, null, null, null, null, null, null);
+        BlogEdit blogEdit = new BlogEdit(null, null, null, null, null, null);
         model.addAttribute("blog", blogEdit);
         return "blog/edit";
     }

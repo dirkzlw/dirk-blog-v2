@@ -20,8 +20,10 @@ public class BlogServiceImpl implements BlogService {
     //注入blogRepository
     @Autowired
     private BlogRepository blogRepository;
+
     /**
      * 保存博客
+     *
      * @param blog
      */
     @Override
@@ -31,6 +33,7 @@ public class BlogServiceImpl implements BlogService {
 
     /**
      * 根据id查询博客
+     *
      * @param blogId
      * @return
      */
@@ -41,6 +44,7 @@ public class BlogServiceImpl implements BlogService {
 
     /**
      * 查询所有博客
+     *
      * @return
      */
     @Override
@@ -50,6 +54,7 @@ public class BlogServiceImpl implements BlogService {
 
     /**
      * 根据id删除博客
+     *
      * @param blogId
      */
     @Override
@@ -59,6 +64,7 @@ public class BlogServiceImpl implements BlogService {
 
     /**
      * 点赞
+     *
      * @param zanNum
      * @param blogId
      */
@@ -74,7 +80,7 @@ public class BlogServiceImpl implements BlogService {
                 }
             }).start();
             return "updateSuccess";
-        }catch (Exception e){
+        } catch (Exception e) {
             return "updateFile";
         }
 
@@ -82,18 +88,20 @@ public class BlogServiceImpl implements BlogService {
 
     /**
      * 博客访问量+1
+     *
      * @param blogId
      */
     @Override
     public void addViewNum(Integer blogId) {
         Blog blog = blogRepository.findOne(blogId);
         Integer viewNum = blog.getViewNum();
-        blog.setViewNum(viewNum+1);
+        blog.setViewNum(viewNum + 1);
         blogRepository.save(blog);
     }
 
     /**
      * 查询人们文章
+     *
      * @return
      */
     @Override
@@ -103,6 +111,7 @@ public class BlogServiceImpl implements BlogService {
 
     /**
      * 分页查询
+     *
      * @param page
      * @param size
      * @return
@@ -118,6 +127,7 @@ public class BlogServiceImpl implements BlogService {
 
     /**
      * 查询所有博客
+     *
      * @return
      */
     @Override
@@ -127,6 +137,7 @@ public class BlogServiceImpl implements BlogService {
 
     /**
      * 根据标签查询博客
+     *
      * @param blogType
      * @return
      */

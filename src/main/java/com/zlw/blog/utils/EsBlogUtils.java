@@ -11,7 +11,7 @@ public class EsBlogUtils {
 
     public static EsBlog getEsblogByBlog(Blog blog){
 
-        EsBlog esBlog = new EsBlog(blog.getBlogId(), blog.getBlogTitle(), blog.getBlogIntro(), null,blog.getAuthor(),blog.getCreateTime(),blog.getCoverImgUrl());
+        EsBlog esBlog = new EsBlog(blog.getBlogId(), blog.getBlogTitle(), null,blog.getAuthor(),blog.getCreateTime(),blog.getCoverImgUrl());
 
         int blogType = blog.getBlogType();
         switch (blogType) {

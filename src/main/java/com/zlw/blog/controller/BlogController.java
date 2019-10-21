@@ -114,7 +114,7 @@ public class BlogController {
         esBlogService.save(esBlog);
 
         BlogInfo blogInfo = new BlogInfo(blog.getBlogId(), blog.getBlogTitle(),
-                blog.getBlogIntro(), blog.getBlogText(), blog.getCreateTime(),
+                blog.getBlogText(), blog.getCreateTime(),
                 blog.getArtType(),
                 blog.getBlogType(), blog.getCoverImgUrl(), blog.getAuthor(),
                 0, blog.getZanNum(), blog.getViewNum());
@@ -153,7 +153,7 @@ public class BlogController {
     @GetMapping("/blog/search")
     public String searchBlog(@RequestParam(required = false) String fors,
                              Model model, HttpServletRequest request) {
-        List<EsBlog> blogList = esBlogService.findEsBlogList(fors, fors, fors);
+        List<EsBlog> blogList = esBlogService.findEsBlogList(fors, fors);
         List<BlogIndex> blogIndexList = IndexUtils.getEsIndexList(blogList);
 
         UserUtils.setUserIndex(model, request);
@@ -207,7 +207,7 @@ public class BlogController {
         Blog blog = blogService.findBlogByID(blogId);
         //封装博客信息对象
         BlogInfo blogInfo = new BlogInfo(blog.getBlogId(), blog.getBlogTitle(),
-                blog.getBlogIntro(), blog.getBlogText(), blog.getCreateTime(),
+                blog.getBlogText(), blog.getCreateTime(),
                 blog.getArtType(),
                 blog.getBlogType(), blog.getCoverImgUrl(), blog.getAuthor(),
                 null, blog.getZanNum(), blog.getViewNum());
@@ -338,7 +338,7 @@ public class BlogController {
     public String editBlog(Integer blogId, Model model) {
 
         Blog blog = blogService.findBlogByID(blogId);
-        BlogEdit blogEdit = new BlogEdit(blog.getBlogId(), blog.getBlogTitle(), blog.getBlogIntro(),
+        BlogEdit blogEdit = new BlogEdit(blog.getBlogId(), blog.getBlogTitle(),
                 blog.getBlogText(), blog.getArtType(), blog.getBlogType(),
                 blog.getCoverImgUrl());
         model.addAttribute("blog", blogEdit);

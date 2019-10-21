@@ -19,8 +19,8 @@ public class EsBlogServiceImpl implements EsBlogService {
     private EsBlogRepository esBlogRepository;
 
     @Override
-    public List<EsBlog> findEsBlogList(String blogTitle, String blogIntro, String blogType) {
-        return esBlogRepository.findDistinctByBlogTitleContainingOrBlogIntroContainingOrBlogTypeContaining(blogTitle, blogIntro, blogType);
+    public List<EsBlog> findEsBlogList(String blogTitle, String blogType) {
+        return esBlogRepository.findDistinctByBlogTitleContainingOrBlogTypeContaining(blogTitle, blogType);
     }
 
     @Override

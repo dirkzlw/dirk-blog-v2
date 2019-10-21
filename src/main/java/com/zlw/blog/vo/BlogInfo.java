@@ -12,8 +12,6 @@ public class BlogInfo {
     private Integer blogId;
     //博客标题
     private String blogTitle;
-    //前言
-    private String blogIntro;
     //博客正文
     private String blogText;
     //博客创建时间
@@ -36,14 +34,13 @@ public class BlogInfo {
     protected BlogInfo() {
     }
 
-    public BlogInfo(Integer blogId, String blogTitle,String blogIntro,
+    public BlogInfo(Integer blogId, String blogTitle,
                     String blogText, String createTime,
                     Integer artType, Integer blogType,
                     String coverImgUrl, String author,Integer commNum,
                     Integer zanNum,Integer viewNum) {
         this.blogId = blogId;
         this.blogTitle = blogTitle;
-        this.blogIntro = blogIntro;
         this.blogText = blogText;
         this.createTime = createTime;
         switch (artType){
@@ -107,14 +104,6 @@ public class BlogInfo {
 
     public void setBlogTitle(String blogTitle) {
         this.blogTitle = blogTitle;
-    }
-
-    public String getBlogIntro() {
-        return blogIntro;
-    }
-
-    public void setBlogIntro(String blogIntro) {
-        this.blogIntro = blogIntro;
     }
 
     public String getBlogText() {
