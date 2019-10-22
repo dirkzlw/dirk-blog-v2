@@ -1,5 +1,9 @@
 package com.zlw.blog.po;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,14 +19,21 @@ import java.util.List;
  */
 @Entity
 @Table(name="t_user")
+@Getter
+@Setter
 public class User {
     @Id
+    @Column(length = 10)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
+    @Column(length = 30)
     private String username;
+    @Column(length = 40)
     private String password;
+    @Column(length = 40)
     private String email;
     //角色：1-管理员 2-用户
+    @Column(length = 10)
     private Integer role;
     //头像URL
     private String headImgUrl;
@@ -40,62 +51,6 @@ public class User {
         this.email = email;
         this.role = role;
         this.headImgUrl = headImgUrl;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Integer getRole() {
-        return role;
-    }
-
-    public void setRole(Integer role) {
-        this.role = role;
-    }
-
-    public String getHeadImgUrl() {
-        return headImgUrl;
-    }
-
-    public void setHeadImgUrl(String headImgUrl) {
-        this.headImgUrl = headImgUrl;
-    }
-
-    public List<Comment> getCommentList() {
-        return commentList;
-    }
-
-    public void setCommentList(List<Comment> commentList) {
-        this.commentList = commentList;
     }
 
     @Override

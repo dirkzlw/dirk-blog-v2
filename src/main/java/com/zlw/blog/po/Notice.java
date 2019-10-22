@@ -11,36 +11,29 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 热门文章类
+ * 公告类
  * @author Ranger
- * @create 2019-06-06 20:01
+ * @create 2019-10-22 18:45
  */
 @Entity
-@Table(name = "t_hotBlog")
+@Table(name="t_notice")
 @Getter
 @Setter
-public class HotBlog {
+public class Notice {
 
     //主键id及生成策略
     @Id
     @Column(length = 10)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer hotBlogId;
-
-    @Column(length = 10)
-    private Integer blogId;
+    private Integer id;
+    //公告信息--字符长度
     @Column(length = 100)
-    private String blogTitle;
-    @Column(length = 10)
-    private Integer viewNum;
+    private String message;
 
-    protected HotBlog() {
+    protected Notice() {
     }
 
-    public HotBlog(Integer blogId, String blogTitle, Integer viewNum) {
-        this.blogId = blogId;
-        this.blogTitle = blogTitle;
-        this.viewNum = viewNum;
+    public Notice(String message) {
+        this.message = message;
     }
-
 }

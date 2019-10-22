@@ -1,5 +1,8 @@
 package com.zlw.blog.vo;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 
 /**
@@ -8,6 +11,8 @@ import java.util.Date;
  * @author Ranger
  * @create 2019-06-04 16:59
  */
+@Getter
+@Setter
 public class BlogInfo {
     private Integer blogId;
     //博客标题
@@ -90,91 +95,4 @@ public class BlogInfo {
         this.viewNum = viewNum;
     }
 
-    public Integer getBlogId() {
-        return blogId;
-    }
-
-    public void setBlogId(Integer blogId) {
-        this.blogId = blogId;
-    }
-
-    public String getBlogTitle() {
-        return blogTitle;
-    }
-
-    public void setBlogTitle(String blogTitle) {
-        this.blogTitle = blogTitle;
-    }
-
-    public String getBlogText() {
-        return blogText;
-    }
-
-    public void setBlogText(String blogText) {
-        this.blogText = blogText;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getArtType() {
-        return artType;
-    }
-
-    public void setArtType(String artType) {
-        this.artType = artType;
-    }
-
-    public String getBlogType() {
-        return blogType;
-    }
-
-    public void setBlogType(String blogType) {
-        this.blogType = blogType;
-    }
-
-    public String getCoverImgUrl() {
-        return coverImgUrl;
-    }
-
-    public void setCoverImgUrl(String coverImgUrl) {
-        this.coverImgUrl = coverImgUrl;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public Integer getCommNum() {
-        return commNum;
-    }
-
-    public void setCommNum(Integer commNum) {
-        this.commNum = commNum;
-    }
-
-    public Integer getZanNum() {
-        return zanNum;
-    }
-
-    public void setZanNum(Integer zanNum) {
-        this.zanNum = zanNum;
-    }
-
-    public Integer getViewNum() {
-        return viewNum;
-    }
-
-    public void setViewNum(Integer viewNum) {
-        this.viewNum = viewNum;
-    }
 }

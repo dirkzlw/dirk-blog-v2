@@ -1,12 +1,15 @@
 package com.zlw.blog.vo;
 
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 用于展示在主页上的博客vo
  * @author Ranger
  * @create 2019-06-04 17:20
  */
+@Getter
+@Setter
 public class BlogIndex {
 
     private Integer blogId;
@@ -28,51 +31,4 @@ public class BlogIndex {
         this.author = author;
     }
 
-    public Integer getBlogId() {
-        return blogId;
-    }
-
-    public void setBlogId(Integer blogId) {
-        this.blogId = blogId;
-    }
-
-    public String getCoverImgUrl() {
-        return coverImgUrl;
-    }
-
-    public void setCoverImgUrl(String coverImgUrl) {
-        this.coverImgUrl = coverImgUrl;
-    }
-
-    public String getBlogTitle() {
-        return blogTitle;
-    }
-
-    public void setBlogTitle(String blogTitle) {
-        this.blogTitle = blogTitle;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public BlogIndex getBlogIndex() {
-        return blogIndex;
-    }
-
-    public void setBlogIndex(BlogIndex blogIndex) {
-        this.blogIndex = blogIndex;
-    }
 }

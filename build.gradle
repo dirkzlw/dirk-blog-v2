@@ -57,6 +57,12 @@ dependencies {
     compile 'com.github.ulisesbocchio:jasypt-spring-boot-starter:1.18'
     //fastdfs_client
     compile files('lib/fastdfs-client-java-1.27-SNAPSHOT.jar')
+    /**
+     *使用lombok 找不到符号
+     *  解决：file--setting--build,xx--compiler--annotation processors
+     *  勾上enable annotation processing
+     */
+    compile 'org.projectlombok:lombok:1.16.6'
     //Json
 //    compile 'org.springframework.boot:spring-boot-starter-json:2.0.3.RELEASE'
 }

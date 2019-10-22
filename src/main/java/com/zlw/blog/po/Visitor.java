@@ -1,5 +1,9 @@
 package com.zlw.blog.po;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,10 +21,14 @@ import java.util.List;
  */
 @Entity
 @Table(name = "t_visitor")
+@Getter
+@Setter
 public class Visitor {
     @Id
+    @Column(length = 10)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer visitorId;
+    @Column(length = 30)
     private String ipAddress;
 
     @OneToMany(mappedBy = "visitor")
@@ -31,29 +39,5 @@ public class Visitor {
 
     public Visitor(String ipAddress) {
         this.ipAddress = ipAddress;
-    }
-
-    public Integer getVisitorId() {
-        return visitorId;
-    }
-
-    public void setVisitorId(Integer visitorId) {
-        this.visitorId = visitorId;
-    }
-
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
-
-    public List<Comment> getCommentList() {
-        return commentList;
-    }
-
-    public void setCommentList(List<Comment> commentList) {
-        this.commentList = commentList;
     }
 }

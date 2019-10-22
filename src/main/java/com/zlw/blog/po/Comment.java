@@ -1,5 +1,9 @@
 package com.zlw.blog.po;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.Date;
 
 /**
  * @author Ranger
@@ -15,10 +18,13 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "t_comment")
+@Getter
+@Setter
 public class Comment {
 
     //主键id及生成策略
     @Id
+    @Column(length = 10)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer commentId;
     //与博客
@@ -33,9 +39,10 @@ public class Comment {
     @ManyToOne()
     @JoinColumn(name = "visitor_id")
     private Visitor visitor;
-
+    @Column(length = 40)
     private String createTime;
-    //评论的内容
+    //评论的内容--限400字符
+    @Column(length = 500)
     private String content;
 
     protected Comment() {
@@ -46,54 +53,6 @@ public class Comment {
         this.cuser = cuser;
         this.visitor = visitor;
         this.createTime = createTime;
-        this.content = content;
-    }
-
-    public Integer getCommentId() {
-        return commentId;
-    }
-
-    public void setCommentId(Integer commentId) {
-        this.commentId = commentId;
-    }
-
-    public Blog getCblog() {
-        return cblog;
-    }
-
-    public void setCblog(Blog cblog) {
-        this.cblog = cblog;
-    }
-
-    public User getCuser() {
-        return cuser;
-    }
-
-    public void setCuser(User cuser) {
-        this.cuser = cuser;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public Visitor getVisitor() {
-        return visitor;
-    }
-
-    public void setVisitor(Visitor visitor) {
-        this.visitor = visitor;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
         this.content = content;
     }
 }

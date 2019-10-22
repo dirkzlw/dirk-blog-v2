@@ -1,5 +1,7 @@
 package com.zlw.blog.po.es;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
@@ -9,6 +11,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
  * @create 2019-04-08 19:35
  */
 @Document(indexName = "blog_index",type = "blog")
+@Getter
+@Setter
 public class EsBlog {
     /**
      * id对应blogid
@@ -31,54 +35,6 @@ public class EsBlog {
         this.blogType = blogType;
         this.author = author;
         this.createTime = createTime;
-        this.coverImgUrl = coverImgUrl;
-    }
-
-    public Integer getBlogId() {
-        return blogId;
-    }
-
-    public void setBlogId(Integer blogId) {
-        this.blogId = blogId;
-    }
-
-    public String getBlogTitle() {
-        return blogTitle;
-    }
-
-    public void setBlogTitle(String blogTitle) {
-        this.blogTitle = blogTitle;
-    }
-
-    public String getBlogType() {
-        return blogType;
-    }
-
-    public void setBlogType(String blogType) {
-        this.blogType = blogType;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getCoverImgUrl() {
-        return coverImgUrl;
-    }
-
-    public void setCoverImgUrl(String coverImgUrl) {
         this.coverImgUrl = coverImgUrl;
     }
 
