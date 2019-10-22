@@ -42,6 +42,8 @@ public class HotBlogServiceImpl implements HotBlogService {
     @Override
     public void delBlogById(Integer blogId) {
         HotBlog hotBlog = hotblogRepository.findByBlogId(blogId);
-        hotblogRepository.delete(hotBlog);
+        if(hotBlog!=null){
+            hotblogRepository.delete(hotBlog);
+        }
     }
 }
