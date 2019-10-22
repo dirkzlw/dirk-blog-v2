@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--suppress ALL-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>DirkBlog--管理中心</title>
+
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="/index/css/bootstrap.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/index/css/style.css" id="theme-styles">
+
+    <!--[if lt IE 9]>
+    <script src="/index/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+
+    <link href="/admin/css/move.css" type="text/css" rel="stylesheet"/>
+
+    <style type="text/css">
+        a {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<!--头部-->
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div>
+    <ul class="list">
+        <li>
+            <div class="border"></div>
+            <span class="icon">Z</span>
+            <div class="text">
+                <h2><a th:href="@{/}">编辑公告</a></h2>
+                <h3>公示用户</h3>
+            </div>
+        </li>
+        <li>
+            <div class="border"></div>
+            <span class="icon">N</span>
+            <div class="text">
+                <h2><a th:href="@{/}">编辑标签</a></h2>
+                <h3>博客分类</h3>
+            </div>
+        </li>
+        <li>
+            <div class="border"></div>
+            <span class="icon">B</span>
+            <div class="text">
+                <h2><a th:href="@{/}">关注管理</a></h2>
+                <h3>设置关注二维码</h3>
+            </div>
+        </li>
+        <li>
+            <div class="border"></div>
+            <span class="icon">B</span>
+            <div class="text">
+                <h2><a th:href="@{/}">用户管理</a></h2>
+                <h3>用户的信息处理</h3>
+            </div>
+        </li>
+    </ul>
+</div>
+<script type="text/javascript">
+    //返回
+    function back() {
+        window.history.back(-1);
+    }
+</script>
+</body>
+</html>

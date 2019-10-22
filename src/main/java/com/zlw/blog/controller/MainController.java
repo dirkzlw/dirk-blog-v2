@@ -157,15 +157,12 @@ public class MainController {
     }
 
     /**
-     * 跳转到用户管理界面
+     * 跳转到管理主界面
      */
-    @GetMapping("/to/user/manage")
-    public String toUserManage(Integer userId, Model model) {
-
-        User user = userService.findUserById(userId);
-        model.addAttribute("user", user);
-
-        return "user/user-manage";
+    @GetMapping("/to/admin/mgn-center")
+    public String toUserManage(Model model, HttpServletRequest request) {
+        UserUtils.setUserIndex(model, request);
+        return "admin/mgn-center";
     }
 
     /**
