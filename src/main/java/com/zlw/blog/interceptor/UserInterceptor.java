@@ -24,7 +24,7 @@ public class UserInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //从session中获取author，判断是否登录
-        User author = (User) request.getSession().getAttribute("sessionUser");
+        User author = (User) request.getSession().getAttribute("user");
         if(author == null){
             response.sendRedirect("/to/login");
             return false;

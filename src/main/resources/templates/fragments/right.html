@@ -14,13 +14,16 @@
             <h3>公告</h3>
         </header>
         <div class="body">
-            <ul class="clean-list">
+            <ul class="clean-list" th:each="notice : ${session.notices}">
                 <li class="notice_active_ch">
+                    <span th:text="${notice.message}" style="font-size: 18px"></span>
+                </li>
+                <!--<li class="notice_active_ch">
                     <span style="font-size: 18px">欢迎您，DirkBlog_V2上线了！</span>
                 </li>
                 <li class="notice_active_ch">
                    <span style="font-size: 18px">如有侵权，请联系管理员删除！</span>
-                </li>
+                </li>-->
             </ul>
         </div>
     </div>

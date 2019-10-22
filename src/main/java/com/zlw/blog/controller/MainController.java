@@ -2,14 +2,15 @@ package com.zlw.blog.controller;
 
 import com.zlw.blog.po.Blog;
 import com.zlw.blog.po.HotBlog;
+import com.zlw.blog.po.Notice;
 import com.zlw.blog.po.User;
 import com.zlw.blog.service.BlogService;
 import com.zlw.blog.service.HotBlogService;
+import com.zlw.blog.service.NoticeService;
 import com.zlw.blog.service.UserService;
 import com.zlw.blog.utils.HotBlogUtils;
 import com.zlw.blog.utils.HttpUtils;
 import com.zlw.blog.utils.IndexUtils;
-import com.zlw.blog.utils.UserUtils;
 import com.zlw.blog.vo.BlogEdit;
 import com.zlw.blog.vo.BlogIndex;
 import com.zlw.blog.vo.ContactInfo;
@@ -28,9 +29,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import static javax.swing.text.html.CSS.getAttribute;
 
 /**
  * @author Ranger
@@ -48,6 +49,8 @@ public class MainController {
     //注入javaMail发送器
     @Autowired
     private JavaMailSender mailSender;
+    @Autowired
+    private NoticeService noticeService;
 
     //邮件发送者
     @Value("${spring.mail.username}")
@@ -60,18 +63,55 @@ public class MainController {
     private Integer PAGE_SIZE;
 
     /**
-     * 获取博客信息，并展示在主页
-     * 跳转到主页
+     * 此url表示用户第一次访问
+     * 将要保存在session中的数据一次性保存
      */
     @GetMapping("/")
-    public String toIndex(Model model, HttpServletRequest request,
+    public String toI(HttpServletRequest request,
+                      @RequestParam(required = false) Integer currentPage) {
+
+        if (currentPage == null) {
+            currentPage = 0;
+        }
+
+        //从session中获取author，判断是否登录
+        HttpSession session = request.getSession();
+
+        UserIndex userIndex = (UserIndex) session.getAttribute("user");
+        if (userIndex == null) {
+            userIndex = new UserIndex(null, null);
+        }
+        session.setAttribute("user", userIndex);
+
+        //从session中获取notice
+        List<Notice> noticeList = (List<Notice>) session.getAttribute("notices");
+        if(noticeList==null){
+            noticeList = noticeService.findNotices();
+        }
+        session.setAttribute("notices", noticeList);
+
+        return "redirect:/index?currentPage=" + currentPage;
+    }
+
+    @GetMapping("/index")
+    public String toIndex(Model model,
+                          HttpServletRequest request,
                           @RequestParam(required = false) Integer currentPage) {
-        if(currentPage == null){
+
+        HttpSession session = request.getSession();
+        //判断需要保存的数据是否已在session，没有重定向至/
+        List<Notice> noticeList = (List<Notice>) session.getAttribute("notices");
+        UserIndex sessionUser = (UserIndex) session.getAttribute("user");
+        if (noticeList == null || sessionUser == null) {
+            return "redirect:/";
+        }
+
+        if (currentPage == null) {
             currentPage = 0;
         }
         //默认差群起始页
         Page<Blog> pageObj = blogService.findBlogByPage(currentPage, PAGE_SIZE);
-        List<Blog> blogList =  pageObj.getContent();
+        List<Blog> blogList = pageObj.getContent();
         com.zlw.blog.vo.Page page = new com.zlw.blog.vo.Page(currentPage, pageObj.getTotalPages());
 
         List<BlogIndex> blogIndexList = IndexUtils.getIndexList(blogList);
@@ -85,17 +125,6 @@ public class MainController {
 
         model.addAttribute("blogList", blogIndexList);
         model.addAttribute("page", page);
-
-        //从session中获取author，判断是否登录
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("sessionUser");
-        UserIndex userIndex ;
-        if(user != null){
-            userIndex = new UserIndex(user.getUserId(), user.getHeadImgUrl());
-        }else{
-            userIndex = new UserIndex(null, null);
-        }
-        session.setAttribute("user", userIndex);
 
         return "index/index";
     }

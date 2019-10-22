@@ -15,7 +15,6 @@ import com.zlw.blog.utils.EsBlogUtils;
 import com.zlw.blog.utils.FastDFSUtils;
 import com.zlw.blog.utils.HotBlogUtils;
 import com.zlw.blog.utils.IndexUtils;
-import com.zlw.blog.utils.UserUtils;
 import com.zlw.blog.vo.BlogEdit;
 import com.zlw.blog.vo.BlogIndex;
 import com.zlw.blog.vo.BlogInfo;
@@ -252,7 +251,7 @@ public class BlogController {
         String timeStr = dateFormat.format(new Date());
         Comment comment = new Comment(null, null, null, timeStr, message);
         //从session中获取user，判断是否登录
-        User user = (User) request.getSession().getAttribute("sessionUser");
+        User user = (User) request.getSession().getAttribute("user");
         Visitor v = null;
         if (user != null) {
             //评论与用户关联

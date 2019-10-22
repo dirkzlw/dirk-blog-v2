@@ -1,6 +1,7 @@
 package com.zlw.blog.interceptor;
 
 import com.zlw.blog.po.User;
+import com.zlw.blog.vo.UserIndex;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,7 +25,7 @@ public class AdminInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //从session中获取author，判断是否登录
-        User author = (User) request.getSession().getAttribute("sessionUser");
+        UserIndex author = (UserIndex) request.getSession().getAttribute("user");
         if(author == null){
             response.sendRedirect("/to/login");
             return false;

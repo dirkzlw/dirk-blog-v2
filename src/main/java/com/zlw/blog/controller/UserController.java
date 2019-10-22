@@ -4,6 +4,7 @@ import com.zlw.blog.po.User;
 import com.zlw.blog.service.UserService;
 import com.zlw.blog.utils.FastDFSUtils;
 import com.zlw.blog.utils.MD5Utils;
+import com.zlw.blog.vo.UserIndex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -80,7 +81,7 @@ public class UserController {
         //存Session
         //根据用户角色，设置用户权限
         HttpSession session = request.getSession();
-        session.setAttribute("sessionUser", user);
+        session.setAttribute("user", user);
         session.setMaxInactiveInterval(3 * 24 * 60);    //设置session生存时间
 
         return "registerSuccess";
@@ -106,7 +107,9 @@ public class UserController {
             //存Session
             //根据用户角色，设置用户权限
             HttpSession session = request.getSession();
-            session.setAttribute("sessionUser", user);
+            //将User转为UserIndex
+            UserIndex userIndex = new UserIndex(user.getUserId(), user.getHeadImgUrl());
+            session.setAttribute("user", userIndex);
             session.setMaxInactiveInterval(3 * 24 * 60);    //设置session生存时间
 
             return "loginSuccess";
@@ -160,7 +163,7 @@ public class UserController {
             cookie.setMaxAge(0);
         }
 
-        request.getSession().removeAttribute("sessionUser");
+        request.getSession().removeAttribute("user");
 
         return "redirect:/";
     }
@@ -303,7 +306,7 @@ public class UserController {
         //更新session
         //根据用户角色，设置用户权限
         HttpSession session = request.getSession();
-        session.setAttribute("sessionUser", user);
+        session.setAttribute("user", user);
         session.setMaxInactiveInterval(3 * 24 * 60);    //设置session生存时间
     }
 

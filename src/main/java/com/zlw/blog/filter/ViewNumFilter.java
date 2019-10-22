@@ -32,7 +32,7 @@ public class ViewNumFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String blogId = request.getParameter("id");
-        blogService.addViewNum(Integer.parseInt(blogId));
+//        blogService.addViewNum(Integer.parseInt(blogId));
         //放行，执行下一个过滤器
         chain.doFilter(request, response);
     }
