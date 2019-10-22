@@ -197,9 +197,16 @@ public class MainController {
     /**
      * 跳转到管理主界面
      */
-    @GetMapping("/to/admin/mgn-center")
+    @GetMapping("/to/mgn/center")
     public String toUserManage(Model model, HttpServletRequest request) {
-        return "admin/mgn-center";
+        return "mgn/center";
+    }
+    /**
+     * 跳转到编辑公告界面
+     */
+    @GetMapping("/to/mgn/notice")
+    public String toNoticeMgn(Model model, HttpServletRequest request) {
+        return "mgn/notice";
     }
 
     /**
