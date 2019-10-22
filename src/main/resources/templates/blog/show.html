@@ -98,13 +98,13 @@
                             <span th:text="${blog.viewNum}"></span>
                             <!--删除博客-->
                             <i class="fa fa-remove"
-                               th:if="${user.userId!=null && user.userId == 1 }"
+                               th:if="${session.user.userId!=null && session.user.userId == 1 }"
                                th:id="${blog.blogId}"
                                onclick="delBlog(this.id)"
                                style="cursor: pointer;color: black"></i>
                             <!--编辑博客-->
                             <i class="fa fa-edit"
-                               th:if="${user.userId!=null && user.userId == 1 }"
+                               th:if="${session.user.userId!=null && session.user.userId == 1 }"
                                th:id="${blog.blogId}"
                                onclick="editBlog(this.id)"
                                style="cursor: pointer;color: black"></i>
@@ -141,7 +141,7 @@
                                 <!--<a href="#create-comment" class="reply-link">Reply</a>-->
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <!--删除评论-->
-                                <a th:if="${user.userId!=null && (user.userId == c.userId || user.userId == 1 )}"
+                                <a th:if="${session.user.userId!=null && (session.user.userId == c.userId || session.user.userId == 1 )}"
                                    th:id="${c.commentId}"
                                    onclick="delComment(this.id)"
                                    style="cursor: pointer;color: #0066cc">
@@ -372,7 +372,7 @@
                         "                                &nbsp;&nbsp;&nbsp;&nbsp;\n" +
                         "\n" +
                         "                                <!--删除评论-->\n" +
-                        "                                <a if='${user.userId!=null && user.userId == c.userId}'\n" +
+                        "                                <a if='${session.user.userId!=null && session.user.userId == c.userId}'\n" +
                         "                                   id='" + commentId + "'\n" +
                         "                                   onclick='delComment(this.id)'\n" +
                         "                                   style='cursor: pointer;color: #0066cc'>\n" +

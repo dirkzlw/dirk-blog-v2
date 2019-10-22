@@ -122,8 +122,6 @@ public class BlogController {
         //添加到视图
         model.addAttribute("blog", blogInfo);
 
-        UserUtils.setUserIndex(model, request);
-
         return "redirect:/blog/showOne?id=" + blog.getBlogId();
     }
 
@@ -156,7 +154,6 @@ public class BlogController {
         List<EsBlog> blogList = esBlogService.findEsBlogList(fors, fors);
         List<BlogIndex> blogIndexList = IndexUtils.getEsIndexList(blogList);
 
-        UserUtils.setUserIndex(model, request);
         //设置热门博客
         List<HotBlog> hotBlogList = hotBlogService.findAllHotBlog();
         //去掉空对象
@@ -180,7 +177,6 @@ public class BlogController {
 
         List<BlogIndex> blogIndexList = IndexUtils.getIndexList(blogList);
 
-        UserUtils.setUserIndex(model, request);
         //设置热门博客
         List<HotBlog> hotBlogList = hotBlogService.findAllHotBlog();
         //去掉空对象
@@ -234,7 +230,6 @@ public class BlogController {
         //将博客信息保存到model
         model.addAttribute("blog", blogInfo);
 
-        UserUtils.setUserIndex(model, request);
         //设置热门博客
         List<HotBlog> hotBlogList = hotBlogService.findAllHotBlog();
         //去掉空对象--注意：不能foreach删除

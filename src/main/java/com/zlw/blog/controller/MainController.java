@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -75,7 +76,6 @@ public class MainController {
 
         List<BlogIndex> blogIndexList = IndexUtils.getIndexList(blogList);
 
-        UserUtils.setUserIndex(model, request);
         //设置热门博客
         List<HotBlog> hotBlogList = hotBlogService.findAllHotBlog();
         //去掉空对象
@@ -86,6 +86,17 @@ public class MainController {
         model.addAttribute("blogList", blogIndexList);
         model.addAttribute("page", page);
 
+        //从session中获取author，判断是否登录
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("sessionUser");
+        UserIndex userIndex ;
+        if(user != null){
+            userIndex = new UserIndex(user.getUserId(), user.getHeadImgUrl());
+        }else{
+            userIndex = new UserIndex(null, null);
+        }
+        session.setAttribute("user", userIndex);
+
         return "index/index";
     }
 
@@ -94,7 +105,6 @@ public class MainController {
      */
     @GetMapping("/to/about")
     public String toAbout(Model model, HttpServletRequest request) {
-        UserUtils.setUserIndex(model, request);
         return "index/about";
     }
 
@@ -103,7 +113,6 @@ public class MainController {
      */
     @GetMapping("/to/contact")
     public String toContact(Model model, HttpServletRequest request) {
-        UserUtils.setUserIndex(model, request);
         return "index/contact";
     }
 
@@ -161,7 +170,6 @@ public class MainController {
      */
     @GetMapping("/to/admin/mgn-center")
     public String toUserManage(Model model, HttpServletRequest request) {
-        UserUtils.setUserIndex(model, request);
         return "admin/mgn-center";
     }
 

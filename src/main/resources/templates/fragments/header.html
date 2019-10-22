@@ -34,15 +34,15 @@
                             <a th:href="@{/to/contact}">联系&nbsp;&nbsp;&nbsp;&nbsp;</a>
                         </li>
                         <li>
-                            <a th:if="${user.userId} != null" th:href="@{/to/blog/edit}">写博客</a>
+                            <a th:if="${session.user.userId} != null" th:href="@{/to/blog/edit}">写博客</a>
                         </li>
                         <li>
-                            <!--th:if="${user.userId} == 1" -->
+                            <!--th:if="${session.user.userId} == 1" -->
                             <a th:href="@{/to/admin/mgn-center}">管理</a>
                         </li>
                         <li>
-                            <a th:if="${user.userId} == null" th:href="@{/to/login}">登 录&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                            <a th:if="${user.userId} != null" th:href="@{/to/user/manage(userId=${user.userId})}">
+                            <a th:if="${session.user.userId} == null" th:href="@{/to/login}">登 录&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                            <a th:if="${session.user.userId} != null" th:href="@{/to/user/manage(userId=${session.user.userId})}">
                                 <img style="
                                         position: relative;
                                         top: -8px;
@@ -58,7 +58,7 @@
                                         alt="头像"
                                         class="round_icon"
                                         title="账户管理"
-                                        th:src="${user.headImgUrl}">
+                                        th:src="${session.user.headImgUrl}">
                             </a>
                         </li>
                     </ul>
