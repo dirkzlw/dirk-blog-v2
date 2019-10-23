@@ -46,4 +46,20 @@ public class NoticeServiceImpl implements NoticeService {
         }
         return new ResultObj(notice, "success");
     }
+
+    /**
+     * 删除公告
+     * @param noticeId 公告id
+     * @return
+     */
+    @Override
+    public String delNotice(Integer noticeId) {
+
+        try {
+            noticeRepository.delete(noticeId);
+        } catch (Exception e) {
+            return "fail";
+        }
+        return "success";
+    }
 }

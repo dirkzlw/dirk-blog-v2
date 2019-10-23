@@ -13,4 +13,6 @@ public interface NoticeService {
     List<Notice> findNotices();
 
     ResultObj saveNotice(Integer noticeId, String noticeMsg);
+
+    String delNotice(Integer noticeId);
 }

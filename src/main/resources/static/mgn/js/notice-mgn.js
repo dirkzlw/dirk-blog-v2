@@ -43,7 +43,7 @@ var methods = {
                     json = eval('(' + json + ')');
                     var noticeId=json.obj.id;
                     var message=json.obj.message;
-                    var noticeIdTr = noticeId*1+1;
+                    var noticeIdTr = noticeId*(-1);
                     // var password=json.password;
                     var rtn = json.rtn;
                     if (rtn == "success") {

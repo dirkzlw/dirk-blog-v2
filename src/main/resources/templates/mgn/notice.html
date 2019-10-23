@@ -106,11 +106,11 @@
             </tr>
             </thead>
             <tbody id="show_tbody">
-            <tr th:each="notice: ${noticeList}">
+            <tr th:each="notice: ${noticeList}" th:id="${notice.id} * (-1)">
                 <td th:text="${notice.message}"></td>
                 <td>
                     <a class="edit">编辑</a>
-                    <a class="del">删除</a>
+                    <a class="del" th:id="${notice.id}" onclick="delNotice(this.id)">删除</a>
                 </td>
             </tr>
             </tbody>
@@ -127,6 +127,43 @@
             $('#bgImg').modal('show');
         });
     });
+</script>
+<script type="text/javascript">
+    function delNotice(noticeId) {
+        var aTag = document.getElementById(noticeId * (-1));
+        // ajax 删除公告
+        $.ajax({
+            type: "POST",
+            url: "/mgn/notice/del",
+            data: {'noticeId': noticeId},
+            dataType: "text", //return dataType: text or json
+            success: function (json) {
+                if (json == "success") {
+                    aTag.remove();
+                    bootbox.alert({
+                        title: "来自DirkBlog的提示",
+                        message: "公告删除成功",
+                        closeButton: false
+                    })
+                }else if(json=="fail") {
+                    bootbox.alert({
+                        title: "来自DirkBlog的提示",
+                        message: "删除失败，请检查网络",
+                        closeButton: false
+                    })
+                    return
+                }
+            },
+            error: function (json) {
+                bootbox.alert({
+                    title: "来自DirkBlog的提示",
+                    message: "删除失败，请检查网络",
+                    closeButton: false
+                })
+                return
+            }
+        });
+    }
 </script>
 </body>
 </html>

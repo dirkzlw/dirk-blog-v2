@@ -49,4 +49,16 @@ public class NoticeController {
         return noticeService.saveNotice(noticeId, noticeMsg);
     }
 
+    /**
+     * 删除公告
+     * @param noticeId 公告id
+     * @return
+     */
+    @PostMapping("/mgn/notice/del")
+    @ResponseBody
+    public String delNotice(Integer noticeId){
+
+        return noticeService.delNotice(noticeId);
+    }
+
 }
