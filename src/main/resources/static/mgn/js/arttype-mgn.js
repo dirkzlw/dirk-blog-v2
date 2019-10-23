@@ -9,7 +9,7 @@ $(function () {  //jquery里的,是当文档载入完毕就执行的意思
     })
 
     $('#show_tbody').on('click', '.edit', function () {
-        noticeId = this.id
+        typeId = this.id
         trIndex = $('.edit', '#show_tbody').index($(this));
         addEnter = true;
         $(this).parents('tr').addClass('has_case');
@@ -18,8 +18,8 @@ $(function () {  //jquery里的,是当文档载入完毕就执行的意思
 
 })
 
-var noticeId,
-    tdStr='',
+var typeId,
+    tdStr = '',
     trIndex,
     addEnter = true,
     hasNullMes = false,
@@ -45,9 +45,9 @@ var methods = {
                 dataType: "text", //return dataType: text or json
                 success: function (json) {
                     json = eval('(' + json + ')');
-                    var typeId=json.obj.id;
-                    var typeName=json.obj.typeName;
-                    var typeIdTr = typeId*(-1);
+                    var typeId = json.obj.id;
+                    var typeName = json.obj.typeName;
+                    var typeIdTr = typeId * (-1);
                     var rtn = json.rtn;
                     if (rtn == "success") {
                         bootbox.alert({
@@ -55,14 +55,15 @@ var methods = {
                             message: "添加公告成功！",
                             closeButton: false
                         })
-
                         //拼接tr
-                        tdStr="<td>"+typeName+"</td>\n" +
+                        tdStr = "<td>" + typeName + "</td>\n" +
                             "                <td>\n" +
                             "                    <a class='edit' id='" + typeId + "'>编辑</a>\n" +
                             "                    <a id='" + typeId + "' onclick='delArtType(this.id)'>删除</a>\n" +
                             "                </td>"
                         $('#show_tbody').append('<tr id=' + typeIdTr + '>' + tdStr + '</tr>');
+                        //将input置空
+                        $('#xztb input').val(' ');
                         $('#renyuan').modal('hide');
                     } else if (rtn == "fail") {
                         bootbox.alert({
@@ -91,40 +92,40 @@ var methods = {
             return;
         }
         if (addEnter) {
-            var noticeMsg = $('.notice_edit').val().trim();
+            var typeName = $('.arttype_edit').val().trim();
             $.ajax({
                 type: "POST",
-                url: "/mgn/notice/save",
+                url: "/mgn/arttype/save",
                 data: {
-                    'noticeId':noticeId,
-                    'noticeMsg': noticeMsg,
+                    'typeId': typeId,
+                    'typeName': typeName,
                 },
                 dataType: "text", //return dataType: text or json
                 success: function (json) {
                     json = eval('(' + json + ')');
-                    var noticeId=json.obj.id;
-                    var message=json.obj.message;
-                    var noticeIdTr = noticeId*(-1);
+                    var typeId = json.obj.id;
+                    var typeName = json.obj.typeName;
+                    var typeIdTr = typeId * (-1);
                     var rtn = json.rtn;
                     if (rtn == "success") {
                         bootbox.alert({
                             title: "来自DirkBlog的提示",
-                            message: "修改公告成功！",
+                            message: "修改标签成功！",
                             closeButton: false
                         })
 
                         //拼接tr
-                        xtdStr="<td>"+message+"</td>\n" +
+                        xtdStr = "<td>" + typeName + "</td>\n" +
                             "                <td>\n" +
-                            "                    <a class='edit' id='" + noticeId + "'>编辑</a>\n" +
-                            "                    <a id='" + noticeId + "' onclick='delNotice(this.id)'>删除</a>\n" +
+                            "                    <a class='edit' id='" + typeId + "'>编辑</a>\n" +
+                            "                    <a id='" + typeId + "' onclick='delArtType(this.id)'>删除</a>\n" +
                             "                </td>"
                         $('#show_tbody tr').eq(trIndex).empty().append(xtdStr);
                         $('#xrenyuan').modal('hide');
                     } else if (rtn == "fail") {
                         bootbox.alert({
                             title: "来自DirkBlog的提示",
-                            message: "修改公告失败，请检查网络！",
+                            message: "修改标签失败，请检查网络！",
                             closeButton: false
                         })
                         return
@@ -133,7 +134,7 @@ var methods = {
                 error: function (json) {
                     bootbox.alert({
                         title: "来自DirkBlog的提示",
-                        message: "修改公告失败，请检查网络！",
+                        message: "修改标签失败，请检查网络！",
                         closeButton: false
                     })
                     return
@@ -158,11 +159,11 @@ var methods = {
     xcheckMustMes: function () {
 
         //理由不能为空
-        var noticeMsg = $('.notice_edit').val().trim()
-        if (noticeMsg === '') {
+        var typeName = $('.arttype_edit').val().trim()
+        if (typeName === '') {
             bootbox.alert({
                 title: "来自DirkBlog的提示",
-                message: "公告不能为空",
+                message: "标签不能为空",
                 closeButton: false
             })
             hasNullMes = true;

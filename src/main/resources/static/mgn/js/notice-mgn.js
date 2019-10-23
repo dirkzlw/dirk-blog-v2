@@ -63,6 +63,8 @@ var methods = {
                             "                    <a id='" + noticeId + "' onclick='delNotice(this.id)'>删除</a>\n" +
                             "                </td>"
                         $('#show_tbody').append('<tr id=' + noticeIdTr + '>' + tdStr + '</tr>');
+                        //将input置空
+                        $('#xztb input').val(' ');
                         $('#renyuan').modal('hide');
                     } else if (rtn == "fail") {
                         bootbox.alert({

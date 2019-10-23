@@ -41,14 +41,8 @@
             <h3>标签</h3>
         </header>
         <div class="body clearfix">
-            <ul class="tags">
-                <li><a th:href="@{/tag/search(blogType=1)}">前端</a></li>
-                <li><a th:href="@{/tag/search(blogType=2)}">后端</a></li>
-                <li><a th:href="@{/tag/search(blogType=3)}">架构</a></li>
-                <li><a th:href="@{/tag/search(blogType=4)}">Linux</a></li>
-                <li><a th:href="@{/tag/search(blogType=5)}">数据库</a></li>
-                <li><a th:href="@{/tag/search(blogType=6)}">编程语言</a></li>
-                <li><a th:href="@{/tag/search(blogType=7)}">其他</a></li>
+            <ul class="tags" th:each="artType : ${application.artTypeList}">
+                <li><a th:href="@{/tag/search(blogType=${artType.id})}" th:text="${artType.typeName}"></a></li>
             </ul>
         </div>
     </div>
