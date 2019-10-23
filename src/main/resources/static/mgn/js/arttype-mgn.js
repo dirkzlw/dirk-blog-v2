@@ -35,19 +35,19 @@ var methods = {
             return;
         }
         if (addEnter) {
-            var noticeMsg = $('.notice_add').val().trim();
+            var typeName = $('.arttype_add').val().trim();
             $.ajax({
                 type: "POST",
-                url: "/mgn/notice/save",
+                url: "/mgn/arttype/save",
                 data: {
-                    'noticeMsg': noticeMsg,
+                    'typeName': typeName,
                 },
                 dataType: "text", //return dataType: text or json
                 success: function (json) {
                     json = eval('(' + json + ')');
-                    var noticeId=json.obj.id;
-                    var message=json.obj.message;
-                    var noticeIdTr = noticeId*(-1);
+                    var typeId=json.obj.id;
+                    var typeName=json.obj.typeName;
+                    var typeIdTr = typeId*(-1);
                     var rtn = json.rtn;
                     if (rtn == "success") {
                         bootbox.alert({
@@ -57,12 +57,12 @@ var methods = {
                         })
 
                         //拼接tr
-                        tdStr="<td>"+message+"</td>\n" +
+                        tdStr="<td>"+typeName+"</td>\n" +
                             "                <td>\n" +
-                            "                    <a class='edit' id='" + noticeId + "'>编辑</a>\n" +
-                            "                    <a id='" + noticeId + "' onclick='delNotice(this.id)'>删除</a>\n" +
+                            "                    <a class='edit' id='" + typeId + "'>编辑</a>\n" +
+                            "                    <a id='" + typeId + "' onclick='delArtType(this.id)'>删除</a>\n" +
                             "                </td>"
-                        $('#show_tbody').append('<tr id=' + noticeIdTr + '>' + tdStr + '</tr>');
+                        $('#show_tbody').append('<tr id=' + typeIdTr + '>' + tdStr + '</tr>');
                         $('#renyuan').modal('hide');
                     } else if (rtn == "fail") {
                         bootbox.alert({
@@ -144,11 +144,11 @@ var methods = {
     checkMustMes: function () {
 
         //理由不能为空
-        var noticeMsg = $('.notice_add').val().trim()
-        if (noticeMsg === '') {
+        var typeName = $('.arttype_add').val().trim()
+        if (typeName === '') {
             bootbox.alert({
                 title: "来自DirkBlog的提示",
-                message: "公告不能为空",
+                message: "标签不能为空",
                 closeButton: false
             })
             hasNullMes = true;

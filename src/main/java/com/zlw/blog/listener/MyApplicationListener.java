@@ -1,6 +1,8 @@
 package com.zlw.blog.listener;
 
+import com.zlw.blog.po.ArtType;
 import com.zlw.blog.po.Notice;
+import com.zlw.blog.service.ArtTypeService;
 import com.zlw.blog.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
@@ -15,6 +17,7 @@ import java.util.List;
 
 /**
  * 监听Application
+ *
  * @author Ranger
  * @create 2019-10-23 15:17
  */
@@ -22,20 +25,27 @@ import java.util.List;
 public class MyApplicationListener extends HttpServlet implements ApplicationListener<ContextRefreshedEvent> {
     @Autowired
     private NoticeService noticeService;
+    @Autowired
+    private ArtTypeService artTypeService;
 
     /**
      * 项目完全启动后执行
      * 将公告、标签、关注存于application
+     *
      * @param contextRefreshedEvent
      */
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        // 将 ApplicationContext 转化为 WebApplicationContext
+        //将ApplicationContext 转化为 WebApplicationContext
         WebApplicationContext webApplicationContext =
-                (WebApplicationContext)contextRefreshedEvent.getApplicationContext();
-        // 从 webApplicationContext 中获取  servletContext
+                (WebApplicationContext) contextRefreshedEvent.getApplicationContext();
+        //从webApplicationContext 中获取  servletContext
         ServletContext application = webApplicationContext.getServletContext();
+        //将公告存于application
         List<Notice> noticeList = noticeService.findNotices();
         application.setAttribute("noticeList", noticeList);
+        //将标签存于application
+        List<ArtType> artTypeList = artTypeService.findAllArtTypes();
+        application.setAttribute("artTypeList", artTypeList);
     }
 }

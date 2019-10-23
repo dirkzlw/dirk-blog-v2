@@ -31,8 +31,6 @@ public class NoticeController {
     @GetMapping("/to/mgn/notice")
     public String toNoticeMgn(Model model, HttpServletRequest request) {
 
-        List<Notice> noticeList = noticeService.findNotices();
-        model.addAttribute("noticeList", noticeList);
         return "mgn/notice";
     }
 

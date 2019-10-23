@@ -5,7 +5,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="utf-8"/>
-    <title>DirkBLog--编辑公告</title>
+    <title>DirkBLog--编辑标签</title>
     <meta name="viewport"
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
 
@@ -41,7 +41,7 @@
                 <div class="modal-dialog modal-lg modal_position">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">添加公告</h4>
+                            <h4 class="modal-title">添加标签</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
@@ -49,11 +49,11 @@
                                 <!--添加弹窗的样式-->
                                 <tbody>
                                 <tr>
-                                    <td class="tb_bg"><label for="notice_add"><font
-                                            style="font-size: 14px; color: red;">*</font>公告</label>
+                                    <td class="tb_bg"><label for="arttype_add"><font
+                                            style="font-size: 14px; color: red;">*</font>标签</label>
                                     </td>
-                                    <td><input class="notice_add" name="notice_add" type="text"
-                                               placeholder="请输入公告(限20字)" maxlength="20"/></td>
+                                    <td><input class="arttype_add" name="arttype_add" type="text"
+                                               placeholder="请输入标签名称(限10字)" maxlength="10"/></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -69,19 +69,19 @@
                 <div class="modal-dialog modal-lg modal_position">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">修改公告</h4>
+                            <h4 class="modal-title">修改标签</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
                             <table id="xxztb" class="table">
-                                <!--修改公告样式-->
+                                <!--修改样式-->
                                 <tbody>
                                 <tr>
-                                    <td class="tb_bg"><label for="notice_edit"><font
-                                            style="font-size: 14px; color: red;">*</font>公告</label>
+                                    <td class="tb_bg"><label for="arttype_edit"><font
+                                            style="font-size: 14px; color: red;">*</font>标签</label>
                                     </td>
-                                    <td><input class="notice_edit" name="notice_edit" type="text"
-                                               placeholder="请输入公告(限20字)" maxlength="20"/></td>
+                                    <td><input class="arttype_edit" name="arttype_edit" type="text"
+                                               placeholder="请输入标签名称(限10字)" maxlength="10"/></td>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -99,16 +99,16 @@
         <table id="tb" class="table">
             <thead>
             <tr>
-                <th>公告</th>
+                <th>标签</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody id="show_tbody">
-            <tr th:each="notice: ${application.noticeList}" th:id="${notice.id} * (-1)">
-                <td th:text="${notice.message}"></td>
+            <tr th:each="artType: ${application.artTypeList}" th:id="${artType.id} * (-1)">
+                <td th:text="${artType.typeName}"></td>
                 <td>
-                    <a class="edit" th:id="${notice.id}">编辑</a>
-                    <a th:id="${notice.id}" onclick="delNotice(this.id)">删除</a>
+                    <a class="edit" th:id="${artType.id}">编辑</a>
+                    <a th:id="${artType.id}" onclick="delArtType(this.id)">删除</a>
                 </td>
             </tr>
             </tbody>
@@ -116,7 +116,7 @@
     </div>
 </div>
 
-<script src="/mgn/js/notice-mgn.js"></script>
+<script src="/mgn/js/arttype-mgn.js"></script>
 <script type="text/javascript">
     $(function () {
         $("img.dialog").click(function() {
@@ -127,13 +127,13 @@
     });
 </script>
 <script type="text/javascript">
-    function delNotice(noticeId) {
-        var aTag = document.getElementById(noticeId * (-1));
+    function delArtType(artTypeId) {
+        var aTag = document.getElementById(artTypeId * (-1));
         // ajax 删除公告
         $.ajax({
             type: "POST",
-            url: "/mgn/notice/del",
-            data: {'noticeId': noticeId},
+            url: "/mgn/arttype/del",
+            data: {'artTypeId': artTypeId},
             dataType: "text", //return dataType: text or json
             success: function (json) {
                 if (json == "success") {
