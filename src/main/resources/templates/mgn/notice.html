@@ -52,7 +52,7 @@
                                     <td class="tb_bg"><label for="notice_add"><font
                                             style="font-size: 14px; color: red;">*</font>公告</label>
                                     </td>
-                                    <td><input class="notice_add" id="notice_add" name="notice_add" type="text"
+                                    <td><input class="notice_add" name="notice_add" type="text"
                                                placeholder="请输入公告(限20字)" maxlength="20"/></td>
                                 </tr>
                                 </tbody>
@@ -110,7 +110,7 @@
                 <td th:text="${notice.message}"></td>
                 <td>
                     <a class="edit">编辑</a>
-                    <a class="del" th:id="${notice.id}" onclick="delNotice(this.id)">删除</a>
+                    <a th:id="${notice.id}" onclick="delNotice(this.id)">删除</a>
                 </td>
             </tr>
             </tbody>

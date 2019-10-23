@@ -57,7 +57,7 @@ var methods = {
                         tdStr="<td>"+message+"</td>\n" +
                             "                <td>\n" +
                             "                    <a class='edit'>编辑</a>\n" +
-                            "                    <a class='del'>删除</a>\n" +
+                            "                    <a id='" + noticeId + "' onclick='delNotice(this.id)'>删除</a>\n" +
                             "                </td>"
                         $('#show_tbody').append('<tr id=' + noticeIdTr + '>' + tdStr + '</tr>');
                         $('#renyuan').modal('hide');
