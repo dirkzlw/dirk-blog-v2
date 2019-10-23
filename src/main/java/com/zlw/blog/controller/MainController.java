@@ -82,13 +82,6 @@ public class MainController {
         }
         session.setAttribute("user", userIndex);
 
-        //从session中获取notice
-        List<Notice> noticeList = (List<Notice>) session.getAttribute("notices");
-        if(noticeList==null){
-            noticeList = noticeService.findNotices();
-        }
-        session.setAttribute("notices", noticeList);
-
         return "redirect:/index?currentPage=" + currentPage;
     }
 
@@ -99,9 +92,8 @@ public class MainController {
 
         HttpSession session = request.getSession();
         //判断需要保存的数据是否已在session，没有重定向至/
-        List<Notice> noticeList = (List<Notice>) session.getAttribute("notices");
         UserIndex sessionUser = (UserIndex) session.getAttribute("user");
-        if (noticeList == null || sessionUser == null) {
+        if (sessionUser == null) {
             return "redirect:/";
         }
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -45,20 +46,41 @@ public class NoticeController {
     @PostMapping("/mgn/notice/save")
     @ResponseBody
     public ResultObj saveNotice(@RequestParam(required = false) Integer noticeId,
-                                String noticeMsg) {
-        return noticeService.saveNotice(noticeId, noticeMsg);
+                                String noticeMsg,
+                                HttpServletRequest request) {
+
+        ResultObj rtnObj = noticeService.saveNotice(noticeId, noticeMsg);
+
+        //同步application
+        if ("success".equals(rtnObj.getRtn())) {
+            ServletContext application = request.getServletContext();
+            List<Notice> noticeList = noticeService.findNotices();
+            application.setAttribute("noticeList", noticeList);
+        }
+
+        return rtnObj;
     }
 
     /**
      * 删除公告
+     *
      * @param noticeId 公告id
      * @return
      */
     @PostMapping("/mgn/notice/del")
     @ResponseBody
-    public String delNotice(Integer noticeId){
+    public String delNotice(Integer noticeId,
+                            HttpServletRequest request) {
 
-        return noticeService.delNotice(noticeId);
+        String rtn = noticeService.delNotice(noticeId);
+
+        //同步application
+        if ("success".equals(rtn)) {
+            ServletContext application = request.getServletContext();
+            List<Notice> noticeList = noticeService.findNotices();
+            application.setAttribute("noticeList", noticeList);
+        }
+
+        return rtn;
     }
-
 }
