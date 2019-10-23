@@ -1,6 +1,7 @@
 package com.zlw.blog.service;
 
 import com.zlw.blog.po.Notice;
+import com.zlw.blog.vo.ResultObj;
 
 import java.util.List;
 
@@ -10,4 +11,6 @@ import java.util.List;
  */
 public interface NoticeService {
     List<Notice> findNotices();
+
+    ResultObj saveNotice(Integer noticeId, String noticeMsg);
 }

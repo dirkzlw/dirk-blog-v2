@@ -9,21 +9,6 @@
     <meta name="viewport"
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
 
-    <!-- Bootstrap styles -->
-    <!--<link rel="stylesheet" href="/index/css/bootstrap.min.css">-->
-
-    <!--&lt;!&ndash; Styles &ndash;&gt;-->
-    <!--<link rel="stylesheet" href="/index/css/style.css" id="theme-styles">-->
-
-    <!--&lt;!&ndash;[if lt IE 9]>-->
-    <!--<script src="/index/js/vendor/google/html5-3.6-respond-1.1.0.min.js"></script>-->
-    <!--<![endif]&ndash;&gt;-->
-
-    <!--<link href="/mgn/css/move.css" type="text/css" rel="stylesheet"/>-->
-
-    <!-- add styles -->
-    <!--<link href="/index/css/main.css" rel="stylesheet" type="text/css" />-->
-
     <link rel="stylesheet" type="text/css" href="/table/css/style.css"/>
 
     <link rel="stylesheet" type="text/css"
@@ -43,37 +28,8 @@
 </head>
 <body>
 
-<!--头部-->
-<!--<div th:replace="~{fragments/header :: header}"></div>-->
-
 <div class="box" style="position: relative;top: 0px;">
     <div class="content">
-        <!--搜索输入框及查询、重置按钮-->
-        <div class="person_search">
-        </div>
-        <div class="line"></div>
-        <!--大图展现资质-->
-        <div class="export">
-            <div class="modal fade" id="bgImg">
-                <div class="modal-dialog modal-lg modal_position">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <img style="
-                                display: inline;
-                                width: 100%;
-                                height: 100%;
-                                /*display: flex;*/
-                                align-items: center;
-                                justify-content: center;
-                                overflow: hidden;
-                                cursor: pointer;"
-                                 id="authImg">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!--添加按钮及bootstrap的模态框-->
         <div class="export">
             <button id="new_add" type="button" class="btn btn-primary btn-sm" data-toggle="modal"
@@ -85,7 +41,7 @@
                 <div class="modal-dialog modal-lg modal_position">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">添加</h4>
+                            <h4 class="modal-title">添加公告</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
@@ -93,30 +49,11 @@
                                 <!--添加会议弹窗的样式-->
                                 <tbody>
                                 <tr>
-                                    <td class="tb_bg"><label for="username"><font
-                                            style="font-size: 14px; color: red;">*</font>用户名</label>
+                                    <td class="tb_bg"><label for="notice_add"><font
+                                            style="font-size: 14px; color: red;">*</font>公告</label>
                                     </td>
-                                    <td><input class="username" id="username" name="username" type="text"
-                                               placeholder="请输入用户名"/></td>
-                                    <!--<td class="tb_bg"><label for="password"><font-->
-                                    <!--style="font-size: 14px; color: red;">*</font>密码</label>-->
-                                    <!--</td>-->
-                                    <!--<td><input class="password" id="password" name="password" type="password"-->
-                                    <!--placeholder="请输入密码"/></td>-->
-                                    <td class="tb_bg"><label for="email"><font
-                                            style="font-size: 14px; color: red;">*</font>邮箱</label>
-                                    </td>
-                                    <td><input class="email" id="email" name="email" type="text"
-                                               placeholder="请输入邮箱"/></td>
-                                </tr>
-                                <tr>
-                                    <td class="tb_bg"><label for="role">角色</label></td>
-                                    <td>
-                                        <select id="role" name="role" class="form-control select_down"
-                                                style="font-size: 13px; color: #666;">
-                                            <option th:each="role : ${roleList}"  th:value="${role.roleName}" th:text="${role.roleName}"></option>
-                                        </select>
-                                    </td>
+                                    <td><input class="notice_add" id="notice_add" name="notice_add" type="text"
+                                               placeholder="请输入公告(限20字)" maxlength="20"/></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -137,7 +74,7 @@
                         </div>
                         <div class="modal-body">
                             <table id="xxztb" class="table">
-                                <!--修改会议弹窗的样式-->
+                                <!--修改公告样式-->
                                 <tbody>
                                 <tr>
                                     <td>
@@ -169,8 +106,8 @@
             </tr>
             </thead>
             <tbody id="show_tbody">
-            <tr>
-                <td>我觉得我可以的低调低调</td>
+            <tr th:each="notice: ${noticeList}">
+                <td th:text="${notice.message}"></td>
                 <td>
                     <a class="edit">编辑</a>
                     <a class="del">删除</a>
@@ -179,27 +116,6 @@
             </tbody>
         </table>
     </div>
-    <!--<div class="content">-->
-        <!--<div th:if="${authPage != null}" style="display: inline;">-->
-            <!--共<span id="totalPage" th:text="${authPage.totalPage}"></span>页-->
-            <!--&nbsp;&nbsp;-->
-            <!--共<span th:text="${authPage.totalNum}"></span>条-->
-
-            <!--&nbsp;&nbsp;-->
-            <!--<a th:if="${authPage.page}>1"-->
-               <!--th:href="@{/index(page=${authPage.page - 2})}">上一页</a>-->
-            <!--&nbsp;&nbsp;-->
-            <!--<span th:text="${authPage.page}"></span>-->
-            <!--&nbsp;&nbsp;-->
-            <!--<a th:if="${authPage.page}<${authPage.totalPage}"-->
-               <!--th:href="@{/index(page=${authPage.page})}">下一页</a>-->
-            <!--&nbsp;&nbsp;-->
-            <!--前往-->
-            <!--<input id="toPage" type="number" style="width: 50px">-->
-            <!--页-->
-            <!--<a href="javascript:toSkip()">Go</a>-->
-        <!--</div>-->
-    <!--</div>-->
 </div>
 
 <script src="/mgn/js/notice-mgn.js"></script>
@@ -211,43 +127,6 @@
             $('#bgImg').modal('show');
         });
     });
-</script>
-<script type="text/javascript">
-    //认证通过
-    function authPass(authId) {
-        var aTag = document.getElementById(authId * 1 + 1);
-        $.ajax({
-            type: "POST",
-            url: "/user/auth/pass",
-            data: {'authId': authId},
-            dataType: "text", //return dataType: text or json
-            success: function (json) {
-                if (json == "success") {
-                    aTag.remove();
-                    bootbox.alert({
-                        title: "来自智能会议室的提示",
-                        message: "用户认证通过成功",
-                        closeButton: false
-                    })
-                }else if(json == "fail"){
-                    bootbox.alert({
-                        title: "来自智能会议室的提示",
-                        message: "通过失败，请检查网络",
-                        closeButton: false
-                    })
-                    return
-                }
-            },
-            error: function (json) {
-                bootbox.alert({
-                    title: "来自智能会议室的提示",
-                    message: "通过失败，请检查网络",
-                    closeButton: false
-                })
-                return
-            }
-        });
-    }
 </script>
 </body>
 </html>

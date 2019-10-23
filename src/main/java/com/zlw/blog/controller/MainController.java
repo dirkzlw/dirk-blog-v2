@@ -3,7 +3,6 @@ package com.zlw.blog.controller;
 import com.zlw.blog.po.Blog;
 import com.zlw.blog.po.HotBlog;
 import com.zlw.blog.po.Notice;
-import com.zlw.blog.po.User;
 import com.zlw.blog.service.BlogService;
 import com.zlw.blog.service.HotBlogService;
 import com.zlw.blog.service.NoticeService;
@@ -200,13 +199,6 @@ public class MainController {
     @GetMapping("/to/mgn/center")
     public String toUserManage(Model model, HttpServletRequest request) {
         return "mgn/center";
-    }
-    /**
-     * 跳转到编辑公告界面
-     */
-    @GetMapping("/to/mgn/notice")
-    public String toNoticeMgn(Model model, HttpServletRequest request) {
-        return "mgn/notice";
     }
 
     /**
