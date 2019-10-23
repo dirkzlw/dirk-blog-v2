@@ -9,18 +9,25 @@ $(function () {  //jquery里的,是当文档载入完毕就执行的意思
     })
 
     $('#show_tbody').on('click', '.edit', function () {
-        authId = this.id
-        aTag = document.getElementById(authId * 1 + 1);
-        $('#xrenyuan').modal('show');
+        noticeId = this.id
+        // aTag = document.getElementById(noticeId * (-1));
+        // $('#xrenyuan').modal('show');
+        trIndex = $('.edit', '#show_tbody').index($(this));
+        addEnter = true;
+        $(this).parents('tr').addClass('has_case');
+        methods.editHandle(trIndex);
     })
 
 })
 
-var authId,
+var noticeId,
     aTag,
     tdStr='',
+    trIndex,
     addEnter = true,
-    hasNullMes = false;
+    hasNullMes = false,
+    xtarInp = $('#xxztb input'),
+    xtarSel = $('#xxztb select');
 
 var methods = {
 
@@ -34,7 +41,7 @@ var methods = {
             var noticeMsg = $('.notice_add').val().trim();
             $.ajax({
                 type: "POST",
-                url: "/mgn/notice/add",
+                url: "/mgn/notice/save",
                 data: {
                     'noticeMsg': noticeMsg,
                 },
@@ -44,7 +51,6 @@ var methods = {
                     var noticeId=json.obj.id;
                     var message=json.obj.message;
                     var noticeIdTr = noticeId*(-1);
-                    // var password=json.password;
                     var rtn = json.rtn;
                     if (rtn == "success") {
                         bootbox.alert({
@@ -56,7 +62,7 @@ var methods = {
                         //拼接tr
                         tdStr="<td>"+message+"</td>\n" +
                             "                <td>\n" +
-                            "                    <a class='edit'>编辑</a>\n" +
+                            "                    <a class='edit' id='" + noticeId + "'>编辑</a>\n" +
                             "                    <a id='" + noticeId + "' onclick='delNotice(this.id)'>删除</a>\n" +
                             "                </td>"
                         $('#show_tbody').append('<tr id=' + noticeIdTr + '>' + tdStr + '</tr>');
@@ -81,6 +87,63 @@ var methods = {
             });
         }
     },
+    xaddHandle: function (the_index) {
+        hasNullMes = false;
+        methods.xcheckMustMes();
+        if (hasNullMes) {
+            return;
+        }
+        if (addEnter) {
+            var noticeMsg = $('.notice_edit').val().trim();
+            $.ajax({
+                type: "POST",
+                url: "/mgn/notice/save",
+                data: {
+                    'noticeId':noticeId,
+                    'noticeMsg': noticeMsg,
+                },
+                dataType: "text", //return dataType: text or json
+                success: function (json) {
+                    json = eval('(' + json + ')');
+                    var noticeId=json.obj.id;
+                    var message=json.obj.message;
+                    var noticeIdTr = noticeId*(-1);
+                    var rtn = json.rtn;
+                    if (rtn == "success") {
+                        bootbox.alert({
+                            title: "来自DirkBlog的提示",
+                            message: "修改公告成功！",
+                            closeButton: false
+                        })
+
+                        //拼接tr
+                        xtdStr="<td>"+message+"</td>\n" +
+                            "                <td>\n" +
+                            "                    <a class='edit' id='" + noticeId + "'>编辑</a>\n" +
+                            "                    <a id='" + noticeId + "' onclick='delNotice(this.id)'>删除</a>\n" +
+                            "                </td>"
+                        $('#show_tbody tr').eq(trIndex).empty().append(xtdStr);
+                        $('#xrenyuan').modal('hide');
+                    } else if (rtn == "fail") {
+                        bootbox.alert({
+                            title: "来自DirkBlog的提示",
+                            message: "修改公告失败，请检查网络！",
+                            closeButton: false
+                        })
+                        return
+                    }
+                },
+                error: function (json) {
+                    bootbox.alert({
+                        title: "来自DirkBlog的提示",
+                        message: "修改公告失败，请检查网络！",
+                        closeButton: false
+                    })
+                    return
+                }
+            });
+        }
+    },
     checkMustMes: function () {
 
         //理由不能为空
@@ -95,63 +158,37 @@ var methods = {
             return
         }
     },
-    xaddHandle: function (the_index) {
-        hasNullMes = false;
-        methods.xcheckMustMes();
-        if (hasNullMes) {
-            return;
-        }
-        if (addEnter) {
-            var noPassReason = $('.noPassReason').val().trim();
-            $.ajax({
-                type: "POST",
-                url: "/user/auth/nopass",
-                data: {
-                    'authId': authId,
-                    'noPassReason': noPassReason,
-                },
-                dataType: "text", //return dataType: text or json
-                success: function (json) {
-                    if (json == "success") {
-                        bootbox.alert({
-                            title: "来自DirkBlog的提示",
-                            message: "用户认证不予通过成功",
-                            closeButton: false
-                        })
-                        aTag.remove();
-                        $('#xrenyuan').modal('hide');
-                    } else if (rtn == "timeError") {
-                        bootbox.alert({
-                            title: "来自DirkBlog的提示",
-                            message: "用户认证不通过失败，请检查网络",
-                            closeButton: false
-                        })
-                        return
-                    }
-                },
-                error: function (json) {
-                    bootbox.alert({
-                        title: "来自DirkBlog的提示",
-                        message: "用户认证不通过失败，请检查网络",
-                        closeButton: false
-                    })
-                    return
-                }
-            });
-        }
-    },
     xcheckMustMes: function () {
 
         //理由不能为空
-        var noPassReason = $('.noPassReason').val().trim()
-        if (noPassReason === '') {
+        var noticeMsg = $('.notice_edit').val().trim()
+        if (noticeMsg === '') {
             bootbox.alert({
                 title: "来自DirkBlog的提示",
-                message: "不予通过原因不能为空",
+                message: "公告不能为空",
                 closeButton: false
             })
             hasNullMes = true;
             return
+        }
+    },
+    editHandle: function (the_index) {
+
+        var tar = $('#show_tbody tr').eq(the_index);
+        var nowConArr = [];
+        for (var i = 0; i < tar.find('td').length - 1; i++) {
+            var a = tar.children('td').eq(i).html();
+            nowConArr.push(a);
+        }
+
+        $('#xrenyuan').modal('show');
+
+        for (var j = 0; j < xtarInp.length; j++) {
+            xtarInp.eq(j).val(nowConArr[j])
+        }
+        for (var p = 0; p < xtarSel.length; p++) {
+            var the_p = p + xtarInp.length;
+            xtarSel.eq(p).val(nowConArr[the_p]);
         }
     },
 }

@@ -77,13 +77,11 @@
                                 <!--修改公告样式-->
                                 <tbody>
                                 <tr>
-                                    <td>
-                                        <textarea
-                                                style="width: 100%;height: 200px"
-                                                class="noPassReason"
-                                                id="noPassReason"
-                                                name="noPassReason"
-                                                type="text"></textarea>
+                                    <td class="tb_bg"><label for="notice_edit"><font
+                                            style="font-size: 14px; color: red;">*</font>公告</label>
+                                    </td>
+                                    <td><input class="notice_edit" name="notice_edit" type="text"
+                                               placeholder="请输入公告(限20字)" maxlength="20"/></td>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -109,7 +107,7 @@
             <tr th:each="notice: ${noticeList}" th:id="${notice.id} * (-1)">
                 <td th:text="${notice.message}"></td>
                 <td>
-                    <a class="edit">编辑</a>
+                    <a class="edit" th:id="${notice.id}">编辑</a>
                     <a th:id="${notice.id}" onclick="delNotice(this.id)">删除</a>
                 </td>
             </tr>

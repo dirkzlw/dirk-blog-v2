@@ -42,7 +42,7 @@ public class NoticeController {
      * @param noticeMsg 公告内容
      * @return
      */
-    @PostMapping("/mgn/notice/add")
+    @PostMapping("/mgn/notice/save")
     @ResponseBody
     public ResultObj saveNotice(@RequestParam(required = false) Integer noticeId,
                                 String noticeMsg) {
