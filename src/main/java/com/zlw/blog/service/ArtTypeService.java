@@ -13,4 +13,6 @@ public interface ArtTypeService {
     ResultObj saveArttype(Integer typeId, String typeName);
 
     List<ArtType> findAllArtTypes();
+
+    String delArtType(Integer typeId);
 }

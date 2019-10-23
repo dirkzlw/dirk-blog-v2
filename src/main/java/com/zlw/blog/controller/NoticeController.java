@@ -51,9 +51,7 @@ public class NoticeController {
 
         //同步application
         if ("success".equals(rtnObj.getRtn())) {
-            ServletContext application = request.getServletContext();
-            List<Notice> noticeList = noticeService.findNotices();
-            application.setAttribute("noticeList", noticeList);
+            syncApplication(request, noticeService);
         }
 
         return rtnObj;
@@ -74,11 +72,21 @@ public class NoticeController {
 
         //同步application
         if ("success".equals(rtn)) {
-            ServletContext application = request.getServletContext();
-            List<Notice> noticeList = noticeService.findNotices();
-            application.setAttribute("noticeList", noticeList);
+            syncApplication(request, noticeService);
         }
 
         return rtn;
     }
+
+    /**
+     * 同步application
+     * @param request
+     * @param noticeService
+     */
+    private static void syncApplication(HttpServletRequest request,NoticeService noticeService){
+        ServletContext application = request.getServletContext();
+        List<Notice> noticeList = noticeService.findNotices();
+        application.setAttribute("noticeList", noticeList);
+    }
+
 }

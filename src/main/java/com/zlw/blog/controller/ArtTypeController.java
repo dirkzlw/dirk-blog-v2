@@ -1,7 +1,9 @@
 package com.zlw.blog.controller;
 
 import com.zlw.blog.po.ArtType;
+import com.zlw.blog.po.Notice;
 import com.zlw.blog.service.ArtTypeService;
+import com.zlw.blog.service.NoticeService;
 import com.zlw.blog.vo.ResultObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,11 +46,40 @@ public class ArtTypeController {
 
         //同步application
         if("success".equals(rtnObj.getRtn())){
-            ServletContext application = request.getServletContext();
-            List<ArtType> artTypeList = artTypeService.findAllArtTypes();
-            application.setAttribute("artTypeList", artTypeList);
+            syncApplication(request, artTypeService);
         }
         return rtnObj;
     }
 
+    /**
+     * 删除标签
+     *
+     * @param typeId 标签id
+     * @return
+     */
+    @PostMapping("/mgn/arttype/del")
+    @ResponseBody
+    public String delArtType(Integer typeId,
+                            HttpServletRequest request) {
+
+        String rtn = artTypeService.delArtType(typeId);
+
+        //同步application
+        if ("success".equals(rtn)) {
+            syncApplication(request, artTypeService);
+        }
+
+        return rtn;
+    }
+
+    /**
+     * 同步application
+     * @param request
+     * @param artTypeService
+     */
+    private static void syncApplication(HttpServletRequest request, ArtTypeService artTypeService){
+        ServletContext application = request.getServletContext();
+        List<ArtType> artTypeList = artTypeService.findAllArtTypes();
+        application.setAttribute("artTypeList", artTypeList);
+    }
 }

@@ -127,20 +127,20 @@
     });
 </script>
 <script type="text/javascript">
-    function delArtType(artTypeId) {
-        var aTag = document.getElementById(artTypeId * (-1));
+    function delArtType(typeId) {
+        var aTag = document.getElementById(typeId * (-1));
         // ajax 删除公告
         $.ajax({
             type: "POST",
             url: "/mgn/arttype/del",
-            data: {'artTypeId': artTypeId},
+            data: {'typeId': typeId},
             dataType: "text", //return dataType: text or json
             success: function (json) {
                 if (json == "success") {
                     aTag.remove();
                     bootbox.alert({
                         title: "来自DirkBlog的提示",
-                        message: "公告删除成功",
+                        message: "标签删除成功",
                         closeButton: false
                     })
                 }else if(json=="fail") {
