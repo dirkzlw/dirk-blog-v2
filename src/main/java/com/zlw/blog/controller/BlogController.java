@@ -65,14 +65,24 @@ public class BlogController {
     @Value("${FDFS_CLIENT_PAHT}")
     private String FDFS_CLIENT_PAHT;
 
+
+    /**
+     * 跳转到编辑博客页面
+     */
+    @GetMapping("/to/blog/edit")
+    public String toBlogEdit(Model model) {
+        BlogEdit blogEdit = new BlogEdit(null, null, null, null, null, null);
+        model.addAttribute("blog", blogEdit);
+        return "blog/edit";
+    }
+
     /**
      * 保存博客
      */
     @PostMapping("/blog/save")
     public String saveBlog(Blog blog,
                            MultipartFile coverImg,
-                           Model model,
-                           HttpServletRequest request) {
+                           Model model) {
 
         //保存新博客
         if (blog.getBlogId() == null) {

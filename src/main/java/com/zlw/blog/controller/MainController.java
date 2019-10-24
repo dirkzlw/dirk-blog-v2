@@ -30,8 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-import static javax.swing.text.html.CSS.getAttribute;
-
 /**
  * @author Ranger
  * @create 2019-06-02 20:38
@@ -43,13 +41,9 @@ public class MainController {
     private BlogService blogService;
     @Autowired
     private HotBlogService hotBlogService;
-    @Autowired
-    private UserService userService;
     //注入javaMail发送器
     @Autowired
     private JavaMailSender mailSender;
-    @Autowired
-    private NoticeService noticeService;
 
     //邮件发送者
     @Value("${spring.mail.username}")
@@ -142,16 +136,6 @@ public class MainController {
     @GetMapping("/to/login")
     public String toLogin() {
         return "user/login";
-    }
-
-    /**
-     * 跳转到编辑博客页面
-     */
-    @GetMapping("/to/blog/edit")
-    public String toBlogEdit(Model model) {
-        BlogEdit blogEdit = new BlogEdit(null, null, null, null, null, null);
-        model.addAttribute("blog", blogEdit);
-        return "blog/edit";
     }
 
     /**
