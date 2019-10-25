@@ -1,8 +1,8 @@
 package com.zlw.blog.service.impl;
 
-import com.zlw.blog.po.ArtType;
-import com.zlw.blog.repository.ArtTypeRepository;
-import com.zlw.blog.service.ArtTypeService;
+import com.zlw.blog.po.BlogTag;
+import com.zlw.blog.repository.BlogTagRepository;
+import com.zlw.blog.service.BlogTagService;
 import com.zlw.blog.vo.ResultObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +14,9 @@ import java.util.List;
  * @create 2019-10-23 15:50
  */
 @Service
-public class ArtTypeServiceImpl implements ArtTypeService {
+public class BlogTagServiceImpl implements BlogTagService {
     @Autowired
-    private ArtTypeRepository artTypeRepository;
+    private BlogTagRepository blogTagRepository;
 
     /**
      * 查询所有标签
@@ -24,8 +24,8 @@ public class ArtTypeServiceImpl implements ArtTypeService {
      * @return
      */
     @Override
-    public List<ArtType> findAllArtTypes() {
-        return artTypeRepository.findAll();
+    public List<BlogTag> findAllBlogTags() {
+        return blogTagRepository.findAll();
     }
 
     /**
@@ -36,15 +36,15 @@ public class ArtTypeServiceImpl implements ArtTypeService {
      * @return
      */
     @Override
-    public ResultObj saveArttype(Integer typeId, String typeName) {
-        ArtType artType = new ArtType(typeName);
+    public ResultObj saveBlogTag(Integer typeId, String typeName) {
+        BlogTag blogTag = new BlogTag(typeName);
         try {
-            artType.setId(typeId);
-            artTypeRepository.save(artType);
+            blogTag.setId(typeId);
+            blogTagRepository.save(blogTag);
         } catch (Exception e) {
-            return new ResultObj(artType, "fail");
+            return new ResultObj(blogTag, "fail");
         }
-        return new ResultObj(artType, "success");
+        return new ResultObj(blogTag, "success");
     }
 
     /**
@@ -54,9 +54,9 @@ public class ArtTypeServiceImpl implements ArtTypeService {
      * @return
      */
     @Override
-    public String delArtType(Integer typeId) {
+    public String delBlogTag(Integer typeId) {
         try {
-            artTypeRepository.delete(typeId);
+            blogTagRepository.delete(typeId);
         }catch (Exception e){
             return "fail";
         }

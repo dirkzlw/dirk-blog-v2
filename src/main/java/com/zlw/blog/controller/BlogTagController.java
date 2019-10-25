@@ -1,9 +1,7 @@
 package com.zlw.blog.controller;
 
-import com.zlw.blog.po.ArtType;
-import com.zlw.blog.po.Notice;
-import com.zlw.blog.service.ArtTypeService;
-import com.zlw.blog.service.NoticeService;
+import com.zlw.blog.po.BlogTag;
+import com.zlw.blog.service.BlogTagService;
 import com.zlw.blog.vo.ResultObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,14 +19,14 @@ import java.util.List;
  * @create 2019-10-23 15:52
  */
 @Controller
-public class ArtTypeController {
+public class BlogTagController {
 
     @Autowired
-    private ArtTypeService artTypeService;
+    private BlogTagService blogTagService;
 
-    @GetMapping("/to/mgn/arttype")
-    public String toArtType(){
-        return "mgn/arttype";
+    @GetMapping("/to/mgn/blogtag")
+    public String toBlogTag(){
+        return "mgn/blogtag";
     }
 
     /**
@@ -37,16 +35,16 @@ public class ArtTypeController {
      * @param typeName
      * @return
      */
-    @PostMapping("/mgn/arttype/save")
+    @PostMapping("/mgn/blogtag/save")
     @ResponseBody
-    public ResultObj saveArtType(@RequestParam(required = false) Integer typeId,
+    public ResultObj saveBlogTag(@RequestParam(required = false) Integer typeId,
                                  String typeName,
                                  HttpServletRequest request){
-        ResultObj rtnObj = artTypeService.saveArttype(typeId, typeName);
+        ResultObj rtnObj = blogTagService.saveBlogTag(typeId, typeName);
 
         //同步application
         if("success".equals(rtnObj.getRtn())){
-            syncApplication(request, artTypeService);
+            syncApplication(request, blogTagService);
         }
         return rtnObj;
     }
@@ -57,16 +55,16 @@ public class ArtTypeController {
      * @param typeId 标签id
      * @return
      */
-    @PostMapping("/mgn/arttype/del")
+    @PostMapping("/mgn/blogtag/del")
     @ResponseBody
-    public String delArtType(Integer typeId,
+    public String delBlogTag(Integer typeId,
                             HttpServletRequest request) {
 
-        String rtn = artTypeService.delArtType(typeId);
+        String rtn = blogTagService.delBlogTag(typeId);
 
         //同步application
         if ("success".equals(rtn)) {
-            syncApplication(request, artTypeService);
+            syncApplication(request, blogTagService);
         }
 
         return rtn;
@@ -75,11 +73,11 @@ public class ArtTypeController {
     /**
      * 同步application
      * @param request
-     * @param artTypeService
+     * @param blogTagService
      */
-    private static void syncApplication(HttpServletRequest request, ArtTypeService artTypeService){
+    private static void syncApplication(HttpServletRequest request, BlogTagService blogTagService){
         ServletContext application = request.getServletContext();
-        List<ArtType> artTypeList = artTypeService.findAllArtTypes();
-        application.setAttribute("artTypeList", artTypeList);
+        List<BlogTag> blogTagList = blogTagService.findAllBlogTags();
+        application.setAttribute("blogTagList", blogTagList);
     }
 }

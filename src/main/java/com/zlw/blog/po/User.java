@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ import java.util.List;
 @Setter
 public class User {
     @Id
-    @Column(length = 10)
+    @Column(length = 11)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
     @Column(length = 30)
@@ -33,9 +35,11 @@ public class User {
     @Column(length = 40)
     private String email;
     //角色：1-管理员 2-用户
-    @Column(length = 10)
-    private Integer role;
+    @ManyToOne
+    @JoinColumn(name = "roleId")
+    private Role role;
     //头像URL
+    @Column(length = 100)
     private String headImgUrl;
 
     //评论
@@ -45,22 +49,12 @@ public class User {
     protected User() {
     }
 
-    public User(String username, String password, String email, Integer role, String headImgUrl) {
+    public User(String username, String password, String email, Role role, String headImgUrl, List<Comment> commentList) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
         this.headImgUrl = headImgUrl;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", role='" + role + '\'' +
-                '}';
+        this.commentList = commentList;
     }
 }

@@ -23,15 +23,15 @@ public class HotBlog {
 
     //主键id及生成策略
     @Id
-    @Column(length = 10)
+    @Column(length = 11)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer hotBlogId;
 
-    @Column(length = 10)
+    @Column(length = 11)
     private Integer blogId;
     @Column(length = 100)
     private String blogTitle;
-    @Column(length = 10)
+    @Column(length = 11)
     private Integer viewNum;
 
     protected HotBlog() {

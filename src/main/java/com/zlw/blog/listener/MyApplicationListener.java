@@ -1,11 +1,10 @@
 package com.zlw.blog.listener;
 
-import com.zlw.blog.po.ArtType;
+import com.zlw.blog.po.BlogTag;
 import com.zlw.blog.po.Notice;
-import com.zlw.blog.service.ArtTypeService;
+import com.zlw.blog.service.BlogTagService;
 import com.zlw.blog.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -26,7 +25,7 @@ public class MyApplicationListener extends HttpServlet implements ApplicationLis
     @Autowired
     private NoticeService noticeService;
     @Autowired
-    private ArtTypeService artTypeService;
+    private BlogTagService blogTagService;
 
     /**
      * 项目完全启动后执行
@@ -45,7 +44,7 @@ public class MyApplicationListener extends HttpServlet implements ApplicationLis
         List<Notice> noticeList = noticeService.findNotices();
         application.setAttribute("noticeList", noticeList);
         //将标签存于application
-        List<ArtType> artTypeList = artTypeService.findAllArtTypes();
-        application.setAttribute("artTypeList", artTypeList);
+        List<BlogTag> blogTagList = blogTagService.findAllBlogTags();
+        application.setAttribute("blogTagList", blogTagList);
     }
 }

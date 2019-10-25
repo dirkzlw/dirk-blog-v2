@@ -49,10 +49,10 @@
                                 <!--添加弹窗的样式-->
                                 <tbody>
                                 <tr>
-                                    <td class="tb_bg"><label for="arttype_add"><font
+                                    <td class="tb_bg"><label for="blogtag_add"><font
                                             style="font-size: 14px; color: red;">*</font>标签</label>
                                     </td>
-                                    <td><input class="arttype_add" name="arttype_add" type="text"
+                                    <td><input class="blogtag_add" name="blogtag_add" type="text"
                                                placeholder="请输入标签名称(限10字)" maxlength="10"/></td>
                                 </tr>
                                 </tbody>
@@ -77,10 +77,10 @@
                                 <!--修改样式-->
                                 <tbody>
                                 <tr>
-                                    <td class="tb_bg"><label for="arttype_edit"><font
+                                    <td class="tb_bg"><label for="blogtag_edit"><font
                                             style="font-size: 14px; color: red;">*</font>标签</label>
                                     </td>
-                                    <td><input class="arttype_edit" name="arttype_edit" type="text"
+                                    <td><input class="blogtag_edit" name="blogtag_edit" type="text"
                                                placeholder="请输入标签名称(限10字)" maxlength="10"/></td>
                                     </td>
                                 </tr>
@@ -104,11 +104,11 @@
             </tr>
             </thead>
             <tbody id="show_tbody">
-            <tr th:each="artType: ${application.artTypeList}" th:id="${artType.id} * (-1)">
-                <td th:text="${artType.typeName}"></td>
+            <tr th:each="blogTag: ${application.blogTagList}" th:id="${blogTag.id} * (-1)">
+                <td th:text="${blogTag.typeName}"></td>
                 <td>
-                    <a class="edit" th:id="${artType.id}">编辑</a>
-                    <a th:id="${artType.id}" onclick="delArtType(this.id)">删除</a>
+                    <a class="edit" th:id="${blogTag.id}">编辑</a>
+                    <a th:id="${blogTag.id}" onclick="delBlogTag(this.id)">删除</a>
                 </td>
             </tr>
             </tbody>
@@ -116,7 +116,7 @@
     </div>
 </div>
 
-<script src="/mgn/js/arttype-mgn.js"></script>
+<script src="/mgn/js/blogtag-mgn.js"></script>
 <script type="text/javascript">
     $(function () {
         $("img.dialog").click(function() {
@@ -127,12 +127,12 @@
     });
 </script>
 <script type="text/javascript">
-    function delArtType(typeId) {
+    function delBlogTag(typeId) {
         var aTag = document.getElementById(typeId * (-1));
         // ajax 删除公告
         $.ajax({
             type: "POST",
-            url: "/mgn/arttype/del",
+            url: "/mgn/blogtag/del",
             data: {'typeId': typeId},
             dataType: "text", //return dataType: text or json
             success: function (json) {

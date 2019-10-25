@@ -8,7 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 文章类型
@@ -19,20 +22,23 @@ import javax.persistence.Table;
 @Table(name="t_art_type")
 @Getter
 @Setter
-public class ArtType {
+public class BlogTag {
     //主键id及生成策略
     @Id
-    @Column(length = 10)
+    @Column(length = 11)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     //类型名称--不超过10字
     @Column(length = 20)
     private String typeName;
 
-    protected ArtType() {
+    @OneToMany(mappedBy = "blogTag")
+    private Set<Blog> blogSet = new HashSet<>();
+
+    protected BlogTag() {
     }
 
-    public ArtType(String typeName) {
+    public BlogTag(String typeName) {
         this.typeName = typeName;
     }
 }

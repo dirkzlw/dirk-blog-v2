@@ -41,8 +41,8 @@
             <h3>标签</h3>
         </header>
         <div class="body clearfix">
-            <ul class="tags" th:each="artType : ${application.artTypeList}">
-                <li><a th:href="@{/tag/search(blogType=${artType.id})}" th:text="${artType.typeName}"></a></li>
+            <ul class="tags" th:each="blogTag : ${application.blogTagList}">
+                <li><a th:href="@{/tag/search(blogType=${blogTag.id})}" th:text="${blogTag.typeName}"></a></li>
             </ul>
         </div>
     </div>

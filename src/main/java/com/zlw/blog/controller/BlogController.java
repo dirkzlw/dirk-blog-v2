@@ -83,7 +83,6 @@ public class BlogController {
     public String saveBlog(Blog blog,
                            MultipartFile coverImg,
                            Model model) {
-        System.out.println("BlogController.saveBlog");
         //保存新博客
         if (blog.getBlogId() == null) {
             //添加作者
@@ -100,7 +99,6 @@ public class BlogController {
                 String coverImgUrl = FastDFSUtils.uploadFile(FDFS_CLIENT_PAHT, FTP_ADDRESS, coverImg);
                 blog.setCoverImgUrl(coverImgUrl);
             }
-
         } else {
             Blog oldBlog = blogService.findBlogByID(blog.getBlogId());
             blog.setAuthor(oldBlog.getAuthor());

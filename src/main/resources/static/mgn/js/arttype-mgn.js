@@ -35,10 +35,10 @@ var methods = {
             return;
         }
         if (addEnter) {
-            var typeName = $('.arttype_add').val().trim();
+            var typeName = $('.blogtag_add').val().trim();
             $.ajax({
                 type: "POST",
-                url: "/mgn/arttype/save",
+                url: "/mgn/blogtag/save",
                 data: {
                     'typeName': typeName,
                 },
@@ -59,7 +59,7 @@ var methods = {
                         tdStr = "<td>" + typeName + "</td>\n" +
                             "                <td>\n" +
                             "                    <a class='edit' id='" + typeId + "'>编辑</a>\n" +
-                            "                    <a id='" + typeId + "' onclick='delArtType(this.id)'>删除</a>\n" +
+                            "                    <a id='" + typeId + "' onclick='delBlogTag(this.id)'>删除</a>\n" +
                             "                </td>"
                         $('#show_tbody').append('<tr id=' + typeIdTr + '>' + tdStr + '</tr>');
                         //将input置空
@@ -92,10 +92,10 @@ var methods = {
             return;
         }
         if (addEnter) {
-            var typeName = $('.arttype_edit').val().trim();
+            var typeName = $('.blogtag_edit').val().trim();
             $.ajax({
                 type: "POST",
-                url: "/mgn/arttype/save",
+                url: "/mgn/blogtag/save",
                 data: {
                     'typeId': typeId,
                     'typeName': typeName,
@@ -118,7 +118,7 @@ var methods = {
                         xtdStr = "<td>" + typeName + "</td>\n" +
                             "                <td>\n" +
                             "                    <a class='edit' id='" + typeId + "'>编辑</a>\n" +
-                            "                    <a id='" + typeId + "' onclick='delArtType(this.id)'>删除</a>\n" +
+                            "                    <a id='" + typeId + "' onclick='delBlogTag(this.id)'>删除</a>\n" +
                             "                </td>"
                         $('#show_tbody tr').eq(trIndex).empty().append(xtdStr);
                         $('#xrenyuan').modal('hide');
@@ -145,7 +145,7 @@ var methods = {
     checkMustMes: function () {
 
         //理由不能为空
-        var typeName = $('.arttype_add').val().trim()
+        var typeName = $('.blogtag_add').val().trim()
         if (typeName === '') {
             bootbox.alert({
                 title: "来自DirkBlog的提示",
@@ -159,7 +159,7 @@ var methods = {
     xcheckMustMes: function () {
 
         //理由不能为空
-        var typeName = $('.arttype_edit').val().trim()
+        var typeName = $('.blogtag_edit').val().trim()
         if (typeName === '') {
             bootbox.alert({
                 title: "来自DirkBlog的提示",

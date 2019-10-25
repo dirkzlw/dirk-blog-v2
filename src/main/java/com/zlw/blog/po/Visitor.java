@@ -25,7 +25,7 @@ import java.util.List;
 @Setter
 public class Visitor {
     @Id
-    @Column(length = 10)
+    @Column(length = 11)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer visitorId;
     @Column(length = 30)

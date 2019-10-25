@@ -24,20 +24,20 @@ public class Comment {
 
     //主键id及生成策略
     @Id
-    @Column(length = 10)
+    @Column(length = 11)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer commentId;
     //与博客
     @ManyToOne()
-    @JoinColumn(name = "blog_id")
+    @JoinColumn(name = "blogId")
     private Blog cblog;
     //与用户
     @ManyToOne()
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     private User cuser;
     //与游客
     @ManyToOne()
-    @JoinColumn(name = "visitor_id")
+    @JoinColumn(name = "visitorId")
     private Visitor visitor;
     @Column(length = 40)
     private String createTime;

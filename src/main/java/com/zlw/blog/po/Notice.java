@@ -23,7 +23,7 @@ public class Notice {
 
     //主键id及生成策略
     @Id
-    @Column(length = 10)
+    @Column(length = 11)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     //公告信息--字符长度
