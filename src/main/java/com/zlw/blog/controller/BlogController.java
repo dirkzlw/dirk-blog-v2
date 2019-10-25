@@ -83,7 +83,7 @@ public class BlogController {
     public String saveBlog(Blog blog,
                            MultipartFile coverImg,
                            Model model) {
-
+        System.out.println("BlogController.saveBlog");
         //保存新博客
         if (blog.getBlogId() == null) {
             //添加作者
