@@ -168,7 +168,7 @@ public class BlogController {
      */
     @GetMapping("/blog/search")
     public String searchBlog(@RequestParam(required = false) String fors,
-                             Model model, HttpServletRequest request) {
+                             Model model) {
         List<EsBlog> blogList = esBlogService.findEsBlogList(fors, fors);
         List<BlogIndex> blogIndexList = IndexUtils.getEsIndexList(blogList);
 
@@ -216,7 +216,7 @@ public class BlogController {
     public String showOne(@RequestParam(value = "id", required = false) Integer blogId,
                           Model model,
                           HttpServletRequest request) {
-//        //查询博客
+        //查询博客
         Blog blog = blogService.findBlogByID(blogId);
         //封装博客信息对象
         BlogInfo blogInfo = new BlogInfo(blog.getBlogId(), blog.getBlogTitle(),
@@ -269,11 +269,11 @@ public class BlogController {
         String timeStr = dateFormat.format(new Date());
         Comment comment = new Comment(null, null, null, timeStr, message);
         //从session中获取user，判断是否登录
-        User user = (User) request.getSession().getAttribute("sessionUser");
+        SessionUser sessionUser = (SessionUser) request.getSession().getAttribute("sessionUser");
         Visitor v = null;
-        if (user != null) {
+        if (sessionUser != null) {
             //评论与用户关联
-            comment.setCuser(user);
+            comment.setCuser(userService.findUserById(sessionUser.getUserId()));
         } else {
             //如果用户为空，创建游客用户
             //获取客户端的IP地址
@@ -301,11 +301,11 @@ public class BlogController {
 
         //提取需要展示的评论
         CommentInfo commentInfo = new CommentInfo(comment.getCommentId(), null, null, null, null, null);
-        if (user != null) {
+        if (sessionUser != null) {
             //关联用户展示的信息
-            commentInfo.setUserId(user.getUserId());
-            commentInfo.setUsername(user.getUsername());
-            commentInfo.setHeadImgUrl(user.getHeadImgUrl());
+            commentInfo.setUserId(sessionUser.getUserId());
+            commentInfo.setUsername(sessionUser.getUsername());
+            commentInfo.setHeadImgUrl(sessionUser.getHeadImgUrl());
         } else {
             //关联游客展示的信息
             commentInfo.setUserId(null);
@@ -349,11 +349,11 @@ public class BlogController {
     @GetMapping("/blog/edit")
     public String editBlog(Integer blogId, Model model) {
 
-//        Blog blog = blogService.findBlogByID(blogId);
-//        BlogEdit blogEdit = new BlogEdit(blog.getBlogId(), blog.getBlogTitle(),
-//                blog.getBlogText(), blog.getArtType(), blog.getBlogType(),
-//                blog.getCoverImgUrl());
-//        model.addAttribute("blog", blogEdit);
+        Blog blog = blogService.findBlogByID(blogId);
+        BlogEdit blogEdit = new BlogEdit(blog.getBlogId(), blog.getBlogTitle(),
+                blog.getBlogText(), blog.getArtType(), blog.getBlogTag().getId(),
+                blog.getCoverImgUrl());
+        model.addAttribute("blog", blogEdit);
 
         return "blog/edit";
     }
