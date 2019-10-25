@@ -93,14 +93,14 @@
 
                 </div>
 
-                <div class="paging">
+                <div class="paging" th:if="${page != null} and ${page.currentPage}>0">
                     <a href="#" class="older">
                         <img style="height: 35px;width: 33px" src="/index/img/toTop.png" alt="回到顶部">
                         </i></a>
                 </div>
 
                 <!--分页-->
-                <div class="Paging" id="pagination">
+                <div class="Paging" id="pagination" th:if="${page != null} and ${page.currentPage}>0">
                     <div class="center_bottom">
                         <div th:if="${page != null}" style="float:right;padding-right:30px">
                                <a th:if="${page.currentPage}>0"
@@ -113,7 +113,8 @@
                             <span id="currentPage" name="currentPage" style="font-size: 18px;color: #0066cc"
                                   th:text="${page.currentPage+1}"></span>
                             <span>/</span>
-                            <span id="totalPage" name="totalPage" style="font-size: 18px;color: #0066cc" th:text="${page.totalPage}"></span>页
+                            <span id="totalPage" name="totalPage" style="font-size: 18px;color: #0066cc"
+                                  th:text="${page.totalPage+1}"></span>页
                         </div>
                     </div>
                 </div>
@@ -141,15 +142,15 @@
         var toPage = document.getElementById("toPage").value * 1 - 1;
         var currentPage = document.getElementById("currentPage").textContent;
         var totalPage = document.getElementById("totalPage").textContent;
-        if(toPage>=0 && toPage<totalPage){
-            if(toPage + 1 == currentPage){
-                narn("warn","跳转的页数为当前页！");
+        if (toPage >= 0 && toPage < totalPage) {
+            if (toPage + 1 == currentPage) {
+                narn("warn", "跳转的页数为当前页！");
                 return false;
             }
             var href = "/?currentPage=" + toPage;
             window.open(href, "_self");
-        }else{
-            narn("warn","输入的跳转页数有误！");
+        } else {
+            narn("warn", "输入的跳转页数有误！");
         }
     }
 
@@ -158,7 +159,7 @@
      * @param type
      * @param msg
      */
-    function narn (type,msg) {
+    function narn(type, msg) {
         naranja()[type]({
             title: '消息提示',
             text: msg,
@@ -171,7 +172,7 @@
                         text: '通知被接受'
                     })
                 }
-            },{
+            }, {
                 text: '取消',
                 click: function (e) {
                     e.closeNotification()

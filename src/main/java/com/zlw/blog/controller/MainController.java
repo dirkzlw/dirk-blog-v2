@@ -2,18 +2,14 @@ package com.zlw.blog.controller;
 
 import com.zlw.blog.po.Blog;
 import com.zlw.blog.po.HotBlog;
-import com.zlw.blog.po.Notice;
 import com.zlw.blog.service.BlogService;
 import com.zlw.blog.service.HotBlogService;
-import com.zlw.blog.service.NoticeService;
-import com.zlw.blog.service.UserService;
 import com.zlw.blog.utils.HotBlogUtils;
 import com.zlw.blog.utils.HttpUtils;
 import com.zlw.blog.utils.IndexUtils;
-import com.zlw.blog.vo.BlogEdit;
 import com.zlw.blog.vo.BlogIndex;
 import com.zlw.blog.vo.ContactInfo;
-import com.zlw.blog.vo.UserIndex;
+import com.zlw.blog.vo.SessionUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -70,11 +66,11 @@ public class MainController {
         //从session中获取author，判断是否登录
         HttpSession session = request.getSession();
 
-        UserIndex userIndex = (UserIndex) session.getAttribute("user");
-        if (userIndex == null) {
-            userIndex = new UserIndex(null, null);
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
+        if (sessionUser == null) {
+            sessionUser = new SessionUser(null);
         }
-        session.setAttribute("user", userIndex);
+        session.setAttribute("sessionUser", sessionUser);
 
         return "redirect:/index?currentPage=" + currentPage;
     }
@@ -86,7 +82,7 @@ public class MainController {
 
         HttpSession session = request.getSession();
         //判断需要保存的数据是否已在session，没有重定向至/
-        UserIndex sessionUser = (UserIndex) session.getAttribute("user");
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
         if (sessionUser == null) {
             return "redirect:/";
         }

@@ -13,7 +13,7 @@ public interface UserService {
 
     User findUserById(Integer userId);
 
-    boolean checkEmailExist(String email);
-
     User findUserByEmail(String email);
+
+    String checkUserNameAndEmail(String username, String email);
 }

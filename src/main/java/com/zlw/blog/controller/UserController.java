@@ -1,10 +1,13 @@
 package com.zlw.blog.controller;
 
+import com.zlw.blog.po.Role;
 import com.zlw.blog.po.User;
+import com.zlw.blog.service.RoleService;
 import com.zlw.blog.service.UserService;
 import com.zlw.blog.utils.FastDFSUtils;
 import com.zlw.blog.utils.MD5Utils;
-import com.zlw.blog.vo.UserIndex;
+import com.zlw.blog.utils.UserUtils;
+import com.zlw.blog.vo.SessionUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -20,9 +23,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * @author Ranger
@@ -33,6 +34,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private RoleService roleService;
     //注入javaMail发送器
     @Autowired
     private JavaMailSender mailSender;
@@ -58,14 +61,16 @@ public class UserController {
     @ResponseBody
     public String register(User user, HttpServletRequest request, HttpServletResponse response) {
 
-        //校验邮箱是否已被注册
-        boolean b = userService.checkEmailExist(user.getEmail());
-        if (b) {
-            return "emailExit";
-        }
+        //校验用户名邮箱是否已被注册
+        String rtn = userService.checkUserNameAndEmail(user.getUsername(),user.getEmail());
 
+        //用户名/邮箱重复
+        if(!"success".equals(rtn)){
+            return rtn;
+        }
+        Role role = roleService.findRoleById(USER_ROLE_FIRST);
         //设置角色
-        user.setRole(USER_ROLE_FIRST);
+        user.setRole(role);
         //设置头像
         user.setHeadImgUrl(USER_HEAD_FIRST);
         //密码加密
@@ -81,10 +86,11 @@ public class UserController {
         //存Session
         //根据用户角色，设置用户权限
         HttpSession session = request.getSession();
-        session.setAttribute("user", user);
+        session.setAttribute("sessionUser",
+                UserUtils.getSessionUser(user));
         session.setMaxInactiveInterval(3 * 24 * 60);    //设置session生存时间
 
-        return "registerSuccess";
+        return rtn;
     }
 
     /**
@@ -107,15 +113,14 @@ public class UserController {
             //存Session
             //根据用户角色，设置用户权限
             HttpSession session = request.getSession();
-            //将User转为UserIndex
-            UserIndex userIndex = new UserIndex(user.getUserId(), user.getHeadImgUrl());
-            session.setAttribute("user", userIndex);
+            //将User转为SessionUser
+            session.setAttribute("sessionUser", UserUtils.getSessionUser(user));
             session.setMaxInactiveInterval(3 * 24 * 60);    //设置session生存时间
 
-            return "loginSuccess";
+            return "success";
         }
 
-        return "loginFail";
+        return "fail";
     }
 
     /**
@@ -163,7 +168,7 @@ public class UserController {
             cookie.setMaxAge(0);
         }
 
-        request.getSession().removeAttribute("user");
+        request.getSession().removeAttribute("sessionUser");
 
         return "redirect:/";
     }
@@ -196,7 +201,7 @@ public class UserController {
         }
 
         //更新session
-        updateSession(request, user);
+        updateSession(request,UserUtils.getSessionUser(user));
 
         return "HeadImgOk";
     }
@@ -216,45 +221,46 @@ public class UserController {
                                  @RequestParam String email,
                                  HttpServletRequest request) {
 
-        //根据id查询数据库中用户
-        User oldUser = userService.findUserById(userId);
-
-        //校验修正的信息
-        if (!oldUser.getUsername().equals(username) && !oldUser.getEmail().equals(email)) {
-            //修改用户名和邮箱
-            boolean b = userService.checkEmailExist(email);
-            if (b) {
-                return "EmailUsed";
-            } else {
-                oldUser.setEmail(email);
-                oldUser.setUsername(username);
-                userService.save(oldUser);
-                //更新session
-                updateSession(request, oldUser);
-                return "EmailUsernameOk";
-            }
-        } else if (!oldUser.getUsername().equals(username)) {
-            //只修改了用户名
-            oldUser.setUsername(username);
-            userService.save(oldUser);
-            //更新session
-            updateSession(request, oldUser);
-            return "UsernameOk";
-        } else if (!oldUser.getEmail().equals(email)) {
-            //只修改了邮箱
-            boolean b = userService.checkEmailExist(email);
-            if (b) {
-                return "EmailUsed";
-            } else {
-                oldUser.setEmail(email);
-                userService.save(oldUser);
-                //更新session
-                updateSession(request, oldUser);
-                return "EmailOk";
-            }
-        } else {
-            return "NothingDo";
-        }
+//        //根据id查询数据库中用户
+//        User oldUser = userService.findUserById(userId);
+//
+//        //校验修正的信息
+//        if (!oldUser.getUsername().equals(username) && !oldUser.getEmail().equals(email)) {
+//            //修改用户名和邮箱
+//            boolean b = userService.checkEmailExist(email);
+//            if (b) {
+//                return "EmailUsed";
+//            } else {
+//                oldUser.setEmail(email);
+//                oldUser.setUsername(username);
+//                userService.save(oldUser);
+//                //更新session
+//                updateSession(request, oldUser);
+//                return "EmailUsernameOk";
+//            }
+//        } else if (!oldUser.getUsername().equals(username)) {
+//            //只修改了用户名
+//            oldUser.setUsername(username);
+//            userService.save(oldUser);
+//            //更新session
+//            updateSession(request, oldUser);
+//            return "UsernameOk";
+//        } else if (!oldUser.getEmail().equals(email)) {
+//            //只修改了邮箱
+//            boolean b = userService.checkEmailExist(email);
+//            if (b) {
+//                return "EmailUsed";
+//            } else {
+//                oldUser.setEmail(email);
+//                userService.save(oldUser);
+//                //更新session
+//                updateSession(request, oldUser);
+//                return "EmailOk";
+//            }
+//        } else {
+//            return "NothingDo";
+//        }
+        return null;
     }
 
     /**
@@ -291,7 +297,7 @@ public class UserController {
             userService.save(oldUser);
             //修改成功
             //更新session
-            updateSession(request, oldUser);
+            updateSession(request, UserUtils.getSessionUser(oldUser));
             return "PwdOk";
         }
     }
@@ -300,13 +306,13 @@ public class UserController {
      * 更新session，多处使用抽象出来
      *
      * @param request
-     * @param user
+     * @param sessionUser
      */
-    private void updateSession(HttpServletRequest request, User user) {
+    private void updateSession(HttpServletRequest request, SessionUser sessionUser) {
         //更新session
         //根据用户角色，设置用户权限
         HttpSession session = request.getSession();
-        session.setAttribute("user", user);
+        session.setAttribute("sessionUser", sessionUser);
         session.setMaxInactiveInterval(3 * 24 * 60);    //设置session生存时间
     }
 

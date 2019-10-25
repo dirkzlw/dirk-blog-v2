@@ -1,7 +1,6 @@
 package com.zlw.blog.interceptor;
 
-import com.zlw.blog.po.User;
-import com.zlw.blog.vo.UserIndex;
+import com.zlw.blog.vo.SessionUser;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -11,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 用户权限权限拦截器
+ *
  * @author Ranger
  * @create 2019-04-07 10:49
  */
@@ -25,11 +25,11 @@ public class AdminInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //从session中获取author，判断是否登录
-        UserIndex author = (UserIndex) request.getSession().getAttribute("user");
-        if(author == null){
+        SessionUser sessionUser = (SessionUser) request.getSession().getAttribute("sessionUser");
+        if (sessionUser == null) {
             response.sendRedirect("/to/login");
             return false;
-        }else if(author.getUserId()!=1){
+        } else if (sessionUser.getUserId() != 1) {
             response.sendRedirect("/to/login");
             return false;
         }

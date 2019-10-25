@@ -68,7 +68,7 @@ var methods = {
                     } else if (rtn == "fail") {
                         bootbox.alert({
                             title: "来自DirkBlog的提示",
-                            message: "添加公告失败，请检查网络！",
+                            message: "添加标签失败，请检查网络！",
                             closeButton: false
                         })
                         return
@@ -77,7 +77,7 @@ var methods = {
                 error: function (json) {
                     bootbox.alert({
                         title: "来自DirkBlog的提示",
-                        message: "添加公告失败，请检查网络！",
+                        message: "添加标签失败，请检查网络！",
                         closeButton: false
                     })
                     return

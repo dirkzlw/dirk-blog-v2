@@ -46,15 +46,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findOne(userId);
     }
 
-    @Override
-    public boolean checkEmailExist(String email) {
-        User user = userRepository.findByEmail(email);
-        if(user!=null){
-            return true;
-        }
-        return false;
-    }
-
     /**
      * 根据邮箱查询用户
      * @param email
@@ -63,5 +54,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public String checkUserNameAndEmail(String username, String email) {
+        User user ;
+        user = userRepository.findByUsername(username);
+        if(user!=null){
+            return "username_exist";
+        }
+        user = userRepository.findByEmail(email);
+        if(user!=null){
+            return "email_exist";
+        }
+        return "success";
     }
 }

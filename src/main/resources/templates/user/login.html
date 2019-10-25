@@ -123,7 +123,7 @@
                 data: {'username': username, 'password': password},
                 dataType: "text", //return dataType: text or json
                 success: function (json) {
-                    if (json == "loginSuccess") {
+                    if (json == "success") {
                         window.location.href = '/';
                     } else {
                         narn('warn', '登录失败！请检查用户名/密码')
@@ -154,14 +154,16 @@
                         data: {'username': username, 'password': password, 'email': email},
                         dataType: "text", //return dataType: text or json
                         success: function (json) {
-                            if (json == "registerSuccess") {
-                                narn('success', '注册成功！即将自动跳转页面')
+                            if (json == "success") {
+                                narn('success', '注册成功！即将自动登录！')
                                 setTimeout(function () {
                                     window.location.href = '/';
                                 }, 2500)
-                            }else if(json == "emailExit"){
+                            }else if(json == "email_exist"){
                                 narn('warn', '注册失败！邮箱已存在')
-                            } else {
+                            }else if(json == "username_exist"){
+                                narn('warn', '注册失败！用户名已存在')
+                            }  else {
                                 narn('warn', '注册失败！请检查网络状况')
                             }
                         },

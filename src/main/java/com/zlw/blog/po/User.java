@@ -28,11 +28,11 @@ public class User {
     @Column(length = 11)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
-    @Column(length = 30)
+    @Column(length = 30,unique = true)
     private String username;
     @Column(length = 40)
     private String password;
-    @Column(length = 40)
+    @Column(length = 40,unique = true)
     private String email;
     //角色：1-管理员 2-用户
     @ManyToOne

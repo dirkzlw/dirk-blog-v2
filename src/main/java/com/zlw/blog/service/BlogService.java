@@ -1,6 +1,7 @@
 package com.zlw.blog.service;
 
 import com.zlw.blog.po.Blog;
+import com.zlw.blog.po.BlogTag;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -28,5 +29,5 @@ public interface BlogService {
 
     List<Blog> findAllBlog();
 
-    List<Blog> findBlogByBlogType(Integer blogType);
+    List<Blog> findBlogByBlogTag(BlogTag blogType);
 }

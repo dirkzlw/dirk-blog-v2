@@ -81,53 +81,57 @@ public class BlogController {
      */
     @PostMapping("/blog/save")
     public String saveBlog(Blog blog,
+                           Integer blogTag,
                            MultipartFile coverImg,
                            Model model) {
-        //保存新博客
-        if (blog.getBlogId() == null) {
-            //添加作者
-            blog.setAuthor(BLOG_AUTHOR);
-            //为博客添加创作时间
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String timeStr = dateFormat.format(new Date());
-            blog.setCreateTime(timeStr);
-            blog.setZanNum(0);
-            //访问量初始化为1,因为编辑完即访问
-            blog.setViewNum(0);
-            //为博客保存封面
-            if (coverImg != null) {
-                String coverImgUrl = FastDFSUtils.uploadFile(FDFS_CLIENT_PAHT, FTP_ADDRESS, coverImg);
-                blog.setCoverImgUrl(coverImgUrl);
-            }
-        } else {
-            Blog oldBlog = blogService.findBlogByID(blog.getBlogId());
-            blog.setAuthor(oldBlog.getAuthor());
-            if (StringUtils.isEmpty(coverImg.getOriginalFilename())) {
-                blog.setCoverImgUrl(oldBlog.getCoverImgUrl());
-            } else {
-                String coverImgUrl = FastDFSUtils.uploadFile(FDFS_CLIENT_PAHT, FTP_ADDRESS, coverImg);
-                blog.setCoverImgUrl(coverImgUrl);
-            }
-            blog.setCreateTime(oldBlog.getCreateTime());
-            blog.setZanNum(oldBlog.getZanNum());
-            blog.setViewNum(oldBlog.getViewNum());
-        }
 
-        //将数据保存到数据库
-        blogService.saveBlog(blog);
+        System.out.println("BlogController.saveBlog");
 
-        //将数据保存到ES
-        EsBlog esBlog = EsBlogUtils.getEsblogByBlog(blog);
-        esBlogService.save(esBlog);
-
-        BlogInfo blogInfo = new BlogInfo(blog.getBlogId(), blog.getBlogTitle(),
-                blog.getBlogText(), blog.getCreateTime(),
-                blog.getArtType(),
-                blog.getBlogType(), blog.getCoverImgUrl(), blog.getAuthor(),
-                0, blog.getZanNum(), blog.getViewNum());
-
-        //添加到视图
-        model.addAttribute("blog", blogInfo);
+//        //保存新博客
+//        if (blog.getBlogId() == null) {
+//            //添加作者
+//            blog.setAuthor(BLOG_AUTHOR);
+//            //为博客添加创作时间
+//            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//            String timeStr = dateFormat.format(new Date());
+//            blog.setCreateTime(timeStr);
+//            blog.setZanNum(0);
+//            //访问量初始化为1,因为编辑完即访问
+//            blog.setViewNum(0);
+//            //为博客保存封面
+//            if (coverImg != null) {
+//                String coverImgUrl = FastDFSUtils.uploadFile(FDFS_CLIENT_PAHT, FTP_ADDRESS, coverImg);
+//                blog.setCoverImgUrl(coverImgUrl);
+//            }
+//        } else {
+//            Blog oldBlog = blogService.findBlogByID(blog.getBlogId());
+//            blog.setAuthor(oldBlog.getAuthor());
+//            if (StringUtils.isEmpty(coverImg.getOriginalFilename())) {
+//                blog.setCoverImgUrl(oldBlog.getCoverImgUrl());
+//            } else {
+//                String coverImgUrl = FastDFSUtils.uploadFile(FDFS_CLIENT_PAHT, FTP_ADDRESS, coverImg);
+//                blog.setCoverImgUrl(coverImgUrl);
+//            }
+//            blog.setCreateTime(oldBlog.getCreateTime());
+//            blog.setZanNum(oldBlog.getZanNum());
+//            blog.setViewNum(oldBlog.getViewNum());
+//        }
+//
+//        //将数据保存到数据库
+//        blogService.saveBlog(blog);
+//
+//        //将数据保存到ES
+//        EsBlog esBlog = EsBlogUtils.getEsblogByBlog(blog);
+//        esBlogService.save(esBlog);
+//
+//        BlogInfo blogInfo = new BlogInfo(blog.getBlogId(), blog.getBlogTitle(),
+//                blog.getBlogText(), blog.getCreateTime(),
+//                blog.getArtType(),
+//                blog.getBlogType(), blog.getCoverImgUrl(), blog.getAuthor(),
+//                0, blog.getZanNum(), blog.getViewNum());
+//
+//        //添加到视图
+//        model.addAttribute("blog", blogInfo);
 
         return "redirect:/blog/showOne?id=" + blog.getBlogId();
     }
@@ -180,7 +184,7 @@ public class BlogController {
     public String tagSearch(Integer blogType,Model model,
                             HttpServletRequest request){
 
-        List<Blog> blogList = blogService.findBlogByBlogType(blogType);
+        List<Blog> blogList = blogService.findBlogByBlogTag(null);
 
         List<BlogIndex> blogIndexList = IndexUtils.getIndexList(blogList);
 
@@ -206,42 +210,44 @@ public class BlogController {
                           Model model,
                           HttpServletRequest request) {
 
-        //查询博客
-        Blog blog = blogService.findBlogByID(blogId);
-        //封装博客信息对象
-        BlogInfo blogInfo = new BlogInfo(blog.getBlogId(), blog.getBlogTitle(),
-                blog.getBlogText(), blog.getCreateTime(),
-                blog.getArtType(),
-                blog.getBlogType(), blog.getCoverImgUrl(), blog.getAuthor(),
-                null, blog.getZanNum(), blog.getViewNum());
 
-        //获取评论，解析评论
-        List<Comment> comments = blog.getComments();
-        List<CommentInfo> commentInfoList = new ArrayList<>();
-        //对象转换
-        for (Comment comment : comments) {
-            User cuser = comment.getCuser();
-            if (cuser != null) {
-                CommentInfo info = new CommentInfo(comment.getCommentId(), cuser.getUserId(), cuser.getHeadImgUrl(), cuser.getUsername(), comment.getCreateTime(), comment.getContent());
-                commentInfoList.add(info);
-            } else {
-                Visitor visitor = comment.getVisitor();
-                CommentInfo info = new CommentInfo(comment.getCommentId(), null, USER_HEAD_FIRST, "游客" + visitor.getIpAddress(), comment.getCreateTime(), comment.getContent());
-                commentInfoList.add(info);
-            }
-        }
-        model.addAttribute("commentList", commentInfoList);
 
-        //设置评论数量
-        blogInfo.setCommNum(commentInfoList.size());
-        //将博客信息保存到model
-        model.addAttribute("blog", blogInfo);
-
-        //设置热门博客
-        List<HotBlog> hotBlogList = hotBlogService.findAllHotBlog();
-        //去掉空对象--注意：不能foreach删除
-        HotBlogUtils.dealHotBlogList(hotBlogList);
-        model.addAttribute("hotBlogList", hotBlogList);
+//        //查询博客
+//        Blog blog = blogService.findBlogByID(blogId);
+//        //封装博客信息对象
+//        BlogInfo blogInfo = new BlogInfo(blog.getBlogId(), blog.getBlogTitle(),
+//                blog.getBlogText(), blog.getCreateTime(),
+//                blog.getArtType(),
+//                blog.getBlogType(), blog.getCoverImgUrl(), blog.getAuthor(),
+//                null, blog.getZanNum(), blog.getViewNum());
+//
+//        //获取评论，解析评论
+//        List<Comment> comments = blog.getComments();
+//        List<CommentInfo> commentInfoList = new ArrayList<>();
+//        //对象转换
+//        for (Comment comment : comments) {
+//            User cuser = comment.getCuser();
+//            if (cuser != null) {
+//                CommentInfo info = new CommentInfo(comment.getCommentId(), cuser.getUserId(), cuser.getHeadImgUrl(), cuser.getUsername(), comment.getCreateTime(), comment.getContent());
+//                commentInfoList.add(info);
+//            } else {
+//                Visitor visitor = comment.getVisitor();
+//                CommentInfo info = new CommentInfo(comment.getCommentId(), null, USER_HEAD_FIRST, "游客" + visitor.getIpAddress(), comment.getCreateTime(), comment.getContent());
+//                commentInfoList.add(info);
+//            }
+//        }
+//        model.addAttribute("commentList", commentInfoList);
+//
+//        //设置评论数量
+//        blogInfo.setCommNum(commentInfoList.size());
+//        //将博客信息保存到model
+//        model.addAttribute("blog", blogInfo);
+//
+//        //设置热门博客
+//        List<HotBlog> hotBlogList = hotBlogService.findAllHotBlog();
+//        //去掉空对象--注意：不能foreach删除
+//        HotBlogUtils.dealHotBlogList(hotBlogList);
+//        model.addAttribute("hotBlogList", hotBlogList);
 
         return "blog/show";
     }
@@ -259,7 +265,7 @@ public class BlogController {
         String timeStr = dateFormat.format(new Date());
         Comment comment = new Comment(null, null, null, timeStr, message);
         //从session中获取user，判断是否登录
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("sessionUser");
         Visitor v = null;
         if (user != null) {
             //评论与用户关联
@@ -339,11 +345,11 @@ public class BlogController {
     @GetMapping("/blog/edit")
     public String editBlog(Integer blogId, Model model) {
 
-        Blog blog = blogService.findBlogByID(blogId);
-        BlogEdit blogEdit = new BlogEdit(blog.getBlogId(), blog.getBlogTitle(),
-                blog.getBlogText(), blog.getArtType(), blog.getBlogType(),
-                blog.getCoverImgUrl());
-        model.addAttribute("blog", blogEdit);
+//        Blog blog = blogService.findBlogByID(blogId);
+//        BlogEdit blogEdit = new BlogEdit(blog.getBlogId(), blog.getBlogTitle(),
+//                blog.getBlogText(), blog.getArtType(), blog.getBlogType(),
+//                blog.getCoverImgUrl());
+//        model.addAttribute("blog", blogEdit);
 
         return "blog/edit";
     }

@@ -57,7 +57,7 @@
         			</ul>
         		</div>
         		<div class="inform-text show">
-					<input type="hidden" th:value="${session.user.userId}" id="userId" name="userId"/>
+					<input type="hidden" th:value="${session.sessionUser.userId}" id="userId" name="userId"/>
 					<p>
 					<span>
 						<font>头像：</font>
@@ -84,7 +84,7 @@
         		</div>
 
         		<div class="inform-text">
-        				<input type="hidden" th:value="${session.user.userId}" id="authorId"/>
+        				<input type="hidden" th:value="${session.sessionUser.userId}" id="authorId"/>
         			<p>
         				<span>
 							<font>用户名：</font>

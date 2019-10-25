@@ -1,6 +1,7 @@
 package com.zlw.blog.service.impl;
 
 import com.zlw.blog.po.Blog;
+import com.zlw.blog.po.BlogTag;
 import com.zlw.blog.repository.BlogRepository;
 import com.zlw.blog.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,12 +139,12 @@ public class BlogServiceImpl implements BlogService {
     /**
      * 根据标签查询博客
      *
-     * @param blogType
+     * @param blogTag
      * @return
      */
     @Override
-    public List<Blog> findBlogByBlogType(Integer blogType) {
-        return blogRepository.findDistinctByBlogType(blogType);
+    public List<Blog> findBlogByBlogTag(BlogTag blogTag) {
+        return blogRepository.findDistinctByBlogTag(blogTag);
     }
 
 }
