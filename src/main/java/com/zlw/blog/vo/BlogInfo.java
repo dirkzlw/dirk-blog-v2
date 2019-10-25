@@ -24,7 +24,7 @@ public class BlogInfo {
     //文章类型:1--原创 2-转发 3-翻译
     private String artType;
     //博客分类:1-前端 2-后端 3-架构 4-Linux 5-数据库 6-编程语言 7-其他
-    private String blogType;
+    private String blogTag;
     //封面的URL
     private String coverImgUrl;
     //作者
@@ -41,7 +41,7 @@ public class BlogInfo {
 
     public BlogInfo(Integer blogId, String blogTitle,
                     String blogText, String createTime,
-                    Integer artType, Integer blogType,
+                    Integer artType, String blogTag,
                     String coverImgUrl, String author,Integer commNum,
                     Integer zanNum,Integer viewNum) {
         this.blogId = blogId;
@@ -62,32 +62,7 @@ public class BlogInfo {
                 this.artType = "未定义";
                 break;
         }
-        switch (blogType){
-            case 1:
-                this.blogType = "前端";
-                break;
-            case 2:
-                this.blogType = "后端";
-                break;
-            case 3:
-                this.blogType = "架构";
-                break;
-            case 4:
-                this.blogType = "Linux";
-                break;
-            case 5:
-                this.blogType = "数据库";
-                break;
-            case 6:
-                this.blogType = "编程语言";
-                break;
-            case 7:
-                this.blogType = "其他";
-                break;
-            default:
-                this.blogType = "未定义";
-                break;
-        }
+        this.blogTag = blogTag;
         this.coverImgUrl = coverImgUrl;
         this.author = author;
         this.commNum = commNum;

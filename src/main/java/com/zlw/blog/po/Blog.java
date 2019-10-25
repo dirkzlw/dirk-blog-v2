@@ -42,8 +42,9 @@ public class Blog implements Serializable {
     @Column(length = 100)
     private String coverImgUrl;
     //作者
-    @Column(length = 30)
-    private String author;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User author;
     //点赞的数量
     @Column(length = 11)
     private Integer zanNum;

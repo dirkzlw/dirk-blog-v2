@@ -42,7 +42,7 @@
         </header>
         <div class="body clearfix">
             <ul class="tags" th:each="blogTag : ${application.blogTagList}">
-                <li><a th:href="@{/tag/search(blogType=${blogTag.id})}" th:text="${blogTag.typeName}"></a></li>
+                <li><a th:href="@{/tag/search(blogTag=${blogTag.id})}" th:text="${blogTag.typeName}"></a></li>
             </ul>
         </div>
     </div>

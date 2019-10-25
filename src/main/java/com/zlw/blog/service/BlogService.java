@@ -29,5 +29,5 @@ public interface BlogService {
 
     List<Blog> findAllBlog();
 
-    List<Blog> findBlogByBlogTag(BlogTag blogType);
+    List<Blog> findBlogByBlogTag(BlogTag blogTag);
 }

@@ -21,6 +21,6 @@ public interface BlogRepository extends JpaRepository<Blog, Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM t_blog ORDER BY t_blog.view_num DESC LIMIT 6")
     List<Blog> findHotBlogs();
 
-    List<Blog> findDistinctByBlogTag(BlogTag blogType);
+    List<Blog> findDistinctByBlogTag(BlogTag blogTag);
 
 }

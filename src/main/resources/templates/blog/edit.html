@@ -155,7 +155,7 @@
                         <tr>
                             <td colspan="3">
                                 文章类型：
-                                <select name="blogTag">
+                                <select name="artType">
                                     <option>请选择</option>
                                     <option value="1" th:selected="${blog.artType} == 1">原创</option>
                                     <option value="2" th:selected="${blog.artType} == 2">转发</option>
@@ -358,7 +358,7 @@
             return false;
         }
         var artType = document.getElementsByName("artType")[0].value;
-        if(blogTag=="请选择"){
+        if(artType=="请选择"){
             narn("warn","请选择文章类型！")
             return false;
         }

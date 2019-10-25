@@ -44,7 +44,7 @@ public class EsBlogTest {
             esBlog.setBlogId(blog.getBlogId());
             esBlog.setBlogTitle(blog.getBlogTitle());
             esBlog.setCreateTime(blog.getCreateTime());
-            esBlog.setAuthor(blog.getAuthor());
+            esBlog.setAuthor(blog.getAuthor().getUsername());
             esBlog.setCoverImgUrl(blog.getCoverImgUrl());
 //            int blogType = blog.getBlogType();
 //            switch (blogType){
@@ -82,7 +82,7 @@ public class EsBlogTest {
      */
     @Test
     public void testEsQuery(){
-        List<EsBlog> blogs = esBlogRepository.findDistinctByBlogTitleContainingOrBlogTypeContaining("测试",  "前端");
+        List<EsBlog> blogs = esBlogRepository.findDistinctByBlogTitleContainingOrBlogTagContaining("测试",  "前端");
         System.out.println(blogs.size());
         for (EsBlog blog : blogs) {
             System.out.println("blog = " + blog);

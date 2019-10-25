@@ -25,11 +25,11 @@ public class IndexUtils {
          */
         for (int i = 0; i < blogList.size(); i += 2) {
             Blog blog = blogList.get(i);
-            BlogIndex blogIndex = new BlogIndex(blog.getBlogId(), blog.getCoverImgUrl(), blog.getBlogTitle(), blog.getCreateTime(), blog.getAuthor());
+            BlogIndex blogIndex = new BlogIndex(blog.getBlogId(), blog.getCoverImgUrl(), blog.getBlogTitle(), blog.getCreateTime(), blog.getAuthor().getUsername());
             //解决单数博客数据越界
             if (i + 1 < blogList.size()) {
                 Blog blog2 = blogList.get(i + 1);
-                BlogIndex blogIndex2 = new BlogIndex(blog2.getBlogId(), blog2.getCoverImgUrl(), blog2.getBlogTitle(), blog2.getCreateTime(), blog2.getAuthor());
+                BlogIndex blogIndex2 = new BlogIndex(blog2.getBlogId(), blog2.getCoverImgUrl(), blog2.getBlogTitle(), blog2.getCreateTime(), blog2.getAuthor().getUsername());
                 blogIndex.setBlogIndex(blogIndex2);
             }
             blogIndexList.add(blogIndex);

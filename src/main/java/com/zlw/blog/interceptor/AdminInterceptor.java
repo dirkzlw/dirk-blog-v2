@@ -29,7 +29,7 @@ public class AdminInterceptor implements HandlerInterceptor {
         if (sessionUser == null) {
             response.sendRedirect("/to/login");
             return false;
-        } else if (sessionUser.getUserId() != 1) {
+        } else if (!"管理员".equals(sessionUser.getRole())) {
             response.sendRedirect("/to/login");
             return false;
         }

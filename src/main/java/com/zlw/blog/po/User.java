@@ -13,7 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Ranger
@@ -41,6 +43,10 @@ public class User {
     //头像URL
     @Column(length = 100)
     private String headImgUrl;
+
+    //bok
+    @OneToMany(mappedBy = "author")
+    private Set<Blog> blogSet = new HashSet<>();
 
     //评论
     @OneToMany(mappedBy = "cuser")

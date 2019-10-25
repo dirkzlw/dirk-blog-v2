@@ -16,20 +16,20 @@ public class BlogEdit {
     private String blogTitle;
     private String blogText;
     private Integer artType;
-    private Integer blogType;
+    private Integer blogTag;
     private String coverImgUrl;
 
     protected BlogEdit() {
     }
 
     public BlogEdit(Integer blogId, String blogTitle,
-                    String blogText, Integer artType, Integer blogType,
+                    String blogText, Integer artType, Integer blogTag,
                     String coverImgUrl) {
         this.blogId = blogId;
         this.blogTitle = blogTitle;
         this.blogText = blogText;
         this.artType = artType;
-        this.blogType = blogType;
+        this.blogTag = blogTag;
         this.coverImgUrl = coverImgUrl;
     }
 

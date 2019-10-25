@@ -1,7 +1,9 @@
 package com.zlw.blog.utils;
 
 import com.zlw.blog.po.User;
+import com.zlw.blog.service.UserService;
 import com.zlw.blog.vo.SessionUser;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Ranger

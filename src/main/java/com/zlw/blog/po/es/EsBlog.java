@@ -21,7 +21,7 @@ public class EsBlog {
     @Id
     private Integer blogId;
     private String blogTitle;
-    private String blogType;
+    private String blogTag;
     private String author;
     private String createTime;
     private String coverImgUrl;
@@ -29,10 +29,10 @@ public class EsBlog {
     protected EsBlog() {
     }
 
-    public EsBlog(Integer blogId, String blogTitle, String blogType, String author, String createTime, String coverImgUrl) {
+    public EsBlog(Integer blogId, String blogTitle, String blogTag, String author, String createTime, String coverImgUrl) {
         this.blogId = blogId;
         this.blogTitle = blogTitle;
-        this.blogType = blogType;
+        this.blogTag = blogTag;
         this.author = author;
         this.createTime = createTime;
         this.coverImgUrl = coverImgUrl;
@@ -43,7 +43,7 @@ public class EsBlog {
         return "EsBlog{" +
                 "blogId=" + blogId +
                 ", blogTitle='" + blogTitle + '\'' +
-                ", blogType='" + blogType + '\'' +
+                ", blogTag='" + blogTag + '\'' +
                 ", author='" + author + '\'' +
                 ", createTime='" + createTime + '\'' +
                 '}';

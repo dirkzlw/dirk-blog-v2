@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface EsBlogService {
     //检索符合所有条件的blog
-    List<EsBlog> findEsBlogList(String blogTitle,String blogType);
+    List<EsBlog> findEsBlogList(String blogTitle,String blogTag);
 
     //保存数据到索引库
     void save(EsBlog esBlog);
