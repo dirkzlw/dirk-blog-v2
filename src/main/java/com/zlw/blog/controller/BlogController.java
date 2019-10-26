@@ -174,12 +174,12 @@ public class BlogController {
         List<EsBlog> blogList = esBlogService.findEsBlogList(fors, fors);
         List<BlogIndex> blogIndexList = IndexUtils.getEsIndexList(blogList);
 
-        //设置热门博客
-        List<HotBlog> hotBlogList = hotBlogService.findAllHotBlog();
-        //去掉空对象
-        //去掉空对象--注意：不能foreach删除
-        HotBlogUtils.dealHotBlogList(hotBlogList);
-        model.addAttribute("hotBlogList", hotBlogList);
+//        //设置热门博客
+//        List<HotBlog> hotBlogList = hotBlogService.findAllHotBlog();
+//        //去掉空对象
+//        //去掉空对象--注意：不能foreach删除
+//        HotBlogUtils.dealHotBlogList(hotBlogList);
+//        model.addAttribute("hotBlogList", hotBlogList);
 
         model.addAttribute("blogList", blogIndexList);
 
@@ -196,12 +196,12 @@ public class BlogController {
 
         List<BlogIndex> blogIndexList = IndexUtils.getIndexList(blogList);
 
-        //设置热门博客
-        List<HotBlog> hotBlogList = hotBlogService.findAllHotBlog();
-        //去掉空对象
-        //去掉空对象--注意：不能foreach删除
-        HotBlogUtils.dealHotBlogList(hotBlogList);
-        model.addAttribute("hotBlogList", hotBlogList);
+//        //设置热门博客
+//        List<HotBlog> hotBlogList = hotBlogService.findAllHotBlog();
+//        //去掉空对象
+//        //去掉空对象--注意：不能foreach删除
+//        HotBlogUtils.dealHotBlogList(hotBlogList);
+//        model.addAttribute("hotBlogList", hotBlogList);
 
         model.addAttribute("blogList", blogIndexList);
 
@@ -228,13 +228,6 @@ public class BlogController {
         com.zlw.blog.vo.Page page = new com.zlw.blog.vo.Page(currentPage, pageObj.getTotalPages());
 
         List<BlogIndex> blogIndexList = IndexUtils.getIndexList(blogList);
-
-        //设置热门博客
-        List<HotBlog> hotBlogList = hotBlogService.findAllHotBlog();
-        //去掉空对象
-        //去掉空对象--注意：不能foreach删除
-        HotBlogUtils.dealHotBlogList(hotBlogList);
-        model.addAttribute("hotBlogList", hotBlogList);
 
         model.addAttribute("blogList", blogIndexList);
         model.addAttribute("page", page);
@@ -282,11 +275,11 @@ public class BlogController {
         //将博客信息保存到model
         model.addAttribute("blog", blogInfo);
 
-        //设置热门博客
-        List<HotBlog> hotBlogList = hotBlogService.findAllHotBlog();
-        //去掉空对象--注意：不能foreach删除
-        HotBlogUtils.dealHotBlogList(hotBlogList);
-        model.addAttribute("hotBlogList", hotBlogList);
+//        //设置热门博客
+//        List<HotBlog> hotBlogList = hotBlogService.findAllHotBlog();
+//        //去掉空对象--注意：不能foreach删除
+//        HotBlogUtils.dealHotBlogList(hotBlogList);
+//        model.addAttribute("hotBlogList", hotBlogList);
 
         return "blog/show";
     }

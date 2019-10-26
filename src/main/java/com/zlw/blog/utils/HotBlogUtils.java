@@ -17,9 +17,9 @@ public class HotBlogUtils {
      */
     public static void dealHotBlogList(List<HotBlog> hotBlogList){
         for (int i = 0; i < hotBlogList.size(); i++) {
-            /*if (null != hotBlogList.get(i).getBlogId() && hotBlogList.get(i).getBlogTitle().length() >= 12) {
-                hotBlogList.get(i).setBlogTitle(hotBlogList.get(i).getBlogTitle().substring(0, 12) + "...");
-            }*/
+//            if (null != hotBlogList.get(i).getBlogId() && hotBlogList.get(i).getBlogTitle().length() >= 12) {
+//                hotBlogList.get(i).setBlogTitle(hotBlogList.get(i).getBlogTitle().substring(0, 12) + "...");
+//            }
             if (null == hotBlogList.get(i).getBlogId()) {
                 hotBlogList.remove(i);
                 //此处为lisit.remove(i)陷阱
