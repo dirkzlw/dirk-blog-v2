@@ -89,6 +89,26 @@
                 <li class="nav-item">
                     <a class="nav-link page-scroll" href="/to/contact"><span style="font-size: 15px">联系</span></a>
                 </li>
+                <li class="nav-item">
+                    <a th:href="@{/to/user/msg(userId=${session.sessionUser.userId})}">
+                        <img style="
+                                        position: relative;
+                                        top: 12px;
+                                        display: inline;
+                                        width: 34px;
+                                        height: 34px;
+                                        /*display: flex;*/
+                                        border-radius: 50%;
+                                        align-items: center;
+                                        justify-content: center;
+                                        overflow: hidden;
+                                        cursor: pointer;"
+                             alt="头像"
+                             class="round_icon"
+                             title="账户管理"
+                             th:src="${session.sessionUser.headImgUrl}">
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

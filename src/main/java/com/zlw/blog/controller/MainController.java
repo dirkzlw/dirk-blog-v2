@@ -100,7 +100,8 @@ public class MainController {
      * 跳转到关于页面
      */
     @GetMapping("/to/about")
-    public String toAbout(Model model, HttpServletRequest request) {
+    public String toAbout(HttpServletRequest request) {
+        UserUtils.initSesionUser(request);
         return "index/about";
     }
 
@@ -108,7 +109,8 @@ public class MainController {
      * 跳转到联系页面
      */
     @GetMapping("/to/contact")
-    public String toContact(Model model, HttpServletRequest request) {
+    public String toContact(HttpServletRequest request) {
+        UserUtils.initSesionUser(request);
         return "index/contact";
     }
 
@@ -147,7 +149,7 @@ public class MainController {
      * 跳转到管理主界面
      */
     @GetMapping("/to/mgn/center")
-    public String toUserManage(Model model, HttpServletRequest request) {
+    public String toUserManage(HttpServletRequest request) {
         return "mgn/center";
     }
 

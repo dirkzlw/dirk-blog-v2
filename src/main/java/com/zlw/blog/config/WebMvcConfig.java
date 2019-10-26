@@ -28,14 +28,18 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         //对普通用户实现编辑博客，点赞，留言功能实现留言
         //,"/author/message"    先对未登录用户进行留言不拦截
         registry.addInterceptor(userRoot)
-                .addPathPatterns("/blog/comment/del","/to/user/manage","/to/user/msg");                                               //AdminController
+                .addPathPatterns("/blog/comment/del",
+                        "/to/user/msg","/to/blog/edit","/blog/save",
+                        "/blog/del","/blog/edit");                                               //AdminController
         //对管理员进行拦截
         AdminInterceptor adminRoot = new AdminInterceptor();
         //对普通用户实现编辑博客，点赞，留言功能实现留言
         //,"/author/message"    先对未登录用户进行留言不拦截
         registry.addInterceptor(adminRoot)
-                .addPathPatterns("/to/blog/edit","/blog/save","/blog/del",
-                        "/blog/edit");                                               //AdminController
+                .addPathPatterns("/to/mgn/center","/to/mgn/notice",
+                        "/mgn/notice/save","/mgn/notice/del",
+                        "/to/mgn/blogtag","/mgn/blogtag/save",
+                        "/mgn/blogtag/del");                                               //AdminController
         //对跳转错误页面进行拦截
         ErrorInterceptor errorRoot = new ErrorInterceptor();
         registry.addInterceptor(errorRoot);

@@ -2,6 +2,7 @@ package com.zlw.blog.controller;
 
 import com.zlw.blog.po.BlogTag;
 import com.zlw.blog.service.BlogTagService;
+import com.zlw.blog.utils.UserUtils;
 import com.zlw.blog.vo.ResultObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,7 @@ public class BlogTagController {
     private BlogTagService blogTagService;
 
     @GetMapping("/to/mgn/blogtag")
-    public String toBlogTag(){
+    public String toBlogTag(HttpServletRequest request){
         return "mgn/blogtag";
     }
 

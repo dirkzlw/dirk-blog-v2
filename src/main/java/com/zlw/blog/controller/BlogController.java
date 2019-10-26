@@ -1,19 +1,16 @@
 package com.zlw.blog.controller;
 
+import com.sun.org.apache.regexp.internal.RE;
 import com.zlw.blog.po.Blog;
 import com.zlw.blog.po.BlogTag;
 import com.zlw.blog.po.Comment;
-import com.zlw.blog.po.HotBlog;
 import com.zlw.blog.po.User;
 import com.zlw.blog.po.Visitor;
-import com.zlw.blog.po.es.EsBlog;
 import com.zlw.blog.service.BlogService;
 import com.zlw.blog.service.CommentService;
 import com.zlw.blog.service.HotBlogService;
 import com.zlw.blog.service.UserService;
 import com.zlw.blog.service.VisitorService;
-import com.zlw.blog.service.es.EsBlogService;
-import com.zlw.blog.utils.EsBlogUtils;
 import com.zlw.blog.utils.FastDFSUtils;
 import com.zlw.blog.utils.IndexUtils;
 import com.zlw.blog.utils.UserUtils;
@@ -59,8 +56,8 @@ public class BlogController {
     private CommentService commentService;
     @Autowired
     private HotBlogService hotBlogService;
-    @Autowired
-    private EsBlogService esBlogService;
+//    @Autowired
+//    private EsBlogService esBlogService;
 
     @Value("${BLOG_AUTHOR}")
     private String BLOG_AUTHOR;
@@ -129,8 +126,8 @@ public class BlogController {
         blogService.saveBlog(blog);
 
         //将数据保存到ES
-        EsBlog esBlog = EsBlogUtils.getEsblogByBlog(blog);
-        esBlogService.save(esBlog);
+//        EsBlog esBlog = EsBlogUtils.getEsblogByBlog(blog);
+//        esBlogService.save(esBlog);
 
         BlogInfo blogInfo = new BlogInfo(blog.getBlogId(), blog.getBlogTitle(),
                 blog.getBlogText(), blog.getCreateTime(),
@@ -154,7 +151,7 @@ public class BlogController {
         try {
             blogService.delBlogById(blogId);
             //删除esblog
-            esBlogService.delBlogById(blogId);
+//            esBlogService.delBlogById(blogId);
             //删除hotblog
             hotBlogService.delBlogById(blogId);
         } catch (Exception e) {
@@ -172,7 +169,9 @@ public class BlogController {
      */
     @GetMapping("/blog/search/fors")
     public String searchBlog(@RequestParam(required = false) String fors,
-                             Model model,Integer currentPage) {
+                             Model model,Integer currentPage,
+                             HttpServletRequest request) {
+        UserUtils.initSesionUser(request);
 //        List<EsBlog> blogList = esBlogService.findEsBlogList(fors, fors);
 //        List<BlogIndex> blogIndexList = IndexUtils.getEsIndexList(blogList);
 //
@@ -201,7 +200,9 @@ public class BlogController {
     @GetMapping("/blog/search/tag")
     public String tagSearch(BlogTag blogTag,
                             Integer currentPage,
-                            Model model) {
+                            Model model,
+                            HttpServletRequest request) {
+        UserUtils.initSesionUser(request);
 
 //        List<Blog> blogList = blogService.findBlogByBlogTag(blogTag);
 //        List<BlogIndex> blogIndexList = IndexUtils.getIndexList(blogList);
@@ -234,7 +235,9 @@ public class BlogController {
     @GetMapping("/blog/search/ud")
     public String userSearch(Model model,
                              Integer ud,
-                             Integer currentPage){
+                             Integer currentPage,
+                             HttpServletRequest request){
+        UserUtils.initSesionUser(request);
         if (currentPage == null) {
             currentPage = 0;
         }

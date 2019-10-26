@@ -2,6 +2,7 @@ package com.zlw.blog.controller;
 
 import com.zlw.blog.po.Notice;
 import com.zlw.blog.service.NoticeService;
+import com.zlw.blog.utils.UserUtils;
 import com.zlw.blog.vo.ResultObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,8 +30,7 @@ public class NoticeController {
      * 跳转到编辑公告界面
      */
     @GetMapping("/to/mgn/notice")
-    public String toNoticeMgn(Model model, HttpServletRequest request) {
-
+    public String toNoticeMgn(HttpServletRequest request) {
         return "mgn/notice";
     }
 
@@ -46,14 +46,11 @@ public class NoticeController {
     public ResultObj saveNotice(@RequestParam(required = false) Integer noticeId,
                                 String noticeMsg,
                                 HttpServletRequest request) {
-
         ResultObj rtnObj = noticeService.saveNotice(noticeId, noticeMsg);
-
         //同步application
         if ("success".equals(rtnObj.getRtn())) {
             syncApplication(request, noticeService);
         }
-
         return rtnObj;
     }
 
@@ -67,14 +64,11 @@ public class NoticeController {
     @ResponseBody
     public String delNotice(Integer noticeId,
                             HttpServletRequest request) {
-
         String rtn = noticeService.delNotice(noticeId);
-
         //同步application
         if ("success".equals(rtn)) {
             syncApplication(request, noticeService);
         }
-
         return rtn;
     }
 

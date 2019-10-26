@@ -6,7 +6,6 @@ import org.csource.fastdfs.StorageClient;
 import org.csource.fastdfs.StorageServer;
 import org.csource.fastdfs.TrackerClient;
 import org.csource.fastdfs.TrackerServer;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +17,6 @@ import java.io.IOException;
  * @author Ranger
  * @create 2019-05-31 15:37
  */
-@PropertySource("classpath:application.properties")
 public class FastDFSUtils {
 
     /**
@@ -37,11 +35,11 @@ public class FastDFSUtils {
         try {
 
             //本地写法
-            ClassPathResource cpr = new ClassPathResource(FDFS_CLIENT_PAHT);
-            ClientGlobal.init(cpr.getClassLoader().getResource(FDFS_CLIENT_PAHT).getPath());
+//            ClassPathResource cpr = new ClassPathResource(FDFS_CLIENT_PAHT);
+//            ClientGlobal.init(cpr.getClassLoader().getResource(FDFS_CLIENT_PAHT).getPath());
 
             //服务器写法
-//            ClientGlobal.init(fdfsConfFile.getPath());
+            ClientGlobal.init(fdfsConfFile.getPath());
 
             TrackerClient tracker = new TrackerClient();
             TrackerServer trackerServer = tracker.getConnection();

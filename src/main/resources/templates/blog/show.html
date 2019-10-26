@@ -98,13 +98,13 @@
                             <span th:text="${blog.viewNum}"></span>
                             <!--删除博客-->
                             <i class="fa fa-remove"
-                               th:if="${session.sessionUser.userId!=null && session.sessionUser.username eq blog.author }"
+                               th:if="${session.sessionUser.userId!=null and session.sessionUser.username eq blog.author }"
                                th:id="${blog.blogId}"
                                onclick="delBlog(this.id)"
                                style="cursor: pointer;color: black"></i>
                             <!--编辑博客-->
                             <i class="fa fa-edit"
-                               th:if="${session.sessionUser.userId!=null && session.sessionUser.username eq blog.author}"
+                               th:if="${session.sessionUser.userId!=null and session.sessionUser.username eq blog.author}"
                                th:id="${blog.blogId}"
                                onclick="editBlog(this.id)"
                                style="cursor: pointer;color: black"></i>
