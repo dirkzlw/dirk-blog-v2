@@ -1,9 +1,7 @@
 package com.zlw.blog.utils;
 
 import com.zlw.blog.po.User;
-import com.zlw.blog.service.UserService;
 import com.zlw.blog.vo.SessionUser;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -61,5 +59,19 @@ public class UserUtils {
         HttpSession session = request.getSession();
         session.setAttribute(sessionName, obj);
         session.setMaxInactiveInterval(3 * 24 * 60);    //设置session生存时间
+    }
+
+
+    /**
+     * 当session中没有sessionUser，初始化
+     * @param request
+     */
+    public static void initSesionUser(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
+        if (sessionUser == null) {
+            sessionUser = new SessionUser(null);
+            session.setAttribute("sessionUser", sessionUser);
+        }
     }
 }

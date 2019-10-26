@@ -7,6 +7,7 @@ import com.zlw.blog.service.HotBlogService;
 import com.zlw.blog.utils.HotBlogUtils;
 import com.zlw.blog.utils.HttpUtils;
 import com.zlw.blog.utils.IndexUtils;
+import com.zlw.blog.utils.UserUtils;
 import com.zlw.blog.vo.BlogIndex;
 import com.zlw.blog.vo.ContactInfo;
 import com.zlw.blog.vo.SessionUser;
@@ -35,8 +36,6 @@ public class MainController {
 
     @Autowired
     private BlogService blogService;
-    @Autowired
-    private HotBlogService hotBlogService;
     //注入javaMail发送器
     @Autowired
     private JavaMailSender mailSender;
@@ -63,14 +62,8 @@ public class MainController {
             currentPage = 0;
         }
 
-        //从session中获取author，判断是否登录
-        HttpSession session = request.getSession();
-
-        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
-        if (sessionUser == null) {
-            sessionUser = new SessionUser(null);
-        }
-        session.setAttribute("sessionUser", sessionUser);
+        //初始化sessionUser
+        UserUtils.initSesionUser(request);
 
         return "redirect:/index?currentPage=" + currentPage;
     }
@@ -91,18 +84,11 @@ public class MainController {
             currentPage = 0;
         }
         //默认差群起始页
-        Page<Blog> pageObj = blogService.findBlogByPage(currentPage, PAGE_SIZE,null);
+        Page<Blog> pageObj = blogService.findBlogByPage(currentPage, PAGE_SIZE);
         List<Blog> blogList = pageObj.getContent();
-        com.zlw.blog.vo.Page page = new com.zlw.blog.vo.Page(currentPage, pageObj.getTotalPages());
+        com.zlw.blog.vo.Page page = new com.zlw.blog.vo.Page(currentPage, pageObj.getTotalPages(),blogList.size());
 
         List<BlogIndex> blogIndexList = IndexUtils.getIndexList(blogList);
-
-        //设置热门博客
-        List<HotBlog> hotBlogList = hotBlogService.findAllHotBlog();
-        //去掉空对象
-        //去掉空对象--注意：不能foreach删除
-        HotBlogUtils.dealHotBlogList(hotBlogList);
-        model.addAttribute("hotBlogList", hotBlogList);
 
         model.addAttribute("blogList", blogIndexList);
         model.addAttribute("page", page);

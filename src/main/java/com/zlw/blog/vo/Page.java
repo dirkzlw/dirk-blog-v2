@@ -14,13 +14,14 @@ import lombok.Setter;
 public class Page {
     private Integer currentPage;
     private Integer totalPage;
+    private Integer esize;
 
     protected Page() {
     }
 
-    public Page(Integer currentPage, Integer totalPage) {
+    public Page(Integer currentPage, Integer totalPage, Integer esize) {
         this.currentPage = currentPage;
         this.totalPage = totalPage;
+        this.esize = esize;
     }
-
 }

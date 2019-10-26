@@ -116,6 +116,18 @@ public class BlogServiceImpl implements BlogService {
 
     /**
      * 分页查询
+     * @param page
+     * @param size
+     * @return
+     */
+    @Override
+    public Page<Blog> findBlogByPage(Integer page, Integer size) {
+        Pageable pageable = new PageRequest(page, size);
+        Page<Blog> result = blogRepository.findAll(pageable);
+        return result;
+    }
+    /**
+     * 根据用户分页查询
      *
      * @param page
      * @param size
@@ -124,21 +136,49 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Page<Blog> findBlogByPage(Integer page, Integer size, User user) {
 
-
-        Pageable pageable = new PageRequest(page, size);
-        Blog blog = new Blog(null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                user,
-                null,
-                null,
-                null);
+        Blog blog = new Blog();
+        blog.setAuthor(user);
         Example<Blog> example = Example.of(blog);
+        Pageable pageable = new PageRequest(page, size);
         Page<Blog> result = blogRepository.findAll(example, pageable);
 
+        return result;
+    }
+
+    /**
+     * 用户搜索分页查询
+     * @param page
+     * @param size
+     * @param fors
+     * @return
+     */
+    @Override
+    public Page<Blog> findBlogByPage(Integer page, Integer size, String fors) {
+        Blog blog = new Blog();
+        blog.setBlogTitle(fors);
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("blogTitle", ExampleMatcher.GenericPropertyMatchers.contains());
+        Example<Blog> example = Example.of(blog, matcher);
+        Pageable pageable = new PageRequest(page, size);
+        Page<Blog> result = blogRepository.findAll(example, pageable);
+
+        return result;
+    }
+
+    /**
+     * 标签分页查询
+     * @param page
+     * @param size
+     * @param blogTag
+     * @return
+     */
+    @Override
+    public Page<Blog> findBlogByPage(Integer page, Integer size, BlogTag blogTag) {
+        Blog blog = new Blog();
+        blog.setBlogTag(blogTag);
+        Example<Blog> example = Example.of(blog);
+        Pageable pageable = new PageRequest(page, size);
+        Page<Blog> result = blogRepository.findAll(example, pageable);
         return result;
     }
 

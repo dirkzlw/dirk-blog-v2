@@ -55,9 +55,7 @@ public class Blog implements Serializable {
     @OneToMany(mappedBy = "cblog",cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
-    //JPA规范
-    protected Blog() {
-    }
+    public Blog(){}
 
     public Blog(String blogTitle, String blogText, String createTime, Integer artType, BlogTag blogTag, String coverImgUrl, User author, Integer zanNum, Integer viewNum, List<Comment> comments) {
         this.blogTitle = blogTitle;

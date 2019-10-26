@@ -104,9 +104,9 @@
                     <div class="center_bottom">
                         <div th:if="${page != null}" style="float:right;padding-right:30px">
                                <a th:if="${page.currentPage}>0"
-                                  th:href="@{/index(currentPage=${page.currentPage - 1})}">上一页</a>
+                                  th:href="@{/blog/search/ud(ud=${ud},currentPage=${page.currentPage - 1})}">上一页</a>
                                <a th:if="${page.currentPage} + 1<${page.totalPage}"
-                                  th:href="@{/index(currentPage=${page.currentPage + 1})}">下一页</a>
+                                  th:href="@{/blog/search/ud(ud=${ud},currentPage=${page.currentPage + 1})}">下一页</a>
                                 <input style="text-align: center;width: 60px" type="number" id="toPage">
                                 <a href="javascript:toSkip()">跳转</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;

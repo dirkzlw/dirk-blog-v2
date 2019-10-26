@@ -26,7 +26,13 @@ public interface BlogService {
 
     List<Blog> findHotBlogs();
 
+    Page<Blog> findBlogByPage(Integer page, Integer size);
+
     Page<Blog> findBlogByPage(Integer page, Integer size, User user);
+
+    Page<Blog> findBlogByPage(Integer page, Integer size, String fors);
+
+    Page<Blog> findBlogByPage(Integer page, Integer size, BlogTag blogTag);
 
     List<Blog> findAllBlog();
 

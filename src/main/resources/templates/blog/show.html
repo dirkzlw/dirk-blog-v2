@@ -134,7 +134,7 @@
 
                     <article th:id="${c.commentId} + 1" class="comment" th:each="c : ${commentList}">
                         <header class="clearfix">
-                            <a th:href="@{/user/search(ud=${c.userId})}"><img th:src="${c.headImgUrl}" alt="" class="avatar"></a>
+                            <a th:href="@{/blog/search/ud(ud=${c.userId})}"><img th:src="${c.headImgUrl}" alt="" class="avatar"></a>
                             <div class="meta">
                                 <h3><a th:text="${c.username}"></a></h3>
                                 <span class="date" th:text="${c.createTime}"></span>
