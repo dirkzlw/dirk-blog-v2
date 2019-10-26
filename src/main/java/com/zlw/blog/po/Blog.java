@@ -58,6 +58,19 @@ public class Blog implements Serializable {
     //JPA规范
     protected Blog() {
     }
+
+    public Blog(String blogTitle, String blogText, String createTime, Integer artType, BlogTag blogTag, String coverImgUrl, User author, Integer zanNum, Integer viewNum, List<Comment> comments) {
+        this.blogTitle = blogTitle;
+        this.blogText = blogText;
+        this.createTime = createTime;
+        this.artType = artType;
+        this.blogTag = blogTag;
+        this.coverImgUrl = coverImgUrl;
+        this.author = author;
+        this.zanNum = zanNum;
+        this.viewNum = viewNum;
+        this.comments = comments;
+    }
     //有参构造
 
     @Override

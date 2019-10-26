@@ -33,10 +33,10 @@
                         <li>
                             <a th:href="@{/to/contact}">联系&nbsp;&nbsp;&nbsp;&nbsp;</a>
                         </li>
-                        <li>
-                            <a th:if="${session.sessionUser.userId} != null" th:href="@{/to/blog/edit}">写博客</a>
+                        <li th:if="${session.sessionUser.userId} != null">
+                            <a th:href="@{/to/blog/edit}">写博客</a>
                         </li>
-                        <li>
+                        <li th:if="${session.sessionUser.role} eq '管理员'">
                             <!--th:if="${session.sessionUser.userId} == 1" -->
                             <a th:href="@{/to/mgn/center}">管理</a>
                         </li>

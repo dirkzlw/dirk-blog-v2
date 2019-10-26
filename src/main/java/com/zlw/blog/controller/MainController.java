@@ -91,7 +91,7 @@ public class MainController {
             currentPage = 0;
         }
         //默认差群起始页
-        Page<Blog> pageObj = blogService.findBlogByPage(currentPage, PAGE_SIZE);
+        Page<Blog> pageObj = blogService.findBlogByPage(currentPage, PAGE_SIZE,null);
         List<Blog> blogList = pageObj.getContent();
         com.zlw.blog.vo.Page page = new com.zlw.blog.vo.Page(currentPage, pageObj.getTotalPages());
 

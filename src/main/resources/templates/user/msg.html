@@ -40,10 +40,7 @@
 </head>
 <body>
 
-<!--头部-->
-<!--<div th:replace="~{fragments/header :: header}"></div>-->
-
-<div class="box" style="position: relative;top: 0px;">
+<div class="box" style="position: relative;top: 43px;">
 	<div class="content">
 		<!--大图展现资质-->
 		<div class="export">
@@ -240,12 +237,8 @@
 			</tr>
 			</tbody>
 		</table>
-		<button class="btn btn-primary search_btn" type="button" id="search_btn" style="float:right" onclick ="logout()">退出登录</button>
-		<!--<a th:href="@{/user/logout}">-->
-		<!--<span class="return">-->
-		<!--退出登录-->
-		<!--</span>-->
-		<!--<button th:if="${mainMrPage.isSearch == 1}" class="btn btn-primary search_btn" type="hidden" id="end_search_btn">结束查询</button>-->
+		<button class="btn btn-primary search_btn" type="button" id="search_btn" style="float:left" onclick ="logout()">退出登录</button>
+		<button class="btn btn-primary search_btn" type="button" id="search_btn" style="float:right" onclick ="toIndex()">返回首页</button>
 	</div>
 </div>
 
@@ -262,6 +255,10 @@
 <script type="text/javascript">
     function logout() {
         var href = "/user/logout"
+        window.open(href,"_self")
+    }
+    function toIndex() {
+        var href = "/index"
         window.open(href,"_self")
     }
     /**

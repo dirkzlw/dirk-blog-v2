@@ -2,9 +2,13 @@ package com.zlw.blog.service.impl;
 
 import com.zlw.blog.po.Blog;
 import com.zlw.blog.po.BlogTag;
+import com.zlw.blog.po.User;
 import com.zlw.blog.repository.BlogRepository;
 import com.zlw.blog.service.BlogService;
+import org.hibernate.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -118,10 +122,22 @@ public class BlogServiceImpl implements BlogService {
      * @return
      */
     @Override
-    public Page<Blog> findBlogByPage(Integer page, Integer size) {
+    public Page<Blog> findBlogByPage(Integer page, Integer size, User user) {
+
 
         Pageable pageable = new PageRequest(page, size);
-        Page<Blog> result = blogRepository.findAll(pageable);
+        Blog blog = new Blog(null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                user,
+                null,
+                null,
+                null);
+        Example<Blog> example = Example.of(blog);
+        Page<Blog> result = blogRepository.findAll(example, pageable);
 
         return result;
     }

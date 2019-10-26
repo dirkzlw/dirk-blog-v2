@@ -2,6 +2,7 @@ package com.zlw.blog.service;
 
 import com.zlw.blog.po.Blog;
 import com.zlw.blog.po.BlogTag;
+import com.zlw.blog.po.User;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public interface BlogService {
 
     List<Blog> findHotBlogs();
 
-    Page<Blog> findBlogByPage(Integer page, Integer size);
+    Page<Blog> findBlogByPage(Integer page, Integer size, User user);
 
     List<Blog> findAllBlog();
 

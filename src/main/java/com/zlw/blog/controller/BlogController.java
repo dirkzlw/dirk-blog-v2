@@ -25,6 +25,7 @@ import com.zlw.blog.vo.CommentInfo;
 import com.zlw.blog.vo.SessionUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,7 +71,8 @@ public class BlogController {
     private String USER_HEAD_FIRST;
     @Value("${FDFS_CLIENT_PAHT}")
     private String FDFS_CLIENT_PAHT;
-
+    @Value("${PAGE_SIZE}")
+    private Integer PAGE_SIZE;
 
     /**
      * 跳转到编辑博客页面
@@ -188,8 +190,7 @@ public class BlogController {
      * 根据标签查询博客
      */
     @GetMapping("/tag/search")
-    public String tagSearch(BlogTag blogTag, Model model,
-                            HttpServletRequest request) {
+    public String tagSearch(BlogTag blogTag, Model model) {
 
         List<Blog> blogList = blogService.findBlogByBlogTag(blogTag);
 
@@ -203,6 +204,40 @@ public class BlogController {
         model.addAttribute("hotBlogList", hotBlogList);
 
         model.addAttribute("blogList", blogIndexList);
+
+        return "index/index";
+    }
+
+    /**
+     * 查询指定用户的主页
+     * @param model
+     * @param ud
+     * @param currentPage
+     * @return
+     */
+    @GetMapping("/user/search")
+    public String userSearch(Model model,
+                             Integer ud,
+                             Integer currentPage){
+        if (currentPage == null) {
+            currentPage = 0;
+        }
+        //默认差群起始页
+        Page<Blog> pageObj = blogService.findBlogByPage(currentPage, PAGE_SIZE,userService.findUserById(ud));
+        List<Blog> blogList = pageObj.getContent();
+        com.zlw.blog.vo.Page page = new com.zlw.blog.vo.Page(currentPage, pageObj.getTotalPages());
+
+        List<BlogIndex> blogIndexList = IndexUtils.getIndexList(blogList);
+
+        //设置热门博客
+        List<HotBlog> hotBlogList = hotBlogService.findAllHotBlog();
+        //去掉空对象
+        //去掉空对象--注意：不能foreach删除
+        HotBlogUtils.dealHotBlogList(hotBlogList);
+        model.addAttribute("hotBlogList", hotBlogList);
+
+        model.addAttribute("blogList", blogIndexList);
+        model.addAttribute("page", page);
 
         return "index/index";
     }
