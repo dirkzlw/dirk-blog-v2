@@ -23,7 +23,7 @@ public class BlogInfo {
     private String createTime;
     //文章类型:1--原创 2-转发 3-翻译
     private String artType;
-    //博客分类:1-前端 2-后端 3-架构 4-Linux 5-数据库 6-编程语言 7-其他
+    //博客分类:1-前端 2-后端 3-架构...
     private String blogTag;
     //封面的URL
     private String coverImgUrl;

@@ -34,7 +34,7 @@ public class Blog implements Serializable {
     //文章类型:1--原创 2-转发 3-翻译
     @Column(length = 11)
     private Integer artType;
-    //博客分类:1-前端 2-后端 3-架构 4-Linux 5-数据库 6-编程语言 7-其他
+    //博客分类:1-前端 2-后端 3-架构...
     @ManyToOne
     @JoinColumn(name="blogTagId")
     private BlogTag blogTag;

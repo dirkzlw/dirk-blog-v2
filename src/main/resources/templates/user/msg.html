@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<meta charset="utf-8"/>
+	<title>DirkBlog--个人中心</title>
+	<meta name="viewport"
+		  content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+	<!-- add styles -->
+	<!--<link href="/index/css/main.css" rel="stylesheet" type="text/css" />-->
+
+	<link rel="stylesheet" type="text/css" href="/table/css/style.css"/>
+
+	<link rel="stylesheet" type="text/css"
+		  href="https://cdn.bootcss.com/twitter-bootstrap/4.2.1/css/bootstrap.min.css"/>
+
+	<script src="/table/js/jquery.min.js"></script>
+	<script src="/table/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/table/js/bootbox.min.js"></script>
+
+	<style type="text/css">
+		a:hover {
+			text-decoration: none;
+		}
+	</style>
+	<style>
+		.inputstyle {
+			width: 100%;
+			padding: 12px 20px;
+			margin: 8px 0;
+			display: inline-block;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+		}
+	</style>
+
+</head>
+<body>
+
+<!--头部-->
+<!--<div th:replace="~{fragments/header :: header}"></div>-->
+
+<div class="box" style="position: relative;top: 0px;">
+	<div class="content">
+		<!--大图展现资质-->
+		<div class="export">
+			<div class="modal fade" id="bgImg">
+				<div class="modal-dialog modal-lg modal_position">
+					<div class="modal-content">
+						<div class="modal-body">
+							<img style="
+                                display: inline;
+                                width: 100%;
+                                height: 100%;
+                                /*display: flex;*/
+                                align-items: center;
+                                justify-content: center;
+                                overflow: hidden;
+                                cursor: pointer;"
+								 id="authImg">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--添加按钮及bootstrap的模态框-->
+		<div class="export">
+			<div class="modal fade" id="xrenyuan">
+				<div class="modal-dialog modal-lg modal_position">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">修改用户名</h4>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						<div class="modal-body">
+							<input type="text" class="newUsername inputstyle" id="newUsername" name="newUsername" placeholder="请输入新的用户名" />
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+							<button id="xadd_btn" type="button" class="btn btn-secondary">确定</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" id="xrenyuan2">
+				<div class="modal-dialog modal-lg modal_position">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">修改密码</h4>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						<div class="modal-body">
+							<input type="password" class="oldUserpwd inputstyle" id="oldUserpwd" name="oldUserpwd" placeholder="请输入旧的密码"/>
+							<input type="password" class="newUserpwd inputstyle" id="newUserpwd" name="newUserpwd" placeholder="请输入新的密码"/>
+							<input type="password" class="newUserpwd2 inputstyle" id="newUserpwd2" name="newUserpwd2" placeholder="请再次输入新的密码"/>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+							<button id="xadd_btn2" type="button" class="btn btn-secondary">确定</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" id="xrenyuan3">
+				<div class="modal-dialog modal-lg modal_position">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">修改邮箱</h4>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						<div class="modal-body">
+							<input type="text" class="newEmail inputstyle" id="newEmail" name="newEmail" placeholder="请输入新的邮箱" />
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+							<button id="xadd_btn3" type="button" class="btn btn-secondary">确定</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" id="xrenyuan4">
+				<div class="modal-dialog modal-lg modal_position">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">修改头像</h4>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						<div class="modal-body">
+							<p align="center">
+								<img style="height: 250px;width: 250px"
+									 th:src="${session.sessionUser.headImgUrl}" id="img0">
+							</p>
+
+							<style>
+								.file {
+									position: relative;
+									display: inline-block;
+									background: #D0EEFF;
+									border: 1px solid #99D3F5;
+									border-radius: 4px;
+									padding: 4px 12px;
+									overflow: hidden;
+									color: #1E88C7;
+									text-decoration: none;
+									text-indent: 0;
+									line-height: 20px;
+								}
+								.file input {
+									position: absolute;
+									font-size: 100px;
+									right: 0;
+									top: 0;
+									opacity: 0;
+								}
+								.file:hover {
+									background: #AADFFD;
+									border-color: #78C3F3;
+									color: #004974;
+									text-decoration: none;
+								}
+							</style>
+							<p style="text-align: center">
+								<a href="javascript:;" class="file" align="center">选择文件
+									<input style="cursor: pointer" type="file"  id="file1" multiple
+										   accept="image/png, image/jpg, image/jpeg, image/bmp" onchange="preImg(this.id,'img0');"/>
+								</a>
+							</p>
+
+							<!--<input style="cursor: pointer"-->
+							<!--type="file" id="file1" multiple-->
+							<!--accept="image/png, image/jpg, image/jpeg, image/bmp" onchange="preImg(this.id,'img0');"/>-->
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+							<button id="xadd_btn4" type="button" class="btn btn-secondary">确定</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--表格列表-->
+		<table id="tb" class="table">
+			<thead>
+			<tr>
+				<th>属性</th>
+				<th>信息</th>
+				<th>操作</th>
+			</tr>
+			</thead>
+			<tbody id="show_tbody">
+			<tr>
+				<td>用户名</td>
+				<td th:text="${session.sessionUser.username}"></td>
+				<td>
+					<a th:id="${session.sessionUser.userId}" href="#" class="usernameEdit" >修改</a>
+				</td>
+			</tr>
+
+			<tr>
+				<td>密码</td>
+				<td>******</td>
+				<td>
+					<a th:id="${session.sessionUser.userId}" href="#" class="userpwdEdit" >修改</a>
+				</td>
+			</tr>
+
+			<tr>
+				<td>邮箱</td>
+				<td th:text="${session.sessionUser.email}"></td>
+				<td>
+					<a th:id="${session.sessionUser.userId}" href="#" class="emailEdit" >修改</a>
+				</td>
+			</tr>
+
+			<tr>
+				<td>头像</td>
+				<td>
+					<img style="
+                    position: relative;
+                    top: 4px;
+                    display: inline;
+                    width: 34px;
+                    height: 34px;
+                    /*display: flex;*/
+                    border-radius: 50%;
+                    align-items: center;
+                    justify-content: center;
+                    overflow: hidden;
+                    cursor: pointer;"
+						 class="dialog"
+						 alt="头像"
+						 th:src="${session.sessionUser.headImgUrl}">
+				</td>
+				<td>
+					<a th:id="${session.sessionUser.userId}" href="#" class="HeadUrlEdit" >修改</a>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+		<button class="btn btn-primary search_btn" type="button" id="search_btn" style="float:right" onclick ="logout()">退出登录</button>
+		<!--<a th:href="@{/user/logout}">-->
+		<!--<span class="return">-->
+		<!--退出登录-->
+		<!--</span>-->
+		<!--<button th:if="${mainMrPage.isSearch == 1}" class="btn btn-primary search_btn" type="hidden" id="end_search_btn">结束查询</button>-->
+	</div>
+</div>
+
+<script src="/user/manage/js/mejs.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("img.dialog").click(function() {
+            var src = this.src;
+            document.getElementById("authImg").src=src
+            $('#bgImg').modal('show');
+        });
+    });
+</script>
+<script type="text/javascript">
+    function logout() {
+        var href = "/user/logout"
+        window.open(href,"_self")
+    }
+    /**
+     * 从 file 域获取 本地图片 url
+     */
+    function getFileUrl(sourceId) {
+        var url;
+        if (navigator.userAgent.indexOf("MSIE")>=1) { // IE
+            url = document.getElementById(sourceId).value;
+        } else if(navigator.userAgent.indexOf("Firefox")>0) { // Firefox
+            url = window.URL.createObjectURL(document.getElementById(sourceId).files.item(0));
+        } else if(navigator.userAgent.indexOf("Chrome")>0) { // Chrome
+            url = window.URL.createObjectURL(document.getElementById(sourceId).files.item(0));
+        }
+        return url;
+    }
+
+    function preImg(sourceId, targetId) {
+        var url = getFileUrl(sourceId);
+        var imgPre = document.getElementById(targetId);
+        imgPre.src = url;
+    }
+
+</script>
+</body>
+</html>

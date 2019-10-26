@@ -42,7 +42,7 @@
                         </li>
                         <li>
                             <a th:if="${session.sessionUser.userId} == null" th:href="@{/to/login}">登 录&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                            <a th:if="${session.sessionUser.userId} != null" th:href="@{/to/user/manage(userId=${session.sessionUser.userId})}">
+                            <a th:if="${session.sessionUser.userId} != null" th:href="@{/to/user/msg(userId=${session.sessionUser.userId})}">
                                 <img style="
                                         position: relative;
                                         top: -8px;

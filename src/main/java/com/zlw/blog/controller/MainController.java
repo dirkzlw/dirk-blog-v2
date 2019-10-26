@@ -127,14 +127,6 @@ public class MainController {
     }
 
     /**
-     * 跳转到登录页面
-     */
-    @GetMapping("/to/login")
-    public String toLogin() {
-        return "user/login";
-    }
-
-    /**
      * 联系作者
      */
     @PostMapping("/contact/he")

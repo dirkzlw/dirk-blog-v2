@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,6 +52,22 @@ public class UserController {
     //邮件发送者
     @Value("${spring.mail.username}")
     private String fromEmail;
+
+    /**
+     * 跳转到登录页面
+     */
+    @GetMapping("/to/login")
+    public String toLogin() {
+        return "user/login";
+    }
+
+    /**
+     * 跳转到用户修改信息
+     */
+    @GetMapping("/to/user/msg")
+    public String toUserMsg() {
+        return "user/msg";
+    }
 
     /**
      * 用户注册
