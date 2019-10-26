@@ -27,7 +27,7 @@ public class FastDFSUtils {
      * @param file
      * @return
      */
-    public static String uploadFile(String FDFS_CLIENT_PAHT, String FTP_ADDRESS, MultipartFile file) {
+    public static String uploadFile(String FDFS_CLIENT_PAHT, String FDFS_ADDRESS, MultipartFile file) {
 
         File fdfsConfFile = new File(FDFS_CLIENT_PAHT);
         String fileName = file.getOriginalFilename();
@@ -56,7 +56,7 @@ public class FastDFSUtils {
             };
             String fileIds[] = storageClient.upload_file(file.getBytes(), ext, nvp);
 
-            imgUrl = "http://" + FTP_ADDRESS + "/" + fileIds[0] + "/" + fileIds[1];
+            imgUrl = "http://" + FDFS_ADDRESS + "/" + fileIds[0] + "/" + fileIds[1];
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

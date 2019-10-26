@@ -16,4 +16,12 @@ public interface UserService {
     User findUserByEmail(String email);
 
     String checkUserNameAndEmail(String username, String email);
+
+    String userNameReset(Integer userId, String newUsername);
+
+    String userPwdReset(Integer userId, String oldUserpwd, String newUserpwd);
+
+    String userEmailReset(Integer userId, String newEmail);
+
+    String HeadUrlReset(Integer userId, String newUrl);
 }

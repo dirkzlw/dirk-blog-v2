@@ -270,6 +270,15 @@ var methods = {
             })
             return
         }
+        var re = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+        if (!re.test(newEmail)) {
+            bootbox.alert({
+                title : "来自智能会议室的提示",
+                message : "邮箱格式不正确，请正确填写！",
+                closeButton : false
+            })
+            return
+        }
     },
     xaddHandle4 : function (the_index) {
         hasNullMes = false;

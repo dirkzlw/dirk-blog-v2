@@ -64,8 +64,8 @@ public class BlogController {
 
     @Value("${BLOG_AUTHOR}")
     private String BLOG_AUTHOR;
-    @Value("${FTP_ADDRESS}")
-    private String FTP_ADDRESS;
+    @Value("${FDFS_ADDRESS}")
+    private String FDFS_ADDRESS;
     @Value("${USER_HEAD_FIRST}")
     private String USER_HEAD_FIRST;
     @Value("${FDFS_CLIENT_PAHT}")
@@ -107,7 +107,7 @@ public class BlogController {
             blog.setViewNum(0);
             //为博客保存封面
             if (coverImg != null) {
-                String coverImgUrl = FastDFSUtils.uploadFile(FDFS_CLIENT_PAHT, FTP_ADDRESS, coverImg);
+                String coverImgUrl = FastDFSUtils.uploadFile(FDFS_CLIENT_PAHT, FDFS_ADDRESS, coverImg);
                 blog.setCoverImgUrl(coverImgUrl);
             }
         } else {
@@ -116,7 +116,7 @@ public class BlogController {
             if (StringUtils.isEmpty(coverImg.getOriginalFilename())) {
                 blog.setCoverImgUrl(oldBlog.getCoverImgUrl());
             } else {
-                String coverImgUrl = FastDFSUtils.uploadFile(FDFS_CLIENT_PAHT, FTP_ADDRESS, coverImg);
+                String coverImgUrl = FastDFSUtils.uploadFile(FDFS_CLIENT_PAHT, FDFS_ADDRESS, coverImg);
                 blog.setCoverImgUrl(coverImgUrl);
             }
             blog.setCreateTime(oldBlog.getCreateTime());

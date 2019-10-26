@@ -21,8 +21,8 @@ import java.util.Map;
 public class UploadController {
 
     //引入图片服务器地址
-    @Value("${FTP_ADDRESS}")
-    private String FTP_ADDRESS;
+    @Value("${FDFS_ADDRESS}")
+    private String FDFS_ADDRESS;
     @Value("${FDFS_CLIENT_PAHT}")
     private String FDFS_CLIENT_PAHT;
 
@@ -35,7 +35,7 @@ public class UploadController {
     @ResponseBody
     public Map<String, String> upload(@RequestParam("file") MultipartFile file) throws IOException {
 
-        String imgUrl = FastDFSUtils.uploadFile(FDFS_CLIENT_PAHT,FTP_ADDRESS,file);
+        String imgUrl = FastDFSUtils.uploadFile(FDFS_CLIENT_PAHT,FDFS_ADDRESS,file);
 
         Map<String, String> map = new HashMap<>();
         map.put("data",imgUrl);//这里应该是项目路径

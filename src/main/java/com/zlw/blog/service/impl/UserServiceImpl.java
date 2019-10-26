@@ -3,6 +3,7 @@ package com.zlw.blog.service.impl;
 import com.zlw.blog.po.User;
 import com.zlw.blog.repository.UserRepository;
 import com.zlw.blog.service.UserService;
+import com.zlw.blog.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +68,52 @@ public class UserServiceImpl implements UserService {
         if(user!=null){
             return "email_exist";
         }
+        return "success";
+    }
+
+    @Override
+    public String userNameReset(Integer userId, String newUsername) {
+        User oldUser = userRepository.findOne(userId);
+        User user1 = userRepository.findByUsername(newUsername);
+        if (user1 == null) {
+            oldUser.setUsername(newUsername);
+            userRepository.save(oldUser);
+        } else {
+            return "userNameExist";
+        }
+        return "success";
+    }
+
+    @Override
+    public String userPwdReset(Integer userId, String oldUserpwd, String newUserpwd) {
+        User oldUser = userRepository.findOne(userId);
+        if (oldUser.getPassword().equals(MD5Utils.md5(oldUserpwd))) {
+            oldUser.setPassword(MD5Utils.md5(newUserpwd));
+            userRepository.save(oldUser);
+            return "success";
+        } else {
+            return "oldUserpwdFalse";
+        }
+    }
+
+    @Override
+    public String userEmailReset(Integer userId, String newEmail) {
+        User oldeUser = userRepository.findOne(userId);
+        User user2 = userRepository.findByEmail(newEmail);
+        if (user2 == null) {
+            oldeUser.setEmail(newEmail);
+            userRepository.save(oldeUser);
+        } else {
+            return "EmailExist";
+        }
+        return "success";
+    }
+
+    @Override
+    public String HeadUrlReset(Integer userId, String newUrl) {
+        User user = userRepository.findOne(userId);
+        user.setHeadImgUrl(newUrl);
+        userRepository.save(user);
         return "success";
     }
 }

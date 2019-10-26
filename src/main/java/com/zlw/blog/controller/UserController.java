@@ -8,6 +8,7 @@ import com.zlw.blog.utils.FastDFSUtils;
 import com.zlw.blog.utils.MD5Utils;
 import com.zlw.blog.utils.UserUtils;
 import com.zlw.blog.vo.SessionUser;
+import org.apache.catalina.manager.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -45,8 +46,8 @@ public class UserController {
     private String USER_HEAD_FIRST;
     @Value("${USER_ROLE_FIRST}")
     private Integer USER_ROLE_FIRST;
-    @Value("${FTP_ADDRESS}")
-    private String FTP_ADDRESS;
+    @Value("${FDFS_ADDRESS}")
+    private String FDFS_ADDRESS;
     @Value("${FDFS_CLIENT_PAHT}")
     private String FDFS_CLIENT_PAHT;
     //邮件发送者
@@ -95,17 +96,10 @@ public class UserController {
         //保存
         userService.save(user);
 
-        //将JSESSIONID存于本地cookie中
-        Cookie cookiesessionid = new Cookie("JSESSIONID", request.getSession().getId());
-        cookiesessionid.setMaxAge(24 * 60 * 60);
-        response.addCookie(cookiesessionid);
-
-        //存Session
-        //根据用户角色，设置用户权限
-        HttpSession session = request.getSession();
-        session.setAttribute("sessionUser",
-                UserUtils.getSessionUser(user));
-        session.setMaxInactiveInterval(3 * 24 * 60);    //设置session生存时间
+        UserUtils.saveObjectToSession(request,
+                response,
+                UserUtils.getSessionUser(user),
+                "sessionUser");
 
         return rtn;
     }
@@ -122,17 +116,10 @@ public class UserController {
         User user = userService.login(logUser.getUsername(), MD5Utils.md5(logUser.getPassword()));
         if (user != null) {
 
-            //将JSESSIONID存于本地cookie中
-            Cookie cookiesessionid = new Cookie("JSESSIONID", request.getSession().getId());
-            cookiesessionid.setMaxAge(24 * 60 * 60);
-            response.addCookie(cookiesessionid);
-
-            //存Session
-            //根据用户角色，设置用户权限
-            HttpSession session = request.getSession();
-            //将User转为SessionUser
-            session.setAttribute("sessionUser", UserUtils.getSessionUser(user));
-            session.setMaxInactiveInterval(3 * 24 * 60);    //设置session生存时间
+            UserUtils.saveObjectToSession(request,
+                    response,
+                    UserUtils.getSessionUser(user),
+                    "sessionUser");
 
             return "success";
         }
@@ -173,6 +160,119 @@ public class UserController {
     }
 
     /**
+     * 修改用户名
+     *
+     * @param userId      用户id
+     * @param newUsername 新用户名
+     * @param request     请求
+     * @param response    响应
+     * @return 修改结果
+     */
+    @PostMapping("/user/username/reset")
+    @ResponseBody
+    public String usernameReset(Integer userId,
+                                String newUsername,
+                                HttpServletRequest request,
+                                HttpServletResponse response) {
+        String result = userService.userNameReset(userId, newUsername);
+        if ("success".equals(result)) {
+            //修改用户名后 同步es库
+//            EsUser esUser = esUserService.findEsUserById(userId);
+//            esUser.setUsername(newUsername);
+//            esUserService.save(esUser);
+
+            SessionUser sessionUser = (SessionUser) UserUtils.getObjectFromSession(request, "sessionUser");
+            sessionUser.setUsername(newUsername);
+            UserUtils.saveObjectToSession(request, response, sessionUser, "sessionUser");
+            return "success";
+        } else {
+            return "userNameExist";
+        }
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param userId     用户名
+     * @param oldUserpwd 旧密码
+     * @param newUserpwd 新密码
+     * @return 修改结果
+     */
+    @PostMapping("/user/userpwd/reset")
+    @ResponseBody
+    public String userpwdReset(Integer userId, String oldUserpwd, String newUserpwd) {
+        String result = userService.userPwdReset(userId, oldUserpwd, newUserpwd);
+        if ("success".equals(result)) {
+            return "success";
+        } else {
+            return "oldUserpwdFalse";
+        }
+    }
+
+    /**
+     * 修改邮箱
+     *
+     * @param userId   用户ID
+     * @param newEmail 用户修改后邮箱
+     * @return 修改结果
+     */
+    @PostMapping("/user/email/reset")
+    @ResponseBody
+    public String userEamilReset(Integer userId,
+                                 String newEmail,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
+
+        String result = userService.userEmailReset(userId, newEmail);
+
+        if ("success".equals(result)) {
+            //更新es
+//            EsUser esUser = esUserService.findEsUserById(userId);
+//            esUser.setEmail(newEmail);
+//            esUserService.save(esUser);
+
+            //更新sessionUser
+            SessionUser sessionUser = (SessionUser) UserUtils.getObjectFromSession(request, "sessionUser");
+            sessionUser.setEmail(newEmail);
+            UserUtils.saveObjectToSession(request, response, sessionUser, "sessionUser");
+        }
+        return result;
+    }
+
+    /**
+     * 修改头像
+     *
+     * @param userId     用户ID
+     * @param newHeadUrl 用户新头像
+     * @param request    请求
+     * @param response   响应
+     * @return 修改结果
+     */
+    @PostMapping("/user/headurl/reset")
+    @ResponseBody
+    public String HeadUrlReset(Integer userId,
+                               MultipartFile newHeadUrl,
+                               HttpServletRequest request,
+                               HttpServletResponse response) {
+
+        //上传文件至服务器
+        String newUrl = FastDFSUtils.uploadFile(FDFS_CLIENT_PAHT,
+                FDFS_ADDRESS,
+                newHeadUrl);
+        String result = "";
+        if (newUrl != null || !"".equals(newUrl)) {
+            result = userService.HeadUrlReset(userId, newUrl);
+        }
+        if ("success".equals(result)) {
+            SessionUser sessionUser = (SessionUser) UserUtils.getObjectFromSession(request, "sessionUser");
+            sessionUser.setHeadImgUrl(newUrl);
+            UserUtils.saveObjectToSession(request, response, sessionUser, "sessionUser");
+            return "success";
+        }
+        return "fail";
+    }
+
+    /**
      * 用户退出
      *
      * @return
@@ -187,150 +287,6 @@ public class UserController {
 
         request.getSession().removeAttribute("sessionUser");
 
-        return "redirect:/";
+        return "redirect:/index";
     }
-
-    /**
-     * 用户修改头像
-     *
-     * @param userId
-     * @param headImg
-     * @throws IOException
-     */
-    @RequestMapping("/user/manage/changeHeadImg")
-    @ResponseBody
-    public String changeHeadImg(@RequestParam Integer userId,
-                                @RequestParam MultipartFile headImg,
-                                HttpServletRequest request) {
-
-        //根据id查询数据库中用户
-        User user = userService.findUserById(userId);
-
-        try {
-            //上传文件
-            String imgUrl = FastDFSUtils.uploadFile(FDFS_CLIENT_PAHT, FTP_ADDRESS, headImg);
-            user.setHeadImgUrl(imgUrl);
-            userService.save(user);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "HeadImgError";
-        }
-
-        //更新session
-        updateSession(request,UserUtils.getSessionUser(user));
-
-        return "HeadImgOk";
-    }
-
-    /**
-     * 用户修改用户名/邮箱
-     *
-     * @param userId
-     * @param username
-     * @param email
-     * @throws IOException
-     */
-    @PostMapping("/user/manage/magChange")
-    @ResponseBody
-    public String checkMsgChange(@RequestParam Integer userId,
-                                 @RequestParam String username,
-                                 @RequestParam String email,
-                                 HttpServletRequest request) {
-
-//        //根据id查询数据库中用户
-//        User oldUser = userService.findUserById(userId);
-//
-//        //校验修正的信息
-//        if (!oldUser.getUsername().equals(username) && !oldUser.getEmail().equals(email)) {
-//            //修改用户名和邮箱
-//            boolean b = userService.checkEmailExist(email);
-//            if (b) {
-//                return "EmailUsed";
-//            } else {
-//                oldUser.setEmail(email);
-//                oldUser.setUsername(username);
-//                userService.save(oldUser);
-//                //更新session
-//                updateSession(request, oldUser);
-//                return "EmailUsernameOk";
-//            }
-//        } else if (!oldUser.getUsername().equals(username)) {
-//            //只修改了用户名
-//            oldUser.setUsername(username);
-//            userService.save(oldUser);
-//            //更新session
-//            updateSession(request, oldUser);
-//            return "UsernameOk";
-//        } else if (!oldUser.getEmail().equals(email)) {
-//            //只修改了邮箱
-//            boolean b = userService.checkEmailExist(email);
-//            if (b) {
-//                return "EmailUsed";
-//            } else {
-//                oldUser.setEmail(email);
-//                userService.save(oldUser);
-//                //更新session
-//                updateSession(request, oldUser);
-//                return "EmailOk";
-//            }
-//        } else {
-//            return "NothingDo";
-//        }
-        return null;
-    }
-
-    /**
-     * 修改密码
-     *
-     * @param userId
-     * @param oldpwd
-     * @param newpwd
-     * @throws IOException
-     */
-    @PostMapping("/user/manage/pwdChange")
-    @ResponseBody
-    public String checkPwdChange(@RequestParam Integer userId,
-                                 @RequestParam String oldpwd,
-                                 @RequestParam String newpwd,
-                                 HttpServletRequest request) throws IOException {
-
-        //根据id查询数据库中用户
-        User oldUser = userService.findUserById(userId);
-
-        //对原密码加密
-        oldpwd = MD5Utils.md5(oldpwd);
-
-        //校验修正的信息
-        if (!oldpwd.equals(oldUser.getPassword())) {
-            //与原密码不符
-            return "PwdError";
-        } else {
-            //原密码输入正确
-            //对新密码进行加密
-            newpwd = MD5Utils.md5(newpwd);
-            //更新密码
-            oldUser.setPassword(newpwd);
-            userService.save(oldUser);
-            //修改成功
-            //更新session
-            updateSession(request, UserUtils.getSessionUser(oldUser));
-            return "PwdOk";
-        }
-    }
-
-    /**
-     * 更新session，多处使用抽象出来
-     *
-     * @param request
-     * @param sessionUser
-     */
-    private void updateSession(HttpServletRequest request, SessionUser sessionUser) {
-        //更新session
-        //根据用户角色，设置用户权限
-        HttpSession session = request.getSession();
-        session.setAttribute("sessionUser", sessionUser);
-        session.setMaxInactiveInterval(3 * 24 * 60);    //设置session生存时间
-    }
-
 }

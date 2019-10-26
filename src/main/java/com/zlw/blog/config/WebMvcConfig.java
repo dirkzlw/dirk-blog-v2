@@ -28,7 +28,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         //对普通用户实现编辑博客，点赞，留言功能实现留言
         //,"/author/message"    先对未登录用户进行留言不拦截
         registry.addInterceptor(userRoot)
-                .addPathPatterns("/blog/comment/del","/to/user/manage");                                               //AdminController
+                .addPathPatterns("/blog/comment/del","/to/user/manage","/to/user/msg");                                               //AdminController
         //对管理员进行拦截
         AdminInterceptor adminRoot = new AdminInterceptor();
         //对普通用户实现编辑博客，点赞，留言功能实现留言
