@@ -1,6 +1,5 @@
 package com.zlw.blog.controller;
 
-import com.sun.org.apache.regexp.internal.RE;
 import com.zlw.blog.po.Blog;
 import com.zlw.blog.po.BlogTag;
 import com.zlw.blog.po.Comment;
@@ -287,7 +286,7 @@ public class BlogController {
                 commentInfoList.add(info);
             } else {
                 Visitor visitor = comment.getVisitor();
-                CommentInfo info = new CommentInfo(comment.getCommentId(), null, USER_HEAD_FIRST, "游客" + visitor.getIpAddress(), comment.getCreateTime(), comment.getContent());
+                CommentInfo info = new CommentInfo(comment.getCommentId(), null, USER_HEAD_FIRST, "游客" + visitor.getIpAddress().replace(".","" ), comment.getCreateTime(), comment.getContent());
                 commentInfoList.add(info);
             }
         }
@@ -316,7 +315,7 @@ public class BlogController {
         //从session中获取user，判断是否登录
         SessionUser sessionUser = (SessionUser) request.getSession().getAttribute("sessionUser");
         Visitor v = null;
-        if (sessionUser != null) {
+        if (sessionUser != null && sessionUser.getUserId()!=null) {
             //评论与用户关联
             comment.setCuser(userService.findUserById(sessionUser.getUserId()));
         } else {
@@ -326,8 +325,6 @@ public class BlogController {
             if ("0:0:0:0:0:0:0:1".equals(ipAddress)) {
                 ipAddress = "127.0.0.1";   //将本地IP地址0:0:0:0:0:0:0:1改为127.0.0.1
             }
-            //去掉.
-            ipAddress = ipAddress.replace(".", "");
             //根据ip判断是否存在游客，存在取出，不存在保存。
             v = visitorService.findVisitorByIP(ipAddress);
             if (v == null) {
@@ -346,7 +343,7 @@ public class BlogController {
 
         //提取需要展示的评论
         CommentInfo commentInfo = new CommentInfo(comment.getCommentId(), null, null, null, null, null);
-        if (sessionUser != null) {
+        if (sessionUser != null && sessionUser.getUserId()!=null) {
             //关联用户展示的信息
             commentInfo.setUserId(sessionUser.getUserId());
             commentInfo.setUsername(sessionUser.getUsername());
@@ -354,7 +351,7 @@ public class BlogController {
         } else {
             //关联游客展示的信息
             commentInfo.setUserId(null);
-            commentInfo.setUsername("游客" + v.getIpAddress());
+            commentInfo.setUsername("游客" + v.getIpAddress().replace(".", ""));
             commentInfo.setHeadImgUrl(USER_HEAD_FIRST);
         }
         commentInfo.setContent(message);

@@ -36,8 +36,7 @@ public class BlogInfo {
     //访问量
     private Integer viewNum;
 
-    protected BlogInfo() {
-    }
+    public BlogInfo() {}
 
     public BlogInfo(Integer blogId, String blogTitle,
                     String blogText, String createTime,

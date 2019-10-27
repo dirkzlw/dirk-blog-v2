@@ -44,11 +44,11 @@
     <div class="widewrapper subheader">
         <div class="container">
             <div class="clean-breadcrumb">
-                <a href="#" style="font-size: 30px">DirkBlog</a>
+                <a th:href="@{/index}" style="font-size: 30px">DirkBlog</a>
                 <span class="separator">&#x2F;</span>
-                <a href="#" th:text="${blog.artType}" style="font-size: 27px"></a>
+                <a th:text="${blog.artType}" style="font-size: 27px"></a>
                 <span class="separator">&#x2F;</span>
-                <a href="#" th:text="${blog.blogTag}" style="font-size: 27px"></a>
+                <a th:href="@{/blog/search/tag(typeName=${blog.blogTag})}" th:text="${blog.blogTag}" style="font-size: 27px"></a>
             </div>
 
 
