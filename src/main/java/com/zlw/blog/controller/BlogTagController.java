@@ -26,7 +26,7 @@ public class BlogTagController {
     private BlogTagService blogTagService;
 
     @GetMapping("/to/mgn/blogtag")
-    public String toBlogTag(HttpServletRequest request){
+    public String toBlogTag(){
         return "mgn/blogtag";
     }
 

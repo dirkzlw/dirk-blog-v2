@@ -69,7 +69,7 @@ var methods = {
                 success: function (json) {
                     if (json == "success") {
                         bootbox.alert({
-                            title: "来自智能会议室的提示",
+                            title: "来自DirkBlog的提示",
                             message: "修改用户名成功",
                             closeButton: false
                         })
@@ -79,7 +79,7 @@ var methods = {
                     }
                     else if (json == "userNameExist") {
                         bootbox.alert({
-                            title: "来自智能会议室的提示",
+                            title: "来自DirkBlog的提示",
                             message: "修改用户名失败，用户名已存在",
                             closeButton: false
                         })
@@ -88,7 +88,7 @@ var methods = {
                 },
                 error: function (json) {
                     bootbox.alert({
-                        title: "来自智能会议室的提示",
+                        title: "来自DirkBlog的提示",
                         message: "修改失败，请检查网络",
                         closeButton: false
                     })
@@ -103,7 +103,7 @@ var methods = {
         var newUsername = $('.newUsername').val().trim();
         if (newUsername === '') {
             bootbox.alert({
-                title: "来自智能会议室的提示",
+                title: "来自DirkBlog的提示",
                 message: "新用户名为必选项，请填写",
                 closeButton: false
             })
@@ -134,7 +134,7 @@ var methods = {
                 success: function (json) {
                     if (json == "success") {
                         bootbox.alert({
-                            title: "来自智能会议室的提示",
+                            title: "来自DirkBlog的提示",
                             message: "修改密码成功",
                             closeButton: false
                         })
@@ -144,7 +144,7 @@ var methods = {
                     }
                     else if (json == "oldUserpwdFalse") {
                         bootbox.alert({
-                            title: "来自智能会议室的提示",
+                            title: "来自DirkBlog的提示",
                             message: "修改密码失败，原密码输入错误",
                             closeButton: false
                         })
@@ -153,7 +153,7 @@ var methods = {
                 },
                 error: function (json) {
                     bootbox.alert({
-                        title: "来自智能会议室的提示",
+                        title: "来自DirkBlog的提示",
                         message: "修改失败，请检查网络",
                         closeButton: false
                     })
@@ -169,7 +169,7 @@ var methods = {
         var newUserpwd2 = $('.newUserpwd2').val().trim()
         if (oldUserpwd === '') {
             bootbox.alert({
-                title: "来自智能会议室的提示",
+                title: "来自DirkBlog的提示",
                 message: "旧密码为必选项，请填写",
                 closeButton: false
             })
@@ -178,7 +178,7 @@ var methods = {
         }
         else if (newUserpwd === '') {
             bootbox.alert({
-                title: "来自智能会议室的提示",
+                title: "来自DirkBlog的提示",
                 message: "新密码为必选项，请填写",
                 closeButton: false
             })
@@ -187,7 +187,7 @@ var methods = {
         }
         else if (newUserpwd2 === '') {
             bootbox.alert({
-                title: "来自智能会议室的提示",
+                title: "来自DirkBlog的提示",
                 message: "再次输入密码为必选项，请填写",
                 closeButton: false
             })
@@ -196,7 +196,7 @@ var methods = {
         }
         else if (newUserpwd !== newUserpwd2) {
             bootbox.alert({
-                title: "来自智能会议室的提示",
+                title: "来自DirkBlog的提示",
                 message: "两次新密码不一致，请重新填写",
                 closeButton: false
             })
@@ -205,7 +205,7 @@ var methods = {
         }
         else if (oldUserpwd === newUserpwd) {
             bootbox.alert({
-                title: "来自智能会议室的提示",
+                title: "来自DirkBlog的提示",
                 message: "新旧密码不能相等，请重新填写",
                 closeButton: false
             })
@@ -233,13 +233,13 @@ var methods = {
                 success : function (json) {
                     if(json == "EmailExist"){
                         bootbox.alert({
-                            title: "来自智能会议室的提示",
+                            title: "来自DirkBlog的提示",
                             message: "邮箱已存在，请更换！",
                             closeButton: false
                         })
                     }else if (json == "success") {
                         bootbox.alert({
-                            title: "来自智能会议室的提示",
+                            title: "来自DirkBlog的提示",
                             message: "修改邮箱成功",
                             closeButton: false
                         })
@@ -251,7 +251,7 @@ var methods = {
                 },
                 error : function(json) {
                     bootbox.alert({
-                        title : "来自智能会议室的提示",
+                        title : "来自DirkBlog的提示",
                         message : "修改失败，请检查网络",
                         closeButton : false
                     })
@@ -264,7 +264,7 @@ var methods = {
         var newEmail = $('.newEmail').val().trim()
         if(newEmail === ''){
             bootbox.alert({
-                title : "来自智能会议室的提示",
+                title : "来自DirkBlog的提示",
                 message : "新邮箱为必填项，请填写",
                 closeButton : false
             })
@@ -273,7 +273,7 @@ var methods = {
         var re = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
         if (!re.test(newEmail)) {
             bootbox.alert({
-                title : "来自智能会议室的提示",
+                title : "来自DirkBlog的提示",
                 message : "邮箱格式不正确，请正确填写！",
                 closeButton : false
             })
@@ -300,7 +300,7 @@ var methods = {
                 success: function (json) {
                     if (json == "success") {
                         bootbox.alert({
-                            title: "来自智能会议室的提示",
+                            title: "来自DirkBlog的提示",
                             message: "修改头像成功",
                             closeButton: false
                         })
@@ -312,7 +312,7 @@ var methods = {
                 },
                 error: function (json) {
                     bootbox.alert({
-                        title: "来自智能会议室的提示",
+                        title: "来自DirkBlog的提示",
                         message: "修改失败，请检查网络",
                         closeButton: false
                     })

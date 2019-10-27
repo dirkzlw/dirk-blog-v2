@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8"/>
+    <title>DirkBLog--编辑关注</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+
+    <link rel="stylesheet" type="text/css" href="/table/css/style.css"/>
+
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.bootcss.com/twitter-bootstrap/4.2.1/css/bootstrap.min.css"/>
+
+    <script src="/table/js/jquery.min.js"></script>
+    <script src="/table/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/table/js/bootbox.min.js"></script>
+
+    <style type="text/css">
+        a:hover {
+            cursor: pointer;
+            text-decoration: none;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="box" style="position: relative;top: 0px;">
+    <div class="content">
+        <!--添加按钮及bootstrap的模态框-->
+        <div class="export">
+            <button id="new_add" type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                    data-target="#renyuan">
+                <img src="/table/img/add_two.png"/>
+                <span>添加</span>
+            </button>
+            <div class="modal fade" id="renyuan">
+                <div class="modal-dialog modal-lg modal_position">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">添加关注</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p align="center">
+                                <img style="height: 250px;width: 250px"
+                                     id="img0">
+                            </p>
+
+                            <style>
+                                .file {
+                                    position: relative;
+                                    display: inline-block;
+                                    background: #D0EEFF;
+                                    border: 1px solid #99D3F5;
+                                    border-radius: 4px;
+                                    padding: 4px 12px;
+                                    overflow: hidden;
+                                    color: #1E88C7;
+                                    text-decoration: none;
+                                    text-indent: 0;
+                                    line-height: 20px;
+                                }
+                                .file input {
+                                    position: absolute;
+                                    font-size: 100px;
+                                    right: 0;
+                                    top: 0;
+                                    opacity: 0;
+                                }
+                                .file:hover {
+                                    background: #AADFFD;
+                                    border-color: #78C3F3;
+                                    color: #004974;
+                                    text-decoration: none;
+                                }
+                            </style>
+                            <p style="text-align: center">
+                                <a href="javascript:;" class="file" align="center">选择文件
+                                    <input style="cursor: pointer" type="file"  id="file0" multiple
+                                           accept="image/png, image/jpg, image/jpeg, image/bmp" onchange="preImg(this.id,'img0');"/>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button id="add_btn" type="button" class="btn btn-secondary">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="xrenyuan">
+                <div class="modal-dialog modal-lg modal_position">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">修改关注</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p align="center">
+                                <img style="height: 250px;width: 250px"
+                                     th:src="${application.qrCode.qrUrl}" id="img1">
+                            </p>
+
+                            <style>
+                                .file {
+                                    position: relative;
+                                    display: inline-block;
+                                    background: #D0EEFF;
+                                    border: 1px solid #99D3F5;
+                                    border-radius: 4px;
+                                    padding: 4px 12px;
+                                    overflow: hidden;
+                                    color: #1E88C7;
+                                    text-decoration: none;
+                                    text-indent: 0;
+                                    line-height: 20px;
+                                }
+                                .file input {
+                                    position: absolute;
+                                    font-size: 100px;
+                                    right: 0;
+                                    top: 0;
+                                    opacity: 0;
+                                }
+                                .file:hover {
+                                    background: #AADFFD;
+                                    border-color: #78C3F3;
+                                    color: #004974;
+                                    text-decoration: none;
+                                }
+                            </style>
+                            <p style="text-align: center">
+                                <a href="javascript:;" class="file" align="center">选择文件
+                                    <input style="cursor: pointer" type="file"  id="file1" multiple
+                                           accept="image/png, image/jpg, image/jpeg, image/bmp" onchange="preImg(this.id,'img1');"/>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button id="xadd_btn" type="button" class="btn btn-secondary">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--表格列表-->
+        <table id="tb" class="table">
+            <thead>
+            <tr>
+                <th>二维码</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="show_tbody">
+            <tr th:if="${application.qrCode.qrUrl} !=null">
+                <td>
+                    <img style="
+                    position: relative;
+                    top: 4px;
+                    display: inline;
+                    width: 34px;
+                    height: 34px;
+                    /*display: flex;*/
+                    border-radius: 50%;
+                    align-items: center;
+                    justify-content: center;
+                    overflow: hidden;
+                    cursor: pointer;"
+                     class="dialog"
+                     alt="关注"
+                     th:src="${application.qrCode.qrUrl}">
+                </td>
+                <td>
+                    <a class="edit" th:id="${application.qrCode.id}">编辑</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="/mgn/js/qrcode.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("img.dialog").click(function () {
+            var src = this.src;
+            document.getElementById("authImg").src = src
+            $('#bgImg').modal('show');
+        });
+    });
+</script>
+<script type="text/javascript">
+    /**
+     * 将本地图片 显示到浏览器上
+     */
+    function preImg(sourceId, targetId) {
+        var url = getFileUrl(sourceId);
+        var imgPre = document.getElementById(targetId);
+        imgPre.src = url;
+    }
+    /**
+     * 从 file 域获取 本地图片 url
+     */
+    function getFileUrl(sourceId) {
+        var url;
+        if (navigator.userAgent.indexOf("MSIE")>=1) { // IE
+            url = document.getElementById(sourceId).value;
+        } else if(navigator.userAgent.indexOf("Firefox")>0) { // Firefox
+            url = window.URL.createObjectURL(document.getElementById(sourceId).files.item(0));
+        } else if(navigator.userAgent.indexOf("Chrome")>0) { // Chrome
+            url = window.URL.createObjectURL(document.getElementById(sourceId).files.item(0));
+        }
+        return url;
+    }
+    function delBlogTag(typeId) {
+        var aTag = document.getElementById(typeId * (-1));
+        // ajax 删除公告
+        $.ajax({
+            type: "POST",
+            url: "/mgn/blogtag/del",
+            data: {'typeId': typeId},
+            dataType: "text", //return dataType: text or json
+            success: function (json) {
+                if (json == "success") {
+                    aTag.remove();
+                    bootbox.alert({
+                        title: "来自DirkBlog的提示",
+                        message: "标签删除成功",
+                        closeButton: false
+                    })
+                } else if (json == "fail") {
+                    bootbox.alert({
+                        title: "来自DirkBlog的提示",
+                        message: "删除失败，请检查网络",
+                        closeButton: false
+                    })
+                    return
+                }
+            },
+            error: function (json) {
+                bootbox.alert({
+                    title: "来自DirkBlog的提示",
+                    message: "删除失败，请检查网络",
+                    closeButton: false
+                })
+                return
+            }
+        });
+    }
+</script>
+</body>
+</html>

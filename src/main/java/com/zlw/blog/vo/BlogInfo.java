@@ -3,8 +3,6 @@ package com.zlw.blog.vo;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
-
 /**
  * 页面展示的实体类
  * 需要get/set方法，不然无法解析
