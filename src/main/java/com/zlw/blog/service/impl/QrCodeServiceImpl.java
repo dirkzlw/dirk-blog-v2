@@ -41,4 +41,14 @@ public class QrCodeServiceImpl implements QrCodeService {
         return new ResultObj<>(qrCode, "success");
     }
 
+    @Override
+    public String delQrCode(Integer qrId) {
+        try {
+            qrCodeRepository.delete(qrId);
+        } catch (Exception e) {
+            return "fail";
+        }
+        return "success";
+    }
+
 }

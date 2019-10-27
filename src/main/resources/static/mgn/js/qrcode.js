@@ -9,7 +9,7 @@ $(function () {  //jquery里的,是当文档载入完毕就执行的意思
     })
 
     $('#show_tbody').on('click', '.edit', function () {
-        typeId = this.id
+        qrId = this.id
         trIndex = $('.edit', '#show_tbody').index($(this));
         addEnter = true;
         $(this).parents('tr').addClass('has_case');
@@ -18,8 +18,9 @@ $(function () {  //jquery里的,是当文档载入完毕就执行的意思
 
 })
 
-var typeId,
+var qrId,
     tdStr = '',
+    xtdStr = '',
     trIndex,
     addEnter = true,
     hasNullMes = false,
@@ -48,6 +49,7 @@ var methods = {
                 success: function (json) {
                     json = eval('(' + json + ')');
                     var qrId = json.obj.id;
+                    var qrTr = qrId * (-1);
                     var qrUrl = json.obj.qrUrl;
                     var rtn = json.rtn;
                     if (rtn == "success") {
@@ -65,21 +67,20 @@ var methods = {
                             "                    width: 34px;\n" +
                             "                    height: 34px;\n" +
                             "                    /*display: flex;*/\n" +
-                            "                    border-radius: 50%;\n" +
                             "                    align-items: center;\n" +
                             "                    justify-content: center;\n" +
                             "                    overflow: hidden;\n" +
                             "                    cursor: pointer;'\n" +
                             "                     class='dialog'\n" +
                             "                     alt='关注'\n" +
-                            "                     th:src='"+qrUrl+"'>\n" +
+                            "                     src='"+qrUrl+"'>\n" +
                             "                </td>\n" +
                             "                <td>\n" +
-                            "                    <a class='edit' th:id='"+qrId+"'>编辑</a>\n" +
+                            "                    <a class='edit' id='"+qrId+"'>编辑</a>\n" +
+                            "                    <a id='"+qrId+"' onclick='delQrCode("+qrId+")'>删除</a>"+
                             "                </td>"
-                        $('#show_tbody').append('<tr' + tdStr + '</tr>');
+                        $('#show_tbody').append('<tr id='+qrTr+'>' + tdStr + '</tr>');
                         //将input置空
-                        $('#xztb input').val(' ');
                         $('#renyuan').modal('hide');
                     }else {
                         bootbox.alert({
@@ -108,40 +109,56 @@ var methods = {
             return;
         }
         if (addEnter) {
-            var typeName = $('.blogtag_edit').val().trim();
+            var qrImg = document.getElementById("file1").files[0];
+            var formData = new FormData();
+            formData.append("qrId",qrId);
+            formData.append("qrImg", qrImg)
             $.ajax({
                 type: "POST",
-                url: "/mgn/blogtag/save",
-                data: {
-                    'typeId': typeId,
-                    'typeName': typeName,
-                },
-                dataType: "text", //return dataType: text or json
+                url: "/mgn/qrcode/save",
+                data: formData,
+                dataType: "text",
+                processData: false,
+                contentType: false,
                 success: function (json) {
                     json = eval('(' + json + ')');
-                    var typeId = json.obj.id;
-                    var typeName = json.obj.typeName;
-                    var typeIdTr = typeId * (-1);
+                    var qrId = json.obj.id;
+                    var qrUrl = json.obj.qrUrl;
                     var rtn = json.rtn;
                     if (rtn == "success") {
                         bootbox.alert({
                             title: "来自DirkBlog的提示",
-                            message: "修改标签成功！",
+                            message: "修改关注成功！",
                             closeButton: false
                         })
-
                         //拼接tr
-                        xtdStr = "<td>" + typeName + "</td>\n" +
+                        xtdStr = "<td>\n" +
+                            "                    <img style='\n" +
+                            "                    position: relative;\n" +
+                            "                    top: 4px;\n" +
+                            "                    display: inline;\n" +
+                            "                    width: 34px;\n" +
+                            "                    height: 34px;\n" +
+                            "                    /*display: flex;*/\n" +
+                            "                    align-items: center;\n" +
+                            "                    justify-content: center;\n" +
+                            "                    overflow: hidden;\n" +
+                            "                    cursor: pointer;'\n" +
+                            "                     class='dialog'\n" +
+                            "                     alt='关注'\n" +
+                            "                     src='"+qrUrl+"'>\n" +
+                            "                </td>\n" +
                             "                <td>\n" +
-                            "                    <a class='edit' id='" + typeId + "'>编辑</a>\n" +
-                            "                    <a id='" + typeId + "' onclick='delBlogTag(this.id)'>删除</a>\n" +
+                            "                    <a class='edit' id='"+qrId+"'>编辑</a>\n" +
+                            "                    <a id='"+qrId+"' onclick='delQrCode("+qrId+")'>删除</a>"+
                             "                </td>"
                         $('#show_tbody tr').eq(trIndex).empty().append(xtdStr);
+                        //将input置空
                         $('#xrenyuan').modal('hide');
-                    } else if (rtn == "fail") {
+                    }else {
                         bootbox.alert({
                             title: "来自DirkBlog的提示",
-                            message: "修改标签失败，请检查网络！",
+                            message: "修改失败，请检查网络！",
                             closeButton: false
                         })
                         return
@@ -150,7 +167,7 @@ var methods = {
                 error: function (json) {
                     bootbox.alert({
                         title: "来自DirkBlog的提示",
-                        message: "修改标签失败，请检查网络！",
+                        message: "修改失败，请检查网络！",
                         closeButton: false
                     })
                     return
@@ -159,7 +176,6 @@ var methods = {
         }
     },
     checkMustMes: function () {
-
         var img0 = $('#img0').attr('src').trim();
         if(img0 == ""){
             bootbox.alert({
@@ -170,16 +186,13 @@ var methods = {
             hasNullMes = true;
             return
         }
-
     },
     xcheckMustMes: function () {
-
-        //理由不能为空
-        var typeName = $('.blogtag_edit').val().trim()
-        if (typeName === '') {
+        var img1 = $('#img1').attr('src').trim();
+        if(img1 == ""){
             bootbox.alert({
                 title: "来自DirkBlog的提示",
-                message: "标签不能为空",
+                message: "尚未选择关注的二维码！",
                 closeButton: false
             })
             hasNullMes = true;

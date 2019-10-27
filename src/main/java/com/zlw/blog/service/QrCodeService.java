@@ -12,4 +12,6 @@ public interface QrCodeService {
     QrCode findQrCode();
 
     ResultObj<QrCode> saveQrCode(Integer qrId, String qrImg);
+
+    String delQrCode(Integer qrId);
 }

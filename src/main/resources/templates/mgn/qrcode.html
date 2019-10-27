@@ -157,7 +157,7 @@
             </tr>
             </thead>
             <tbody id="show_tbody">
-            <tr th:if="${application.qrCode.qrUrl} !=null">
+            <tr th:if="${application.qrCode.qrUrl} !=null" th:id="${application.qrCode.id} * (-1)">
                 <td>
                     <img style="
                     position: relative;
@@ -166,7 +166,6 @@
                     width: 34px;
                     height: 34px;
                     /*display: flex;*/
-                    border-radius: 50%;
                     align-items: center;
                     justify-content: center;
                     overflow: hidden;
@@ -177,6 +176,7 @@
                 </td>
                 <td>
                     <a class="edit" th:id="${application.qrCode.id}">编辑</a>
+                    <a th:id="${application.qrCode.id}" onclick="delQrCode(this.id)">删除</a>
                 </td>
             </tr>
             </tbody>
@@ -217,20 +217,20 @@
         }
         return url;
     }
-    function delBlogTag(typeId) {
-        var aTag = document.getElementById(typeId * (-1));
+    function delQrCode(qrId) {
+        var aTag = document.getElementById(qrId * (-1));
         // ajax 删除公告
         $.ajax({
             type: "POST",
-            url: "/mgn/blogtag/del",
-            data: {'typeId': typeId},
+            url: "/mgn/qrcode/del",
+            data: {'qrId': qrId},
             dataType: "text", //return dataType: text or json
             success: function (json) {
                 if (json == "success") {
                     aTag.remove();
                     bootbox.alert({
                         title: "来自DirkBlog的提示",
-                        message: "标签删除成功",
+                        message: "二维码删除成功！",
                         closeButton: false
                     })
                 } else if (json == "fail") {

@@ -52,39 +52,44 @@ public class QrCodeController {
     @PostMapping("/mgn/qrcode/save")
     @ResponseBody
     public ResultObj saveNotice(@RequestParam(required = false) Integer qrId,
-                                MultipartFile qrImg) {
+                                MultipartFile qrImg,
+                                HttpServletRequest request) {
         String qrUrl = FastDFSUtils.uploadFile(FDFS_CLIENT_PAHT, FDFS_ADDRESS, qrImg);
         ResultObj<QrCode> rtnObj = qrCodeService.saveQrCode(qrId, qrUrl);
+        //同步application
+        if ("success".equals(rtnObj.getRtn())) {
+            syncApplication(request, qrCodeService);
+        }
         return rtnObj;
     }
 
     /**
      * 删除公告
      *
-     * @param noticeId 公告id
+     * @param qrId 公告id
      * @return
      */
-//    @PostMapping("/mgn/qrcode/del")
-//    @ResponseBody
-//    public String delNotice(Integer noticeId,
-//                            HttpServletRequest request) {
-//        String rtn = noticeService.delNotice(noticeId);
-//        //同步application
-//        if ("success".equals(rtn)) {
-//            syncApplication(request, noticeService);
-//        }
-//        return rtn;
-//    }
+    @PostMapping("/mgn/qrcode/del")
+    @ResponseBody
+    public String delNotice(Integer qrId,
+                            HttpServletRequest request) {
+        String rtn = qrCodeService.delQrCode(qrId);
+        //同步application
+        if ("success".equals(rtn)) {
+            syncApplication(request, qrCodeService);
+        }
+        return rtn;
+    }
 
     /**
      * 同步application
      * @param request
-     * @param noticeService
+     * @param qrCodeService
      */
-    private static void syncApplication(HttpServletRequest request,NoticeService noticeService){
+    private static void syncApplication(HttpServletRequest request,QrCodeService qrCodeService){
         ServletContext application = request.getServletContext();
-        List<Notice> noticeList = noticeService.findNotices();
-        application.setAttribute("noticeList", noticeList);
+        QrCode qrCode = qrCodeService.findQrCode();
+        application.setAttribute("qrCode", qrCode);
     }
 
 }
