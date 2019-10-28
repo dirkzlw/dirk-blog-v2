@@ -47,8 +47,8 @@ public class MainController {
     @Value("${ADMIN_EMAIL}")
     private String ADMIN_EMAIL;
     //分页查询每页显示数据
-    @Value("${PAGE_SIZE}")
-    private Integer PAGE_SIZE;
+    @Value("${BLOG_PAGE_SIZE}")
+    private Integer BLOG_PAGE_SIZE;
 
     /**
      * 此url表示用户第一次访问
@@ -84,13 +84,17 @@ public class MainController {
             currentPage = 0;
         }
         //默认差群起始页
-        Page<Blog> pageObj = blogService.findBlogByPage(currentPage, PAGE_SIZE);
+        Page<Blog> pageObj = blogService.findBlogByPage(currentPage, BLOG_PAGE_SIZE);
         List<Blog> blogList = pageObj.getContent();
-        com.zlw.blog.vo.Page page = new com.zlw.blog.vo.Page(currentPage, pageObj.getTotalPages(),blogList.size());
-
         List<BlogIndex> blogIndexList = IndexUtils.getIndexList(blogList);
+        com.zlw.blog.vo.Page page =
+                new com.zlw.blog.vo.Page(
+                        blogIndexList,
+                        currentPage,
+                        pageObj.getTotalPages(),
+                        (int) pageObj.getTotalElements(),
+                        blogList.size());
 
-        model.addAttribute("blogList", blogIndexList);
         model.addAttribute("page", page);
 
         return "index/index";

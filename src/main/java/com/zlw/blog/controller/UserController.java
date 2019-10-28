@@ -13,9 +13,11 @@ import com.zlw.blog.vo.SessionUser;
 import org.apache.catalina.manager.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Ranger
@@ -57,6 +61,8 @@ public class UserController {
     //邮件发送者
     @Value("${spring.mail.username}")
     private String fromEmail;
+    @Value("${USER_PAGE_SIZE}")
+    private Integer USER_PAGE_SIZE;
 
     /**
      * 跳转到登录页面
@@ -75,6 +81,31 @@ public class UserController {
     }
 
     /**
+     * 跳转到用户管理界面
+     *
+     * @return
+     */
+    @GetMapping("/to/mgn/umgn")
+    public String toUserMgn(Model model,
+                            @RequestParam(required = false) Integer currentPage,
+                            HttpServletRequest request) {
+        if (currentPage == null) {
+            currentPage = 0;
+        }
+        Page<EsUser> pageObj = esUserService.findEsUserByPage(currentPage, USER_PAGE_SIZE);
+        List<EsUser> content = pageObj.getContent();
+        com.zlw.blog.vo.Page userPage =
+                new com.zlw.blog.vo.Page(content,
+                        currentPage,
+                        pageObj.getTotalPages(),
+                        (int) pageObj.getTotalElements(),
+                        content.size());
+
+        model.addAttribute("userPage", userPage);
+        return "mgn/umgn";
+    }
+
+    /**
      * 用户注册
      *
      * @return
@@ -84,10 +115,10 @@ public class UserController {
     public String register(User user, HttpServletRequest request, HttpServletResponse response) {
 
         //校验用户名邮箱是否已被注册
-        String rtn = userService.checkUserNameAndEmail(user.getUsername(),user.getEmail());
+        String rtn = userService.checkUserNameAndEmail(user.getUsername(), user.getEmail());
 
         //用户名/邮箱重复
-        if(!"success".equals(rtn)){
+        if (!"success".equals(rtn)) {
             return rtn;
         }
         Role role = roleService.findRoleById(USER_ROLE_FIRST);
@@ -102,7 +133,7 @@ public class UserController {
 
         //同步es
         esUserService.saveEsUser(new EsUser(user.getUserId(),
-                user.getUsername(),user.getEmail(),user.getRole().getRoleName()));
+                user.getUsername(), user.getEmail(), user.getRole().getRoleName()));
 
         UserUtils.saveObjectToSession(request,
                 response,

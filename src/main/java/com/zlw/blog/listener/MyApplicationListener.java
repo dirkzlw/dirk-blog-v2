@@ -4,10 +4,12 @@ import com.zlw.blog.po.BlogTag;
 import com.zlw.blog.po.HotBlog;
 import com.zlw.blog.po.Notice;
 import com.zlw.blog.po.QrCode;
+import com.zlw.blog.po.Role;
 import com.zlw.blog.service.BlogTagService;
 import com.zlw.blog.service.HotBlogService;
 import com.zlw.blog.service.NoticeService;
 import com.zlw.blog.service.QrCodeService;
+import com.zlw.blog.service.RoleService;
 import com.zlw.blog.utils.HotBlogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -36,6 +38,8 @@ public class MyApplicationListener extends HttpServlet implements ApplicationLis
     private HotBlogService hotBlogService;
     @Autowired
     private QrCodeService qrCodeService;
+    @Autowired
+    private RoleService roleService;
 
     /**
      * 项目完全启动后执行
@@ -68,6 +72,10 @@ public class MyApplicationListener extends HttpServlet implements ApplicationLis
         //将关注的二维码存于application
         QrCode qrCode = qrCodeService.findQrCode();
         application.setAttribute("qrCode", qrCode);
+
+        //将角色存于application
+        List<Role> roleList = roleService.findAllRoles();
+        application.setAttribute("roleList", roleList);
 
     }
 }

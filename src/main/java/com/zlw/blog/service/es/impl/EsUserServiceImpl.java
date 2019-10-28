@@ -4,6 +4,9 @@ import com.zlw.blog.po.es.EsUser;
 import com.zlw.blog.repository.es.EsUserRepository;
 import com.zlw.blog.service.es.EsUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,6 +25,13 @@ public class EsUserServiceImpl implements EsUserService {
     @Override
     public EsUser findEsUserById(Integer userId) {
         return esUserRepository.findOne(userId);
+    }
+
+    @Override
+    public Page<EsUser> findEsUserByPage(Integer currentPage, Integer size) {
+        Pageable pageable = new PageRequest(currentPage, size);
+        Page<EsUser> page = esUserRepository.findAll(pageable);
+        return page;
     }
 
 }

@@ -54,8 +54,7 @@
         <div class="row">
             <div class="col-md-8 blog-main">
                 <!--遍历集合，展示博客-->
-                <div th:each="blog : ${blogList}" class="row">
-                    <!--/*@thymesVar id="blogList1" type="遍历集合1"*/-->
+                <div th:each="blog : ${page.tList}" class="row">
                     <div class="col-md-6 col-sm-6">
                         <article class=" blog-teaser">
                             <header>
@@ -73,7 +72,6 @@
                         </article>
                     </div>
 
-                    <!--/*@thymesVar id="blogList1" type="遍历集合2"*/-->
                     <div th:if="${blog.blogIndex}!=null" class="col-md-6 col-sm-6">
                         <article class=" blog-teaser">
                             <header>

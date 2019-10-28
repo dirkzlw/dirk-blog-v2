@@ -3,6 +3,8 @@ package com.zlw.blog.vo;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * 返回的分页信息
  *
@@ -11,17 +13,21 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class Page {
+public class Page<T> {
+    private List<T> tList;
     private Integer currentPage;
     private Integer totalPage;
+    private Integer totalNum;
     private Integer esize;
 
     protected Page() {
     }
 
-    public Page(Integer currentPage, Integer totalPage, Integer esize) {
+    public Page(List<T> tList, Integer currentPage, Integer totalPage, Integer totalNum, Integer esize) {
+        this.tList = tList;
         this.currentPage = currentPage;
         this.totalPage = totalPage;
+        this.totalNum = totalNum;
         this.esize = esize;
     }
 }

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8"/>
+    <title>DirkBlog--用户管理</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="/table/css/style.css"/>
+
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.bootcss.com/twitter-bootstrap/4.2.1/css/bootstrap.min.css"/>
+
+    <script src="/table/js/jquery.min.js"></script>
+    <script src="/table/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/table/js/bootbox.min.js"></script>
+
+    <style type="text/css">
+        a:hover {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box" style="position: relative;top: 0px;">
+    <div class="content">
+        <!--搜索输入框及查询、重置按钮-->
+        <div class="container content_width">
+            <div class="person_search">
+                <div class="search_input">
+                    <div class="input-group mb-3">
+                        <span>账户：</span>
+                        <input id="smrn" type="text" class="form-control" placeholder="请输入用户名">
+                    </div>
+                </div>
+                <div class="search_input">
+                    <button class="btn btn-primary search_btn" type="button" id="search_btn">查询</button>
+                </div>
+            </div>
+            <div class="line"></div>
+        </div>
+        <!--添加按钮及bootstrap的模态框-->
+        <div class="export">
+            <button id="new_add" type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                    data-target="#renyuan">
+                <img src="/table/img/add_two.png"/>
+                <span>添加</span>
+            </button>
+            <div class="modal fade" id="renyuan">
+                <div class="modal-dialog modal-lg modal_position">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">添加</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <table id="xztb" class="table">
+                                <!--添加会议弹窗的样式-->
+                                <tbody>
+                                <tr>
+                                    <td class="tb_bg"><label for="username"><font
+                                            style="font-size: 14px; color: red;">*</font>用户名</label>
+                                    </td>
+                                    <td><input class="username" id="username" name="username" type="text"
+                                               placeholder="请输入用户名"/></td>
+                                    <td class="tb_bg"><label for="email"><font
+                                            style="font-size: 14px; color: red;">*</font>邮箱</label>
+                                    </td>
+                                    <td><input class="email" id="email" name="email" type="text"
+                                               placeholder="请输入邮箱"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="tb_bg"><label for="role">角色</label></td>
+                                    <td>
+                                        <select id="role" name="role" class="form-control select_down"
+                                                style="font-size: 13px; color: #666;">
+                                            <option th:each="role : ${application.roleList}"  th:value="${role.roleName}" th:text="${role.roleName}"></option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button id="add_btn" type="button" class="btn btn-secondary">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="xrenyuan">
+                <div class="modal-dialog modal-lg modal_position">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">修改</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <table id="xxztb" class="table">
+                                <!--修改会议弹窗的样式-->
+                                <tbody>
+                                <tr>
+                                    <td class="tb_bg"><label for="xusername"><font
+                                            style="font-size: 14px; color: red;">*</font>用户名</label>
+                                    </td>
+                                    <td><input class="xusername" id="xusername" name="xusername" type="text"
+                                               placeholder="请输入用户名"/></td>
+                                    <td class="tb_bg"><label for="xemail"><font
+                                            style="font-size: 14px; color: red;">*</font>邮箱</label>
+                                    </td>
+                                    <td><input class="xemail" id="xemail" name="xemail" type="text"
+                                               placeholder="请输入邮箱"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="tb_bg"><label for="xrole">角色</label></td>
+                                    <td>
+                                        <select id="xrole" name="xrole"
+                                                class="form-control select_down" style="font-size: 13px; color: #666;">
+                                            <option th:each="role : ${application.roleList}"  th:value="${role.roleName}" th:text="${role.roleName}"></option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button id="xadd_btn" type="button" class="btn btn-secondary">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--表格列表-->
+        <table id="tb" class="table">
+            <thead>
+            <tr>
+                <th>用户名</th>
+                <th>邮箱</th>
+                <th>角色</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="show_tbody">
+            <tr th:each="user : ${userPage.tList}" th:id="${user.userId} + 1">
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.roleName}"></td>
+                <td>
+                    <a th:id="${user.userId}" href="#" class="edit">编辑</a>
+                    <a th:id="${user.userId}" href="#" class="del" onclick="delUser(this.id)">删除</a>
+                    <a th:id="${user.userId}" href="#" th:title="${user.userId}" onclick="resetPwd(title)">重置密码</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="content">
+        <div th:if="${userPage != null}" style="display: inline;">
+            共<span id="totalPage" th:text="${userPage.totalPage}"></span>页
+            &nbsp;&nbsp;
+            共<span th:text="${userPage.totalNum}"></span>条
+
+            &nbsp;&nbsp;
+            <a th:if="${userPage.currentPage}>1"
+               th:href="@{/to/mgn/umgn(currentPage=${userPage.currentPage})}">上一页</a>
+            &nbsp;&nbsp;
+            <span th:text="${userPage.currentPage}"></span>
+            &nbsp;&nbsp;
+            <a th:if="${userPage.currentPage}<${userPage.totalPage}"
+               th:href="@{/to/mgn/umgn(currentPage=${userPage.currentPage})}">下一页</a>
+            &nbsp;&nbsp;
+            前往
+            <input id="toPage" type="number" style="width: 50px">
+            页
+            <a href="javascript:toSkip()">Go</a>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="/mgn/table/umgn.js"></script>
+<script type="text/javascript">
+    function delUser(userId) {
+        var aTag = document.getElementById(userId * 1 + 1);
+        // ajax 删除用户
+        $.ajax({
+            type: "POST",
+            url: "/usermgn/user/del",
+            data: {'userId': userId},
+            dataType: "text", //return dataType: text or json
+            success: function (json) {
+                if (json == "del") {
+                    aTag.remove();
+                    bootbox.alert({
+                        title: "来自智能会议室的提示",
+                        message: "用户删除成功",
+                        closeButton: false
+                    })
+                }
+            },
+            error: function (json) {
+                bootbox.alert({
+                    title: "来自智能会议室的提示",
+                    message: "删除失败，请检查网络",
+                    closeButton: false
+                })
+                return
+            }
+        });
+    }
+
+    //重置密码
+    function resetPwd(id) {
+        $.ajax({
+            type: "POST",
+            url: "/usermgn/user/resetPwd",
+            data: {'userId': id},
+            dataType: "text", //return dataType: text or json
+            success: function (json) {
+                if (json == "success") {
+                    bootbox.alert({
+                        title: "来自智能会议室的提示",
+                        message: "当前密码已重置为“123456”",
+                        closeButton: false
+                    })
+                }
+            },
+            error: function (json) {
+                bootbox.alert({
+                    title: "来自智能会议室的提示",
+                    message: "重置密码失败，请检查网络",
+                    closeButton: false
+                })
+                return
+            }
+        });
+
+
+    }
+
+
+
+    //页面跳转
+    function toSkip() {
+        var toPage = document.getElementById("toPage").value * 1 - 1;
+        var totalPage = document.getElementById("totalPage").textContent;
+        if (toPage >= 0 && toPage < totalPage) {
+            var href = "/to/usermgn/user-manage?page=" + toPage;
+            window.open(href, "_self");
+        } else {
+            bootbox.alert({
+                title: "来自智能会议室的提示",
+                message: "跳转页面输入有误",
+                closeButton: false
+            })
+        }
+    }
+
+
+    //查询
+    $('#search_btn').click(function () {
+        var mrkey = document.getElementById("smrn").value;
+        if (mrkey === '') {
+            bootbox.alert({
+                title: "来自智能会议室的提示",
+                message: "搜索内容不能为空",
+                closeButton: false
+            })
+            return;
+        }else {
+            var href = "/to/control/user/search?mrkey=" + mrkey;
+            window.open(href, "_self");
+        }
+    })
+
+    //结束查询
+    $('#end_search_btn').click(function () {
+        var href = "/to/usermgn/user-manage";
+        window.open(href, "_self");
+    })
+
+</script>
+</body>
+</html>

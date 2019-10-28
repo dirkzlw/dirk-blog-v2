@@ -66,8 +66,8 @@ public class BlogController {
     private String USER_HEAD_FIRST;
     @Value("${FDFS_CLIENT_PAHT}")
     private String FDFS_CLIENT_PAHT;
-    @Value("${PAGE_SIZE}")
-    private Integer PAGE_SIZE;
+    @Value("${BLOG_PAGE_SIZE}")
+    private Integer BLOG_PAGE_SIZE;
 
     /**
      * 跳转到编辑博客页面
@@ -162,13 +162,14 @@ public class BlogController {
 
     /**
      * 搜索博客
-     * @param fors 用户输入搜索
+     *
+     * @param fors  用户输入搜索
      * @param model
      * @return
      */
     @GetMapping("/blog/search/fors")
     public String searchBlog(@RequestParam(required = false) String fors,
-                             Model model,Integer currentPage,
+                             Model model, Integer currentPage,
                              HttpServletRequest request) {
         UserUtils.initSesionUser(request);
 //        List<EsBlog> blogList = esBlogService.findEsBlogList(fors, fors);
@@ -180,13 +181,17 @@ public class BlogController {
             currentPage = 0;
         }
         //默认差群起始页
-        Page<Blog> pageObj = blogService.findBlogByPage(currentPage, PAGE_SIZE,fors);
+        Page<Blog> pageObj = blogService.findBlogByPage(currentPage, BLOG_PAGE_SIZE, fors);
         List<Blog> blogList = pageObj.getContent();
-        com.zlw.blog.vo.Page page = new com.zlw.blog.vo.Page(currentPage, pageObj.getTotalPages(),blogList.size());
-
         List<BlogIndex> blogIndexList = IndexUtils.getIndexList(blogList);
+        com.zlw.blog.vo.Page page =
+                new com.zlw.blog.vo.Page(
+                        blogIndexList,
+                        currentPage,
+                        pageObj.getTotalPages(),
+                        (int) pageObj.getTotalElements(),
+                        blogList.size());
 
-        model.addAttribute("blogList", blogIndexList);
         model.addAttribute("page", page);
         model.addAttribute("fors", fors);
 
@@ -211,13 +216,17 @@ public class BlogController {
             currentPage = 0;
         }
         //默认差群起始页
-        Page<Blog> pageObj = blogService.findBlogByPage(currentPage, PAGE_SIZE,blogTag);
+        Page<Blog> pageObj = blogService.findBlogByPage(currentPage, BLOG_PAGE_SIZE, blogTag);
         List<Blog> blogList = pageObj.getContent();
-        com.zlw.blog.vo.Page page = new com.zlw.blog.vo.Page(currentPage, pageObj.getTotalPages(),blogList.size());
-
         List<BlogIndex> blogIndexList = IndexUtils.getIndexList(blogList);
+        com.zlw.blog.vo.Page page =
+                new com.zlw.blog.vo.Page(
+                        blogIndexList,
+                        currentPage,
+                        pageObj.getTotalPages(),
+                        (int) pageObj.getTotalElements(),
+                        blogList.size());
 
-        model.addAttribute("blogList", blogIndexList);
         model.addAttribute("page", page);
         model.addAttribute("tag", blogTag.getId());
 
@@ -226,6 +235,7 @@ public class BlogController {
 
     /**
      * 查询指定用户的主页
+     *
      * @param model
      * @param ud
      * @param currentPage
@@ -235,19 +245,23 @@ public class BlogController {
     public String userSearch(Model model,
                              Integer ud,
                              Integer currentPage,
-                             HttpServletRequest request){
+                             HttpServletRequest request) {
         UserUtils.initSesionUser(request);
         if (currentPage == null) {
             currentPage = 0;
         }
         //默认差群起始页
-        Page<Blog> pageObj = blogService.findBlogByPage(currentPage, PAGE_SIZE,userService.findUserById(ud));
+        Page<Blog> pageObj = blogService.findBlogByPage(currentPage, BLOG_PAGE_SIZE, userService.findUserById(ud));
         List<Blog> blogList = pageObj.getContent();
-        com.zlw.blog.vo.Page page = new com.zlw.blog.vo.Page(currentPage, pageObj.getTotalPages(),blogList.size());
-
         List<BlogIndex> blogIndexList = IndexUtils.getIndexList(blogList);
+        com.zlw.blog.vo.Page page =
+                new com.zlw.blog.vo.Page(
+                        blogIndexList,
+                        currentPage,
+                        pageObj.getTotalPages(),
+                        (int) pageObj.getTotalElements(),
+                        blogList.size());
 
-        model.addAttribute("blogList", blogIndexList);
         model.addAttribute("page", page);
         model.addAttribute("ud", ud);
 
@@ -286,7 +300,7 @@ public class BlogController {
                 commentInfoList.add(info);
             } else {
                 Visitor visitor = comment.getVisitor();
-                CommentInfo info = new CommentInfo(comment.getCommentId(), null, USER_HEAD_FIRST, "游客" + visitor.getIpAddress().replace(".","" ), comment.getCreateTime(), comment.getContent());
+                CommentInfo info = new CommentInfo(comment.getCommentId(), null, USER_HEAD_FIRST, "游客" + visitor.getIpAddress().replace(".", ""), comment.getCreateTime(), comment.getContent());
                 commentInfoList.add(info);
             }
         }
@@ -315,7 +329,7 @@ public class BlogController {
         //从session中获取user，判断是否登录
         SessionUser sessionUser = (SessionUser) request.getSession().getAttribute("sessionUser");
         Visitor v = null;
-        if (sessionUser != null && sessionUser.getUserId()!=null) {
+        if (sessionUser != null && sessionUser.getUserId() != null) {
             //评论与用户关联
             comment.setCuser(userService.findUserById(sessionUser.getUserId()));
         } else {
@@ -343,7 +357,7 @@ public class BlogController {
 
         //提取需要展示的评论
         CommentInfo commentInfo = new CommentInfo(comment.getCommentId(), null, null, null, null, null);
-        if (sessionUser != null && sessionUser.getUserId()!=null) {
+        if (sessionUser != null && sessionUser.getUserId() != null) {
             //关联用户展示的信息
             commentInfo.setUserId(sessionUser.getUserId());
             commentInfo.setUsername(sessionUser.getUsername());
