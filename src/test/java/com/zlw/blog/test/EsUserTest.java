@@ -29,6 +29,7 @@ public class EsUserTest {
     public void delAll(){
         esUserRepository.deleteAll();
     }
+    //将mysql中数据导入es
     @Test
     public void leadIn(){
         List<User> userList = userService.findAll();

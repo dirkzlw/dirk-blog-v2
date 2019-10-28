@@ -2,8 +2,10 @@ package com.zlw.blog.controller;
 
 import com.zlw.blog.po.Role;
 import com.zlw.blog.po.User;
+import com.zlw.blog.po.es.EsUser;
 import com.zlw.blog.service.RoleService;
 import com.zlw.blog.service.UserService;
+import com.zlw.blog.service.es.EsUserService;
 import com.zlw.blog.utils.FastDFSUtils;
 import com.zlw.blog.utils.MD5Utils;
 import com.zlw.blog.utils.UserUtils;
@@ -38,6 +40,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private EsUserService esUserService;
     //注入javaMail发送器
     @Autowired
     private JavaMailSender mailSender;
@@ -96,6 +100,10 @@ public class UserController {
         //保存
         userService.save(user);
 
+        //同步es
+        esUserService.saveEsUser(new EsUser(user.getUserId(),
+                user.getUsername(),user.getEmail(),user.getRole().getRoleName()));
+
         UserUtils.saveObjectToSession(request,
                 response,
                 UserUtils.getSessionUser(user),
@@ -139,7 +147,7 @@ public class UserController {
             return "noneEmail";
         }
 
-        //数据库中邮箱不存在，则给注册的邮件发送验证码
+        //给邮箱发送重置的密码
         SimpleMailMessage message = new SimpleMailMessage();
         //发件人
         message.setFrom(fromEmail);
@@ -154,6 +162,7 @@ public class UserController {
 
         //保存用户新密码
         user.setPassword(MD5Utils.md5(newpwd));
+
         userService.save(user);
 
         return "resetSuccess";
@@ -177,9 +186,9 @@ public class UserController {
         String result = userService.userNameReset(userId, newUsername);
         if ("success".equals(result)) {
             //修改用户名后 同步es库
-//            EsUser esUser = esUserService.findEsUserById(userId);
-//            esUser.setUsername(newUsername);
-//            esUserService.save(esUser);
+            EsUser esUser = esUserService.findEsUserById(userId);
+            esUser.setUsername(newUsername);
+            esUserService.saveEsUser(esUser);
 
             SessionUser sessionUser = (SessionUser) UserUtils.getObjectFromSession(request, "sessionUser");
             sessionUser.setUsername(newUsername);
@@ -227,9 +236,9 @@ public class UserController {
 
         if ("success".equals(result)) {
             //更新es
-//            EsUser esUser = esUserService.findEsUserById(userId);
-//            esUser.setEmail(newEmail);
-//            esUserService.save(esUser);
+            EsUser esUser = esUserService.findEsUserById(userId);
+            esUser.setEmail(newEmail);
+            esUserService.saveEsUser(esUser);
 
             //更新sessionUser
             SessionUser sessionUser = (SessionUser) UserUtils.getObjectFromSession(request, "sessionUser");
