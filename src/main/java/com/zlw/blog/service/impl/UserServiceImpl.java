@@ -7,6 +7,8 @@ import com.zlw.blog.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author Ranger
  * @create 2019-06-04 19:47
@@ -115,5 +117,10 @@ public class UserServiceImpl implements UserService {
         user.setHeadImgUrl(newUrl);
         userRepository.save(user);
         return "success";
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }

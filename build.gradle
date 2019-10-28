@@ -52,7 +52,7 @@ dependencies {
     //javaMail
     compile 'org.springframework.boot:spring-boot-starter-mail'
     //Spring Data ElasticSearch
-//    compile 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    compile 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
     //jasypt 配置文件加密
     compile 'com.github.ulisesbocchio:jasypt-spring-boot-starter:1.18'
     //fastdfs_client

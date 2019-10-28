@@ -2,6 +2,8 @@ package com.zlw.blog.service;
 
 import com.zlw.blog.po.User;
 
+import java.util.List;
+
 /**
  * @author Ranger
  * @create 2019-06-04 19:47
@@ -24,4 +26,6 @@ public interface UserService {
     String userEmailReset(Integer userId, String newEmail);
 
     String HeadUrlReset(Integer userId, String newUrl);
+
+    List<User> findAll();
 }

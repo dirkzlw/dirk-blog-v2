@@ -17,7 +17,7 @@
     <script type="text/javascript" src="/naran/js/naranja.js"></script>
 
 </head>
-<body>
+<body onkeydown="keyLogin()">
 
 <div class="form" style="position:relative">
 
@@ -35,7 +35,7 @@
                 <input type="password" name="password" id="login_password" placeholder="请输入密码" required>
             </div>
             <div class="form_item">
-                <input type="button" value="登录" onclick="login()">
+                <input type="button" id="keyLogin" value="登录" onclick="login()">
             </div>
         </form>
         <div class="info">
@@ -77,6 +77,16 @@
 <script src="/user/login/js/ajax.js"></script>
 <script src="/index/js/jquery.min.js"></script>
 <script type="text/javascript">
+
+    /*
+  * 回车登录，监听函数
+  */
+    function keyLogin(){
+        if (event.keyCode==13) { //回车键的键值为13
+            var toClick = document.getElementById("keyLogin");
+            toClick.click();  //调用登录按钮的登录事件
+        }
+    }
 
     //重置密码
     function resetPwd() {
