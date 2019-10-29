@@ -141,6 +141,7 @@
                 <th>用户名</th>
                 <th>邮箱</th>
                 <th>角色</th>
+                <th>状态</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -149,9 +150,12 @@
                 <td th:text="${user.username}"></td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.roleName}"></td>
+                <td name="ok_use" th:if="${user.status} eq 1">可用</td>
+                <td name="no_use" th:if="${user.status} eq 2">被禁用</td>
                 <td>
                     <a th:id="${user.userId}" href="#" class="edit">编辑</a>
-                    <a th:id="${user.userId}" href="#" class="del" onclick="delUser(this.id)">禁用</a>
+                    <a th:if="${user.status} eq 1" th:id="${user.userId}" href="#" onclick="delUser(this.id,this)">禁用</a>
+                    <a th:if="${user.status} eq 2" th:id="${user.userId}" href="#" onclick="reUse(this.id,this)">启用</a>
                     <a th:id="${user.userId}" href="#" th:title="${user.userId}" onclick="resetPwd(title)">重置密码</a>
                 </td>
             </tr>
@@ -184,8 +188,9 @@
 
 <script src="/mgn/js/umgn.js"></script>
 <script type="text/javascript">
-    function delUser(userId) {
-        var aTag = document.getElementById(userId * (-1));
+    //禁用用户
+    function delUser(userId,obj) {
+        var aTag = document.getElementById(userId * (-1)).cells[3];
         // ajax 禁用用户
         $.ajax({
             type: "POST",
@@ -194,7 +199,8 @@
             dataType: "text", //return dataType: text or json
             success: function (json) {
                 if (json == "success") {
-                    aTag.remove();
+                    aTag.innerHTML="被禁用"
+                    $(obj).text("启用")
                     bootbox.alert({
                         title: "来自DirkBlog的提示",
                         message: "用户禁用成功",
@@ -213,6 +219,44 @@
                 bootbox.alert({
                     title: "来自DirkBlog的提示",
                     message: "禁用失败，请检查网络",
+                    closeButton: false
+                })
+                return
+            }
+        });
+    }
+
+    //启用用户
+    function reUse(userId,obj) {
+        var aTag = document.getElementById(userId * (-1)).cells[3];
+        // ajax 禁用用户
+        $.ajax({
+            type: "POST",
+            url: "/mgn/umgn/reuse",
+            data: {'userId': userId},
+            dataType: "text", //return dataType: text or json
+            success: function (json) {
+                if (json == "success") {
+                    aTag.innerHTML="可用"
+                    $(obj).text("禁用")
+                    bootbox.alert({
+                        title: "来自DirkBlog的提示",
+                        message: "用户启用成功",
+                        closeButton: false
+                    })
+                }else {
+                    bootbox.alert({
+                        title: "来自DirkBlog的提示",
+                        message: "启用失败，请检查网络",
+                        closeButton: false
+                    })
+                    return
+                }
+            },
+            error: function (json) {
+                bootbox.alert({
+                    title: "来自DirkBlog的提示",
+                    message: "启用失败，请检查网络",
                     closeButton: false
                 })
                 return

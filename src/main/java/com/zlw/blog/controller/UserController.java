@@ -384,13 +384,31 @@ public class UserController {
     public String delUser(Integer userId){
 
         try {
-            User user = userService.findUserById(userId);
-            user.setStatus(USER_LOCK_STATUS);
-            userService.save(user);
-            //同步es
-            EsUser esUser = esUserService.findEsUserById(userId);
-            esUser.setStatus(USER_LOCK_STATUS);
-            esUserService.saveEsUser(esUser);
+            lockAndReuse(userService,
+                    esUserService,
+                    userId,
+                    USER_LOCK_STATUS);
+        }catch (Exception e){
+            return "fail";
+        }
+
+        return "success";
+    }
+
+    /**
+     * 启用用户
+     * @param userId
+     * @return
+     */
+    @PostMapping("/mgn/umgn/reuse")
+    @ResponseBody
+    public String reuseUser(Integer userId){
+
+        try {
+           lockAndReuse(userService,
+                   esUserService,
+                   userId,
+                   USER_INIT_STATUS);
         }catch (Exception e){
             return "fail";
         }
@@ -416,5 +434,18 @@ public class UserController {
         request.getSession().removeAttribute("sessionUser");
 
         return "redirect:/index";
+    }
+
+    private static void lockAndReuse(UserService userService,
+                                     EsUserService esUserService,
+                                     Integer userId,
+                                     Integer status){
+        User user = userService.findUserById(userId);
+        user.setStatus(status);
+        userService.save(user);
+        //同步es
+        EsUser esUser = esUserService.findEsUserById(userId);
+        esUser.setStatus(status);
+        esUserService.saveEsUser(esUser);
     }
 }
