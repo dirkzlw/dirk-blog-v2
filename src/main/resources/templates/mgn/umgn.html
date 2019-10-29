@@ -268,14 +268,14 @@
     function resetPwd(id) {
         $.ajax({
             type: "POST",
-            url: "/usermgn/user/resetPwd",
+            url: "/mgn/umgn/rpd",
             data: {'userId': id},
             dataType: "text", //return dataType: text or json
             success: function (json) {
                 if (json == "success") {
                     bootbox.alert({
                         title: "来自DirkBlog的提示",
-                        message: "当前密码已重置为“123456”",
+                        message: "密码重置成功！",
                         closeButton: false
                     })
                 }

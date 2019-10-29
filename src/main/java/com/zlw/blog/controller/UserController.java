@@ -416,7 +416,23 @@ public class UserController {
         return "success";
     }
 
+    /**
+     * 重置用户密码
+     * @return
+     */
+    @PostMapping("/mgn/umgn/rpd")
+    @ResponseBody
+    public String resetPwd(Integer userId){
+        try {
+            User user = userService.findUserById(userId);
+            user.setPassword(MD5Utils.md5(USER_INIT_PASSWORD));
+            userService.save(user);
+        }catch (Exception e){
+            return "fail";
+        }
 
+        return "success";
+    }
 
     /**
      * 用户退出
