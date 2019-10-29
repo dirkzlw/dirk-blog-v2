@@ -31,4 +31,5 @@ public interface UserService {
 
     String checkAndSave(User user);
 
+    String saveEditedUser(User oldUser);
 }

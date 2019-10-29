@@ -33,7 +33,6 @@ $(function () {
 
 var editUserId,
     addEnter = true,
-    noRepeat = false,
     tdStr = '',
     xtdStr = '',
     trIndex,
@@ -67,9 +66,16 @@ var methods = {
                     var username=json.obj.username;
                     var email=json.obj.email;
                     var role=json.obj.roleName;
-                    var status = json.rtn;
+                    var status=json.obj.status
+                    var rtn = json.rtn;
                     var userIdTr = userId * (-1);
-                    if (status == "save") {
+                    var statusName;
+                    if(status==1){
+                        statusName="可用"
+                    }else {
+                        statusName="被禁用"
+                    }
+                    if (rtn == "save") {
                         bootbox.alert({
                             title: "来自DirkBlog的提示",
                             message: "用户添加成功",
@@ -79,21 +85,23 @@ var methods = {
                             "                <td>"+username+"</td>\n" +
                             "                <td>"+email+"</td>\n" +
                             "                <td>"+role+"</td>\n" +
+                            "                <td>"+statusName+"</td>\n" +
                             "                <td>\n" +
-                            "                    <a id='" + userId + "' href='#' class='edit'>编辑</a> <a id='" + userId + "' href='#' class='del' onclick='delUser(this.id)'>删除</a>" +
-                            "                    <a id='" + userId + "' href='#'  class='del' onclick='resetPsw(email)'>重置密码</a>"+
+                            "                    <a id='" + userId + "' href='#' class='edit'>编辑</a> " +
+                            "                    <a id='" + userId + "' href='#' onclick='delUser(this.id,this)'>禁用</a>" +
+                            "                    <a id='" + userId + "' href='#' onclick='resetPsw(email)'>重置密码</a>"+
                             "               </td>" +
                             "           ";
                         $('#show_tbody').append('<tr id=' + userIdTr + '>' + tdStr + '</tr>');
                         $('#renyuan').modal('hide');
-                    } else if (status=="userNameExist") {
+                    } else if (rtn=="userNameExist") {
                         bootbox.alert({
                             title: "来自DirkBlog的提示",
                             message: "用户名已存在，请检查",
                             closeButton: false
                         })
                         return
-                    }else if(status=="emailExist"){
+                    }else if(rtn=="emailExist"){
                         bootbox.alert({
                             title: "来自DirkBlog的提示",
                             message: "邮箱已存在，请检查",
@@ -122,13 +130,12 @@ var methods = {
         }
         if (addEnter) {
             var xusername = $('.xusername').val().trim();
-            // var xpassword = $('.xpassword').val().trim();
             var xemail = $('.xemail').val().trim();
             var xrole = $("#xrole option:selected").val();
             // ajax 修改会议
             $.ajax({
                 type: "POST",
-                url: "/usermgn/user/save",
+                url: "/mgn/umgn/save",
                 data: {
                     'userId': editUserId,
                     'username': xusername,
@@ -138,12 +145,19 @@ var methods = {
                 dataType: "text", //return dataType: text or json
                 success: function (json) {
                     json = eval('(' + json + ')');
-                    var userId=json.userId;
-                    var username=json.username;
-                    var email=json.email;
-                    var role=json.role;
-                    var status = json.rtn;
-                    if (status == "save") {
+                    var userId=json.obj.userId;
+                    var username=json.obj.username;
+                    var email=json.obj.email;
+                    var role=json.obj.roleName;
+                    var status = json.obj.status
+                    var rtn = json.rtn;
+                    var statusName;
+                    if(status==1){
+                        statusName="可用"
+                    }else {
+                        statusName="被禁用"
+                    }
+                    if (rtn == "save") {
                         bootbox.alert({
                             title: "来自DirkBlog的提示",
                             message: "用户信息修改成功",
@@ -153,19 +167,26 @@ var methods = {
                             "                <td>"+username+"</td>\n" +
                             "                <td>"+email+"</td>\n" +
                             "                <td>"+role+"</td>\n" +
+                            "                <td>"+statusName+"</td>\n" +
                             "                <td>\n" +
-                            "                    <a id='" + userId + "' href='#' class='edit'>编辑</a> <a id='" + userId + "' href='#' class='del' onclick='delUser(this.id)'>删除</a>" +
-                            "                    <a id='" + userId + "' href='#' class='${title:this.email}' onclick='resetPwd(title)'>重置密码</a>"+
+                            "                    <a id='" + userId + "' href='#' class='edit'>编辑</a> " +
+                            "                    <a id='" + userId + "' href='#' onclick='delUser(this.id,this)'>禁用</a>" +
+                            "                    <a id='" + userId + "' href='#' onclick='resetPwd(title)'>重置密码</a>"+
                             "               </td>" +
                             "           ";
-                        // methods.xsetStr();
-                        // xtdStr += "<td><a id='" + userId + "' href='#' class='edit'>编辑</a> <a id='" + userId + "' href='#' class='del' onclick='delUser(this.id)'>删除</a></td>";
                         $('#show_tbody tr').eq(trIndex).empty().append(xtdStr);
                         $('#xrenyuan').modal('hide');
-                    } else if (status == "exist") {
+                    } else if (rtn == "userNameExist") {
                         bootbox.alert({
                             title: "来自DirkBlog的提示",
                             message: "用户已存在，请检查",
+                            closeButton: false
+                        })
+                        return
+                    } else if (rtn == "emailExist") {
+                        bootbox.alert({
+                            title: "来自DirkBlog的提示",
+                            message: "邮箱已存在，请检查",
                             closeButton: false
                         })
                         return
@@ -199,28 +220,6 @@ var methods = {
         for (var p = 0; p < xtarSel.length; p++) {
             var the_p = p + xtarInp.length;
             xtarSel.eq(p).val(nowConArr[the_p]);
-        }
-
-    },
-    setStr: function () {
-
-        tdStr = '';
-        for (var a = 0; a < tarInp.length; a++) {
-            tdStr += '<td>' + tarInp.eq(a).val() + '</td>'
-        }
-        for (var b = 0; b < tarSel.length; b++) {
-            tdStr += '<td>' + tarSel.eq(b).val() + '</td>'
-        }
-
-    },
-    xsetStr: function () {
-
-        xtdStr = '';
-        for (var a = 0; a < xtarInp.length; a++) {
-            xtdStr += '<td>' + xtarInp.eq(a).val() + '</td>'
-        }
-        for (var b = 0; b < xtarSel.length; b++) {
-            xtdStr += '<td>' + xtarSel.eq(b).val() + '</td>'
         }
 
     },

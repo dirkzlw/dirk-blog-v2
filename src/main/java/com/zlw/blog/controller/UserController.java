@@ -336,42 +336,39 @@ public class UserController {
     public ResultObj saveUser(User user, String roleName) {
         String result;
         System.out.println("roleName = " + roleName);
+        Role role = roleService.findByRoleName(roleName);
+        EsUser esUser = new EsUser();
         if (user.getUserId() == null) {
             // 添加
-            Role role = roleService.findByRoleName(roleName);
             user.setRole(role);
             user.setPassword(MD5Utils.md5(USER_INIT_PASSWORD));
             user.setHeadImgUrl(USER_HEAD_FIRST);
             user.setStatus(USER_INIT_STATUS);
             result = userService.checkAndSave(user);
-            EsUser esUser = new EsUser(user.getUserId(),
-                    user.getUsername(),
-                    user.getEmail(),
-                    user.getRole().getRoleName(),
-                    user.getStatus());
-            ResultObj rtnObj = new ResultObj(esUser, result);
-            //同步搜索库
-            if ("save".equals(result)) {
-                esUserService.saveEsUser(esUser);
-            }
-            return rtnObj;
         } else {
             //修改
-//            Role role = roleService.findByRoleName(roleName);
-//            User oldUser = userService.findUserById(user.getUserId());
-//            oldUser.setRole(role);
-//            oldUser.setUsername(user.getUsername());
-//            oldUser.setEmail(user.getEmail());
-//            result = userService.saveUser(oldUser);
-//            UserInfo userInfo = new UserInfo(oldUser.getUsername(), oldUser.getEmail(), oldUser.getRole().getRoleName(), result);
-//            userInfo.setUserId(oldUser.getUserId());
-//            //同步搜索库
-//            if ( "save".equals(result)) {
-//                esUserService.save(new EsUser(oldUser.getUserId(), oldUser.getUsername(), oldUser.getEmail(), oldUser.getRole().getRoleName()));
-//            }
-            return null;
+            user.setRole(role);
+            User oldUser = userService.findUserById(user.getUserId());
+            oldUser.setUsername(user.getUsername());
+            oldUser.setEmail(user.getEmail());
+            oldUser.setRole(user.getRole());
+            user.setStatus(oldUser.getStatus());
+            result = userService.saveEditedUser(oldUser);
         }
-
+        ResultObj rtnObj = new ResultObj();
+        //同步搜索库
+        if ("save".equals(result)) {
+            esUser.setUserId(user.getUserId());
+            esUser.setUsername(user.getUsername());
+            esUser.setEmail(user.getEmail());
+            esUser.setRoleName(user.getRole().getRoleName());
+            esUser.setStatus(user.getStatus());
+            esUserService.saveEsUser(esUser);
+        }
+        rtnObj.setObj(esUser);
+        rtnObj.setRtn(result);
+        System.out.println("UserController.saveUser");
+        return rtnObj;
     }
 
     /**

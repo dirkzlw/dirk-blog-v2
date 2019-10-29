@@ -21,6 +21,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 保存用户
+     *
      * @param user
      */
     @Override
@@ -30,6 +31,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 用户登录
+     *
      * @param username
      * @param password
      * @return
@@ -41,6 +43,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 根据id查询用户
+     *
      * @param userId
      * @return
      */
@@ -51,6 +54,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 根据邮箱查询用户
+     *
      * @param email
      * @return
      */
@@ -61,13 +65,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String checkUserNameAndEmail(String username, String email) {
-        User user ;
+        User user;
         user = userRepository.findByUsername(username);
-        if(user!=null){
+        if (user != null) {
             return "username_exist";
         }
         user = userRepository.findByEmail(email);
-        if(user!=null){
+        if (user != null) {
             return "email_exist";
         }
         return "success";
@@ -127,11 +131,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public String checkAndSave(User user) {
         User byUsername = userRepository.findByUsername(user.getUsername());
-        if(byUsername!=null){
+        if (byUsername != null) {
             return "userNameExist";
         }
         User byEmail = userRepository.findByEmail(user.getEmail());
-        if(byEmail!=null){
+        if (byEmail != null) {
+            return "emailExist";
+        }
+        userRepository.save(user);
+        return "save";
+    }
+
+    @Override
+    public String saveEditedUser(User user) {
+        User byUsername = userRepository.findByUsername(user.getUsername());
+        if (byUsername != null && byUsername.getUserId() != user.getUserId()) {
+            return "userNameExist";
+        }
+        User byEmail = userRepository.findByEmail(user.getEmail());
+        if (byEmail != null && byEmail.getUserId() != user.getUserId()) {
             return "emailExist";
         }
         userRepository.save(user);
