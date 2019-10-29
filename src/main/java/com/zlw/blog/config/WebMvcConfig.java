@@ -29,7 +29,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         //,"/author/message"    先对未登录用户进行留言不拦截
         registry.addInterceptor(userRoot)
                 .addPathPatterns("/blog/comment/del",
-                        "/to/user/msg","/to/blog/edit","/blog/save",
+                        "/to/user/msg","/to/blog/edit",
+                        "to/blog/edit","/blog/save",
                         "/blog/del","/blog/edit");                                               //AdminController
         //对管理员进行拦截
         AdminInterceptor adminRoot = new AdminInterceptor();
@@ -43,7 +44,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                         "/mgn/blogtag/save", "/mgn/blogtag/del")
                 .addPathPatterns("/to/mgn/qrcode",  //关注操作
                         "/mgn/qrcode/save", "/mgn/qrcode/del")
-                .addPathPatterns("to/mgn/umgn",
+                .addPathPatterns("/to/mgn/umgn",
                         "/mgn/umgn/save", "/mgn/umgn/del",
                         "/mgn/umgn/reuse", "/mgn/umgn/rpd",
                         "/mgn/umgn/search");

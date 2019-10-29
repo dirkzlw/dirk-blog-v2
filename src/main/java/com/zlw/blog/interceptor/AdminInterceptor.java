@@ -26,6 +26,7 @@ public class AdminInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //从session中获取author，判断是否登录
         SessionUser sessionUser = (SessionUser) request.getSession().getAttribute("sessionUser");
+        System.out.println("sessionUser = " + sessionUser);
         if (sessionUser == null) {
             response.sendRedirect("/to/login");
             return false;
