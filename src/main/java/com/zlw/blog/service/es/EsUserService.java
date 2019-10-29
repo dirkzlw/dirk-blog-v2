@@ -13,4 +13,6 @@ public interface EsUserService {
     EsUser findEsUserById(Integer userId);
 
     Page<EsUser> findEsUserByPage(Integer currentPage, Integer i);
+
+    void delEsUser(Integer userId);
 }

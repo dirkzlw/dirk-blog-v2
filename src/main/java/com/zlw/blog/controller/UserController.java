@@ -66,6 +66,10 @@ public class UserController {
     private Integer USER_PAGE_SIZE;
     @Value("${USER_INIT_PASSWORD}")
     private String USER_INIT_PASSWORD;
+    @Value(("${USER_INIT_STATUS}"))
+    private Integer USER_INIT_STATUS;
+    @Value(("${USER_LOCK_STATUS}"))
+    private Integer USER_LOCK_STATUS;
 
     /**
      * 跳转到登录页面
@@ -131,12 +135,17 @@ public class UserController {
         user.setHeadImgUrl(USER_HEAD_FIRST);
         //密码加密
         user.setPassword(MD5Utils.md5(user.getPassword()));
+        //设置状态
+        user.setStatus(USER_INIT_STATUS);
         //保存
         userService.save(user);
 
         //同步es
         esUserService.saveEsUser(new EsUser(user.getUserId(),
-                user.getUsername(), user.getEmail(), user.getRole().getRoleName()));
+                user.getUsername(),
+                user.getEmail(),
+                user.getRole().getRoleName(),
+                user.getStatus()));
 
         UserUtils.saveObjectToSession(request,
                 response,
@@ -157,12 +166,13 @@ public class UserController {
         //校验
         User user = userService.login(logUser.getUsername(), MD5Utils.md5(logUser.getPassword()));
         if (user != null) {
-
+            if(user.getStatus()==USER_LOCK_STATUS){
+                return "lock";
+            }
             UserUtils.saveObjectToSession(request,
                     response,
                     UserUtils.getSessionUser(user),
                     "sessionUser");
-
             return "success";
         }
 
@@ -315,6 +325,12 @@ public class UserController {
         return "fail";
     }
 
+    /**
+     * 管理员添加用户
+     * @param user
+     * @param roleName
+     * @return
+     */
     @PostMapping("/mgn/umgn/save")
     @ResponseBody
     public ResultObj saveUser(User user, String roleName) {
@@ -326,11 +342,13 @@ public class UserController {
             user.setRole(role);
             user.setPassword(MD5Utils.md5(USER_INIT_PASSWORD));
             user.setHeadImgUrl(USER_HEAD_FIRST);
+            user.setStatus(USER_INIT_STATUS);
             result = userService.checkAndSave(user);
             EsUser esUser = new EsUser(user.getUserId(),
                     user.getUsername(),
                     user.getEmail(),
-                    user.getRole().getRoleName());
+                    user.getRole().getRoleName(),
+                    user.getStatus());
             ResultObj rtnObj = new ResultObj(esUser, result);
             //同步搜索库
             if ("save".equals(result)) {
@@ -355,6 +373,32 @@ public class UserController {
         }
 
     }
+
+    /**
+     * 将用户加入黑名单
+     * @param userId
+     * @return
+     */
+    @PostMapping("/mgn/umgn/del")
+    @ResponseBody
+    public String delUser(Integer userId){
+
+        try {
+            User user = userService.findUserById(userId);
+            user.setStatus(USER_LOCK_STATUS);
+            userService.save(user);
+            //同步es
+            EsUser esUser = esUserService.findEsUserById(userId);
+            esUser.setStatus(USER_LOCK_STATUS);
+            esUserService.saveEsUser(esUser);
+        }catch (Exception e){
+            return "fail";
+        }
+
+        return "success";
+    }
+
+
 
     /**
      * 用户退出

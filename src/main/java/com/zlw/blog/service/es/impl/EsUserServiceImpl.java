@@ -34,4 +34,9 @@ public class EsUserServiceImpl implements EsUserService {
         return page;
     }
 
+    @Override
+    public void delEsUser(Integer userId) {
+
+    }
+
 }

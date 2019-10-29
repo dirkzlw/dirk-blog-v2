@@ -18,15 +18,17 @@ public class EsUser {
     private String username;
     private String email;
     private String roleName;
+    private Integer status;
 
     public EsUser() {
     }
 
-    public EsUser(Integer userId, String username, String email, String roleName) {
+    public EsUser(Integer userId, String username, String email, String roleName, Integer status) {
         this.userId = userId;
         this.username = username;
         this.email = email;
         this.roleName = roleName;
+        this.status = status;
     }
 
     @Override
@@ -36,6 +38,7 @@ public class EsUser {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", roleName='" + roleName + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

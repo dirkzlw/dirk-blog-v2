@@ -36,14 +36,16 @@ public class User {
     private String password;
     @Column(length = 40,unique = true)
     private String email;
-    //角色：1-管理员 2-用户
+    //角色--多对一
     @ManyToOne
     @JoinColumn(name = "roleId")
     private Role role;
     //头像URL
     @Column(length = 100)
     private String headImgUrl;
-
+    //账户状态--1：可用  2：黑名单
+    @Column(length = 11)
+    private Integer status;
     //bok
     @OneToMany(mappedBy = "author")
     private Set<Blog> blogSet = new HashSet<>();

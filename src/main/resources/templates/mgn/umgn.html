@@ -145,13 +145,13 @@
             </tr>
             </thead>
             <tbody id="show_tbody">
-            <tr th:each="user : ${userPage.tList}" th:id="${user.userId} + 1">
+            <tr th:each="user : ${userPage.tList}" th:id="${user.userId} * (-1)">
                 <td th:text="${user.username}"></td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.roleName}"></td>
                 <td>
                     <a th:id="${user.userId}" href="#" class="edit">编辑</a>
-                    <a th:id="${user.userId}" href="#" class="del" onclick="delUser(this.id)">删除</a>
+                    <a th:id="${user.userId}" href="#" class="del" onclick="delUser(this.id)">禁用</a>
                     <a th:id="${user.userId}" href="#" th:title="${user.userId}" onclick="resetPwd(title)">重置密码</a>
                 </td>
             </tr>
@@ -185,27 +185,34 @@
 <script src="/mgn/js/umgn.js"></script>
 <script type="text/javascript">
     function delUser(userId) {
-        var aTag = document.getElementById(userId * 1 + 1);
-        // ajax 删除用户
+        var aTag = document.getElementById(userId * (-1));
+        // ajax 禁用用户
         $.ajax({
             type: "POST",
-            url: "/usermgn/user/del",
+            url: "/mgn/umgn/del",
             data: {'userId': userId},
             dataType: "text", //return dataType: text or json
             success: function (json) {
-                if (json == "del") {
+                if (json == "success") {
                     aTag.remove();
                     bootbox.alert({
                         title: "来自DirkBlog的提示",
-                        message: "用户删除成功",
+                        message: "用户禁用成功",
                         closeButton: false
                     })
+                }else {
+                    bootbox.alert({
+                        title: "来自DirkBlog的提示",
+                        message: "禁用失败，请检查网络",
+                        closeButton: false
+                    })
+                    return
                 }
             },
             error: function (json) {
                 bootbox.alert({
                     title: "来自DirkBlog的提示",
-                    message: "删除失败，请检查网络",
+                    message: "禁用失败，请检查网络",
                     closeButton: false
                 })
                 return

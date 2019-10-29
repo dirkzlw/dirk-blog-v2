@@ -30,4 +30,5 @@ public interface UserService {
     List<User> findAll();
 
     String checkAndSave(User user);
+
 }

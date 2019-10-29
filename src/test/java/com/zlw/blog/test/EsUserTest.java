@@ -32,13 +32,15 @@ public class EsUserTest {
     //将mysql中数据导入es
     @Test
     public void leadIn(){
+        esUserRepository.deleteAll();
         List<User> userList = userService.findAll();
         EsUser esUser;
         for (User user : userList) {
             esUser = new EsUser(user.getUserId(),
                     user.getUsername(),
                     user.getEmail(),
-                    user.getRole().getRoleName());
+                    user.getRole().getRoleName(),
+                    user.getStatus());
             esUserRepository.save(esUser);
         }
 
