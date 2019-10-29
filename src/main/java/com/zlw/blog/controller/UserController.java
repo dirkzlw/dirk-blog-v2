@@ -335,7 +335,6 @@ public class UserController {
     @ResponseBody
     public ResultObj saveUser(User user, String roleName) {
         String result;
-        System.out.println("roleName = " + roleName);
         Role role = roleService.findByRoleName(roleName);
         EsUser esUser = new EsUser();
         if (user.getUserId() == null) {
@@ -367,7 +366,6 @@ public class UserController {
         }
         rtnObj.setObj(esUser);
         rtnObj.setRtn(result);
-        System.out.println("UserController.saveUser");
         return rtnObj;
     }
 
@@ -429,6 +427,32 @@ public class UserController {
         }
 
         return "success";
+    }
+
+    /**
+     * 查询用户
+     * @param ufor
+     * @return
+     */
+    @GetMapping("/mgn/umgn/search")
+    public String uSearch(Model model,
+                          String ufor,
+                          Integer currentPage,
+                          HttpServletRequest request){
+        if (currentPage == null) {
+            currentPage = 0;
+        }
+        Page<EsUser> pageObj = esUserService.searchEsUserByPage(ufor,currentPage, USER_PAGE_SIZE);
+        List<EsUser> content = pageObj.getContent();
+        com.zlw.blog.vo.Page userPage =
+                new com.zlw.blog.vo.Page(content,
+                        currentPage,
+                        pageObj.getTotalPages(),
+                        (int) pageObj.getTotalElements(),
+                        content.size());
+        model.addAttribute("userPage", userPage);
+        model.addAttribute("ufor", ufor);
+        return "search/ufor";
     }
 
     /**

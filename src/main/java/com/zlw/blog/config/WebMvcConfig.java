@@ -42,11 +42,14 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .addPathPatterns("/to/mgn/blogtag", //标签操作
                         "/mgn/blogtag/save", "/mgn/blogtag/del")
                 .addPathPatterns("/to/mgn/qrcode",  //关注操作
-                        "/mgn/qrcode/save","/mgn/qrcode/del");                                          //AdminController
+                        "/mgn/qrcode/save", "/mgn/qrcode/del")
+                .addPathPatterns("to/mgn/umgn",
+                        "/mgn/umgn/save", "/mgn/umgn/del",
+                        "/mgn/umgn/reuse", "/mgn/umgn/rpd",
+                        "/mgn/umgn/search");
         //对跳转错误页面进行拦截
         ErrorInterceptor errorRoot = new ErrorInterceptor();
         registry.addInterceptor(errorRoot);
         super.addInterceptors(registry);
-
     }
 }

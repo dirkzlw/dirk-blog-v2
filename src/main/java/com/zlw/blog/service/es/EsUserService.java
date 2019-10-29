@@ -15,4 +15,6 @@ public interface EsUserService {
     Page<EsUser> findEsUserByPage(Integer currentPage, Integer i);
 
     void delEsUser(Integer userId);
+
+    Page<EsUser> searchEsUserByPage(String ufor, Integer currentPage, Integer user_page_size);
 }

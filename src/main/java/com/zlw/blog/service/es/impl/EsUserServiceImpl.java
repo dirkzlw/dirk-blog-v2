@@ -1,6 +1,8 @@
 package com.zlw.blog.service.es.impl;
 
+import com.zlw.blog.po.Blog;
 import com.zlw.blog.po.es.EsUser;
+import com.zlw.blog.repository.es.EsUserDao;
 import com.zlw.blog.repository.es.EsUserRepository;
 import com.zlw.blog.service.es.EsUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ import org.springframework.stereotype.Service;
 public class EsUserServiceImpl implements EsUserService {
     @Autowired
     private EsUserRepository esUserRepository;
+    @Autowired
+    private EsUserDao esUserDao;
+
     @Override
     public void saveEsUser(EsUser esUser) {
         esUserRepository.save(esUser);
@@ -37,6 +42,11 @@ public class EsUserServiceImpl implements EsUserService {
     @Override
     public void delEsUser(Integer userId) {
 
+    }
+
+    @Override
+    public Page<EsUser> searchEsUserByPage(String ufor, Integer currentPage, Integer user_page_size) {
+        return esUserDao.searchEsUserByPage(ufor,currentPage,user_page_size);
     }
 
 }

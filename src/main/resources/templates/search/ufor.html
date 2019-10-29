@@ -170,12 +170,12 @@
 
             &nbsp;&nbsp;
             <a th:if="${userPage.currentPage}>0"
-               th:href="@{/to/mgn/umgn(currentPage=${userPage.currentPage}-1)}">上一页</a>
+               th:href="@{/mgn/umgn/search(currentPage=${userPage.currentPage}-1,ufor=${ufor})}">上一页</a>
             &nbsp;&nbsp;
             <span th:text="${userPage.currentPage}+1"></span>
             &nbsp;&nbsp;
             <a th:if="${userPage.currentPage}<${userPage.totalPage}-1"
-               th:href="@{/to/mgn/umgn(currentPage=${userPage.currentPage}+1)}">下一页</a>
+               th:href="@{/mgn/umgn/search(currentPage=${userPage.currentPage}+1,ufor=${ufor})}">下一页</a>
             &nbsp;&nbsp;
             前往
             <input id="toPage" type="number" style="width: 50px">
@@ -316,12 +316,8 @@
     $('#search_btn').click(function () {
         var mrkey = document.getElementById("smrn").value;
         if (mrkey === '') {
-            bootbox.alert({
-                title: "来自DirkBlog的提示",
-                message: "搜索内容不能为空",
-                closeButton: false
-            })
-            return;
+            var href = "/to/mgn/umgn";
+            window.open(href, "_self");
         }else {
             var href = "/mgn/umgn/search?ufor=" + mrkey;
             window.open(href, "_self");
