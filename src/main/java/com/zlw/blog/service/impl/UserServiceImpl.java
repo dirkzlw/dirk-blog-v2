@@ -123,4 +123,18 @@ public class UserServiceImpl implements UserService {
     public List<User> findAll() {
         return userRepository.findAll();
     }
+
+    @Override
+    public String checkAndSave(User user) {
+        User byUsername = userRepository.findByUsername(user.getUsername());
+        if(byUsername!=null){
+            return "userNameExist";
+        }
+        User byEmail = userRepository.findByEmail(user.getEmail());
+        if(byEmail!=null){
+            return "emailExist";
+        }
+        userRepository.save(user);
+        return "save";
+    }
 }

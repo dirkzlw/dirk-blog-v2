@@ -28,4 +28,6 @@ public interface UserService {
     String HeadUrlReset(Integer userId, String newUrl);
 
     List<User> findAll();
+
+    String checkAndSave(User user);
 }

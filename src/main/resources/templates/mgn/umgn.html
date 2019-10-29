@@ -182,7 +182,7 @@
 </div>
 </div>
 
-<script src="/mgn/table/umgn.js"></script>
+<script src="/mgn/js/umgn.js"></script>
 <script type="text/javascript">
     function delUser(userId) {
         var aTag = document.getElementById(userId * 1 + 1);
@@ -196,7 +196,7 @@
                 if (json == "del") {
                     aTag.remove();
                     bootbox.alert({
-                        title: "来自智能会议室的提示",
+                        title: "来自DirkBlog的提示",
                         message: "用户删除成功",
                         closeButton: false
                     })
@@ -204,7 +204,7 @@
             },
             error: function (json) {
                 bootbox.alert({
-                    title: "来自智能会议室的提示",
+                    title: "来自DirkBlog的提示",
                     message: "删除失败，请检查网络",
                     closeButton: false
                 })
@@ -223,7 +223,7 @@
             success: function (json) {
                 if (json == "success") {
                     bootbox.alert({
-                        title: "来自智能会议室的提示",
+                        title: "来自DirkBlog的提示",
                         message: "当前密码已重置为“123456”",
                         closeButton: false
                     })
@@ -231,7 +231,7 @@
             },
             error: function (json) {
                 bootbox.alert({
-                    title: "来自智能会议室的提示",
+                    title: "来自DirkBlog的提示",
                     message: "重置密码失败，请检查网络",
                     closeButton: false
                 })
@@ -253,7 +253,7 @@
             window.open(href, "_self");
         } else {
             bootbox.alert({
-                title: "来自智能会议室的提示",
+                title: "来自DirkBlog的提示",
                 message: "跳转页面输入有误",
                 closeButton: false
             })
@@ -266,7 +266,7 @@
         var mrkey = document.getElementById("smrn").value;
         if (mrkey === '') {
             bootbox.alert({
-                title: "来自智能会议室的提示",
+                title: "来自DirkBlog的提示",
                 message: "搜索内容不能为空",
                 closeButton: false
             })

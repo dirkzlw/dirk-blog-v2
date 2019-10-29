@@ -24,4 +24,9 @@ public class MD5Utils {
 		return md5code;
 	}
 
+	public static void main(String[] args){
+		//689b0c54f3d248bf1a3ed3ea46fad8f1
+		System.out.println(md5("dirk@123456"));
+	}
+
 }

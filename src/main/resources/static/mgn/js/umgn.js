@@ -53,13 +53,12 @@ var methods = {
         }
         if (addEnter) {
             var username = $('.username').val().trim();
-            // var password = $('.password').val().trim();
             var email = $('.email').val().trim();
             var role = $("#role option:selected").val();
             // ajax 新增用户
             $.ajax({
                 type: "POST",
-                url: "/usermgn/user/save",
+                url: "/mgn/umgn/save",
                 data: {'username': username, 'email': email, 'roleName': role},
                 dataType: "text", //return dataType: text or json
                 success: function (json) {
@@ -256,15 +255,6 @@ var methods = {
                 return
             }
         }
-        // if ($('.xpassword').val().trim() === '') {
-        //     bootbox.alert({
-        //         title: "来自DirkBlog的提示",
-        //         message: "密码为必选项，请填写",
-        //         closeButton: false
-        //     })
-        //     hasNullMes = true;
-        //     return
-        // }
         if ($('.xemail').val().trim() == '') {
             bootbox.alert({
                 title: "来自DirkBlog的提示",
@@ -310,15 +300,6 @@ var methods = {
                 return
             }
         }
-        // if ($('.password').val().trim() === '') {
-        //     bootbox.alert({
-        //         title: "来自DirkBlog的提示",
-        //         message: "密码为必选项，请填写",
-        //         closeButton: false
-        //     })
-        //     hasNullMes = true;
-        //     return
-        // }
         if ($('.email').val().trim() === '') {
             bootbox.alert({
                 title: "来自DirkBlog的提示",

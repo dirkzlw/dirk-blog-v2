@@ -9,6 +9,7 @@ import com.zlw.blog.service.es.EsUserService;
 import com.zlw.blog.utils.FastDFSUtils;
 import com.zlw.blog.utils.MD5Utils;
 import com.zlw.blog.utils.UserUtils;
+import com.zlw.blog.vo.ResultObj;
 import com.zlw.blog.vo.SessionUser;
 import org.apache.catalina.manager.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,8 @@ public class UserController {
     private String fromEmail;
     @Value("${USER_PAGE_SIZE}")
     private Integer USER_PAGE_SIZE;
+    @Value("${USER_INIT_PASSWORD}")
+    private String USER_INIT_PASSWORD;
 
     /**
      * 跳转到登录页面
@@ -310,6 +313,47 @@ public class UserController {
             return "success";
         }
         return "fail";
+    }
+
+    @PostMapping("/mgn/umgn/save")
+    @ResponseBody
+    public ResultObj saveUser(User user, String roleName) {
+        String result;
+        System.out.println("roleName = " + roleName);
+        if (user.getUserId() == null) {
+            // 添加
+            Role role = roleService.findByRoleName(roleName);
+            user.setRole(role);
+            user.setPassword(MD5Utils.md5(USER_INIT_PASSWORD));
+            user.setHeadImgUrl(USER_HEAD_FIRST);
+            result = userService.checkAndSave(user);
+            EsUser esUser = new EsUser(user.getUserId(),
+                    user.getUsername(),
+                    user.getEmail(),
+                    user.getRole().getRoleName());
+            ResultObj rtnObj = new ResultObj(esUser, result);
+            //同步搜索库
+            if ("save".equals(result)) {
+                esUserService.saveEsUser(esUser);
+            }
+            return rtnObj;
+        } else {
+            //修改
+//            Role role = roleService.findByRoleName(roleName);
+//            User oldUser = userService.findUserById(user.getUserId());
+//            oldUser.setRole(role);
+//            oldUser.setUsername(user.getUsername());
+//            oldUser.setEmail(user.getEmail());
+//            result = userService.saveUser(oldUser);
+//            UserInfo userInfo = new UserInfo(oldUser.getUsername(), oldUser.getEmail(), oldUser.getRole().getRoleName(), result);
+//            userInfo.setUserId(oldUser.getUserId());
+//            //同步搜索库
+//            if ( "save".equals(result)) {
+//                esUserService.save(new EsUser(oldUser.getUserId(), oldUser.getUsername(), oldUser.getEmail(), oldUser.getRole().getRoleName()));
+//            }
+            return null;
+        }
+
     }
 
     /**
